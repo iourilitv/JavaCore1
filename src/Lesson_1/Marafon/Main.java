@@ -7,7 +7,7 @@ package Lesson_1.Marafon;
  * @author Yuriy Litvinenko.
  * 1. Разобраться с имеющимся кодом;
  * 2. Добавить класс Team, который будет содержать название команды, массив из четырех
- * участников (в конструкторе можно сразу указыватьвсех участников ), метод для вывода
+ * участников (в конструкторе можно сразу указывать всех участников ), метод для вывода
  * информации о членах команды, прошедших дистанцию, метод вывода информации обо всех
  * членах команды.
  * 3. Добавить класс Course (полоса препятствий), в котором будут находиться массив
@@ -22,7 +22,7 @@ package Lesson_1.Marafon;
  *      }
  */
 public class Main {
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Competitor[] competitors = {new Human("Боб"), new Cat("Барсик"), new Dog("Бобик")};
         Obstacle[] course = {new Cross(80), new Wall(2), new Wall(1), new Cross(120)};
         for (Competitor c : competitors) {
@@ -34,5 +34,21 @@ public class Main {
         for (Competitor c : competitors) {
             c.info();
         }
+    }*/
+
+    public static void main(String[] args) {
+        Course c = new Course(
+                new Cross(80), new Wall(2),
+                new Wall(1), new Cross(120)
+        ); // Создаем полосу препятствий
+
+        Team team = new Team("Team1",
+                new Human("Боб"), new Human("Иван"),
+                new Cat("Барсик"), new Dog("Бобик")
+        ); // Создаем команду
+        team.teamInfo();//выводим информацию о команде
+
+        c.doIt(team); // Просим команду пройти полосу
+        team.showResults(); // Показываем результаты команды
     }
 }
