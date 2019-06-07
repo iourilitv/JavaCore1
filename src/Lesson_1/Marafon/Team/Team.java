@@ -1,4 +1,4 @@
-package Lesson_1.Marafon;
+package Lesson_1.Marafon.Team;
 
 public class Team {
     String teamName;
@@ -10,9 +10,21 @@ public class Team {
     }
 
     /**
+     * Геттер для инкапсуляции массива участников соревнований
+     * @return
+     */
+    public Competitor[] getCompetitors() {
+        Competitor[] c = new Competitor[competitors.length];
+        for (int i = 0; i < competitors.length; i++) {
+            c[i] = competitors[i];
+        }
+        return c;
+    }
+
+    /**
      * Метод вывода результата марафона.
      */
-    void showResults() {
+    public void showResults() {//TODO added public
         System.out.println("\nMarathon results.\nCompetitors which have passed marathon successfully:");
         for (Competitor c : competitors) {
             if (c.isOnDistance()){
@@ -24,7 +36,7 @@ public class Team {
     /**
      * Метод вывода инфомации об участниках команды
      */
-    void teamInfo() {
+    public void teamInfo() {//TODO added public
         int n = 1;
         System.out.println(this.teamName + " members:");
         for (Competitor c : competitors) {
