@@ -25,15 +25,15 @@ class MyExceptions {
         }
         catch (MyArraySizeException e){
             System.err.println(e.getMessage());
+            return arrayElementsSum;
         }
 
         try{
-            testArrayDataException(stringsArray);
+            arrayElementsSum = testArrayDataException(stringsArray);
         }
         catch (MyArrayDataException e){
             System.err.println(e.getMessage());
         }
-
         return arrayElementsSum;
     }
 
@@ -45,7 +45,7 @@ class MyExceptions {
                 (
                 "Длина массива превышает " + maxArrayLength + "!"
                 );
-        System.out.println("Everything is all wright!");
+        System.out.println("Array length is correct!");
     }
 
     public static int testArrayDataException(String[][] stringsArray) throws MyArrayDataException{
