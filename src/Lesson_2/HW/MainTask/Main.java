@@ -1,6 +1,6 @@
 package Lesson_2.HW.MainTask;
 
-public class MainExceptions {
+public class Main {
     public static void main(String[] args) {
         int maxArrayLength = 3;
         String[][] stringsArray = {
