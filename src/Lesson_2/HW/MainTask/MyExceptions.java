@@ -23,10 +23,13 @@ class MyExceptions {
      * @param maxArrayLength - максимальная длина массива (здесь квадрат).
      * @return сумму элементов массива, если нет исключений, иначе -1.
      */
-    public static int getArrayElementsSum(String[][] stringsArray, int maxArrayLength){
+    public static int getArrayElementsSum(
+            String[][] stringsArray, int maxArrayLength, int maxSubArrayLength
+                                          ){
+
         int arrayElementsSum = -1;
         try{
-            testArraySizeException(stringsArray, maxArrayLength);
+            testArraySizeException(stringsArray, maxArrayLength, maxSubArrayLength);
         }
         catch (MyArraySizeException e){
             System.err.println(e.getMessage());
@@ -49,13 +52,18 @@ class MyExceptions {
      * @throws MyArraySizeException - исключение превышения длины массива по двум размерам
      */
     public static void testArraySizeException(
-                            String[][] stringsArray, int maxArrayLength
+            String[][] stringsArray, int maxArrayLength, int maxSubArrayLength
                                               ) throws MyArraySizeException{
 
+        if (stringsArray.length > maxArrayLength) throw new MyArraySizeException
+                (
+                        "Длина массива превышает " + maxArrayLength + "!"
+                );
+
         for (int i = 0; i < stringsArray.length; i++) {
-            if (stringsArray.length > maxArrayLength || stringsArray[i].length > maxArrayLength) throw new MyArraySizeException
+            if (stringsArray[i].length > maxSubArrayLength) throw new MyArraySizeException
                     (
-                            "Длина массива превышает " + maxArrayLength + "!"
+                            "Длина подмассива: stringsArray[" + i + "] превышает " + maxSubArrayLength + "!"
                     );
         }
         System.out.println("Array length is correct!");
