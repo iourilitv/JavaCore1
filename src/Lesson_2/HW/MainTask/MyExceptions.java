@@ -5,7 +5,7 @@ package Lesson_2.HW.MainTask;
  * Вебинар 03 июня 2019 MSK (UTC+3).
  * Урок 2. eNum. Вложенные классы. Исключения.
  * Home Work. Main task.
- * @author Yuriy Litvinenko.
+ * @author Yuriy Litvinenko. Status: completed.
  * 1. Напишите метод, на вход которого подается двумерный строковый массив размером 4х4,
  *  при подаче массива другого размера необходимо бросить исключение MyArraySizeException.
  * 2. Далее метод должен пройтись по всем элементам массива, преобразовать в int, и

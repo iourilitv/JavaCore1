@@ -4,7 +4,7 @@ package Lesson_2.HW.AdditionalTask;
  * Java Core. Продвинутый уровень.
  * Вебинар 03 июня 2019 MSK (UTC+3).
  * Урок 2. eNum. Вложенные классы. Исключения.
- * Home Work. Additional Task.
+ * Home Work. Additional Task. Status: completed.
  * @author Yuriy Litvinenko.
  * Требуется реализовать enum DayOfWeek, который будет представлять дни недели.
  * С его помощью необходимо решить задачу определения кол-ва рабочих часов
