@@ -10,7 +10,7 @@ enum DayOfWeek {
     SUNDAY("Воскресенье", 7, 0);
 
     private String rus;
-    private int dayOfWeekNumber;
+    private int dayOfWeekNumber;//Требуется только для Способа 1. Номер дня в неделе.
     private double workHours;
 
     DayOfWeek(String rus, int dayOfWeekNumber, double workHours) {
@@ -23,6 +23,7 @@ enum DayOfWeek {
         return rus;
     }
 
+    //Требуется только для Способа 1.
     public int getDayOfWeekNumber() {
         return dayOfWeekNumber;
     }
