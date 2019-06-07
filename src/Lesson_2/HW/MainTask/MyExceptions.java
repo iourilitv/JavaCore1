@@ -20,7 +20,8 @@ class MyExceptions {
     /**
      * Метод отлавливания исключений при вычислении суммы элементов массива
      * @param stringsArray - массив чисел ввиде строк
-     * @param maxArrayLength - максимальная длина массива (здесь квадрат).
+     * @param maxArrayLength - максимальная длина массива.
+     * @param maxSubArrayLength - максимальная длина подмассива.
      * @return сумму элементов массива, если нет исключений, иначе -1.
      */
     public static int getArrayElementsSum(
@@ -48,7 +49,8 @@ class MyExceptions {
     /**
      * Метод отлавливания исключения превышения длины массива
      * @param stringsArray - массив чисел ввиде строк
-     * @param maxArrayLength - максимальная длина массива (здесь квадрат).
+     * @param maxArrayLength - максимальная длина массива.
+     * @param maxSubArrayLength - максимальная длина подмассива.
      * @throws MyArraySizeException - исключение превышения длины массива по двум размерам
      */
     public static void testArraySizeException(
