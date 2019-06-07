@@ -10,12 +10,12 @@ enum DayOfWeek {
     SUNDAY("Воскресенье", 7, 0);
 
     private String rus;
-    private int dayOfTheWeek;
+    private int dayOfWeekNumber;
     private double workHours;
 
-    DayOfWeek(String rus, int dayOfTheWeek, double workHours) {
+    DayOfWeek(String rus, int dayOfWeekNumber, double workHours) {
         this.rus = rus;
-        this.dayOfTheWeek = dayOfTheWeek;
+        this.dayOfWeekNumber = dayOfWeekNumber;
         this.workHours = workHours;
     }
 
@@ -23,11 +23,12 @@ enum DayOfWeek {
         return rus;
     }
 
-    public int getDayOfTheWeek() {
-        return dayOfTheWeek;
+    public int getDayOfWeekNumber() {
+        return dayOfWeekNumber;
     }
 
     public double getWorkHours() {
         return workHours;
     }
+
 }

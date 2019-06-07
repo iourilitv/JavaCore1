@@ -18,14 +18,19 @@ package Lesson_2.HW.AdditionalTask;
  */
 public class Main {
     public static void main(final String[] args) {
-        System.out.println(getWorkingHours(DayOfWeek.MONDAY));
+        System.out.println(getWorkingHoursV1(DayOfWeek.WEDNESDAY));
     }
 
-    static double getWorkingHours(DayOfWeek dayOfWeek){
+    /**
+     * Метод суммирования рабочих часов до конца недели начиная с dayOfWeek
+     * @param dayOfWeek - день недели, с которого суммируем
+     * @return сумму рабочих часов оставщихся дней недели
+     */
+    static double getWorkingHoursV1(DayOfWeek dayOfWeek){
         double remainingWorkTimeSum = 0;
 
-        for (int i = dayOfWeek.getDayOfTheWeek(); i < dayOfWeek.values().length; i++) {
-            remainingWorkTimeSum += dayOfWeek.getWorkHours();
+        for (int i = dayOfWeek.getDayOfWeekNumber() - 1; i < dayOfWeek.values().length; i++) {
+            remainingWorkTimeSum += DayOfWeek.values()[i].getWorkHours();
         }
         return remainingWorkTimeSum;
     }
