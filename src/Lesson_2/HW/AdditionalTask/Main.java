@@ -16,5 +16,17 @@ package Lesson_2.HW.AdditionalTask;
  *   System.out.println(getWorkingHours(DayOfWeek.MONDAY));
  *   }
  */
-public class Enum {
+public class Main {
+    public static void main(final String[] args) {
+        System.out.println(getWorkingHours(DayOfWeek.MONDAY));
+    }
+
+    static double getWorkingHours(DayOfWeek dayOfWeek){
+        double remainingWorkTimeSum = 0;
+
+        for (int i = dayOfWeek.getDayOfTheWeek(); i < dayOfWeek.values().length; i++) {
+            remainingWorkTimeSum += dayOfWeek.getWorkHours();
+        }
+        return remainingWorkTimeSum;
+    }
 }
