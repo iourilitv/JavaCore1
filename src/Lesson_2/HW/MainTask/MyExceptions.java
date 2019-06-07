@@ -2,6 +2,8 @@ package Lesson_2.HW.MainTask;
 
 import Lesson_2.FactorialException;
 
+import static java.lang.Float.NaN;
+
 /**
  * Java Core. Продвинутый уровень.
  * Вебинар 03 июня 2019 MSK (UTC+3).
@@ -19,22 +21,38 @@ import Lesson_2.FactorialException;
  * исключения MySizeArrayException и MyArrayDataException и вывести результат расчета.
 */
 class MyExceptions {
-    //private static int maxLength = 3;
 
     public static void testArraySizeException(
-            String[][] stringArray, int maxArrayLength
+                            String[][] stringArray, int maxArrayLength
                                               ) throws MyArraySizeException{
 
         if (stringArray.length > maxArrayLength) throw new MyArraySizeException
                 (
                 "Длина массива превышает " + maxArrayLength + "!"
                 );
+        System.out.println("Everything is all wright!");
     }
 
-    /*public static void testArrayDataException(String[][] stringArray) throws MyArrayDataException{
-        if (stringArray.length > maxLength) throw new MyArrayDataException(
-                "Элемент массива с индексом " + index + " не является числом!"
-        );
-    }*/
+    public static int testArrayDataException(String[][] stringArray) throws MyArrayDataException{
+        int arrayElementsSum = 0;
+        int num;
+
+        for (int i = 0; i < stringArray.length; i++) {
+            for (int j = 0; j < stringArray.length; j++) {
+                try{
+                    num = Integer.parseInt(stringArray[i][j]);
+                    arrayElementsSum += num;
+                }
+                catch (NumberFormatException e){
+                    throw new MyArrayDataException
+                            (
+                             "Элемент массива stringArray[" + i + "][" + j + "]: \""
+                             + stringArray[i][j] + "\" не является числом!"
+                            );
+                }
+            }
+        }
+        return arrayElementsSum;
+    }
 
 }
