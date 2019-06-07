@@ -1,9 +1,5 @@
 package Lesson_2.HW.MainTask;
 
-import Lesson_2.FactorialException;
-
-import static java.lang.Float.NaN;
-
 /**
  * Java Core. Продвинутый уровень.
  * Вебинар 03 июня 2019 MSK (UTC+3).
@@ -22,32 +18,51 @@ import static java.lang.Float.NaN;
 */
 class MyExceptions {
 
+    public static int getArrayElementsSum(String[][] stringsArray, int maxArrayLength){
+        int arrayElementsSum = -1;
+        try{
+            testArraySizeException(stringsArray, maxArrayLength);
+        }
+        catch (MyArraySizeException e){
+            System.err.println(e.getMessage());
+        }
+
+        try{
+            testArrayDataException(stringsArray);
+        }
+        catch (MyArrayDataException e){
+            System.err.println(e.getMessage());
+        }
+
+        return arrayElementsSum;
+    }
+
     public static void testArraySizeException(
-                            String[][] stringArray, int maxArrayLength
+                            String[][] stringsArray, int maxArrayLength
                                               ) throws MyArraySizeException{
 
-        if (stringArray.length > maxArrayLength) throw new MyArraySizeException
+        if (stringsArray.length > maxArrayLength) throw new MyArraySizeException
                 (
                 "Длина массива превышает " + maxArrayLength + "!"
                 );
         System.out.println("Everything is all wright!");
     }
 
-    public static int testArrayDataException(String[][] stringArray) throws MyArrayDataException{
+    public static int testArrayDataException(String[][] stringsArray) throws MyArrayDataException{
         int arrayElementsSum = 0;
         int num;
 
-        for (int i = 0; i < stringArray.length; i++) {
-            for (int j = 0; j < stringArray.length; j++) {
+        for (int i = 0; i < stringsArray.length; i++) {
+            for (int j = 0; j < stringsArray.length; j++) {
                 try{
-                    num = Integer.parseInt(stringArray[i][j]);
+                    num = Integer.parseInt(stringsArray[i][j]);
                     arrayElementsSum += num;
                 }
                 catch (NumberFormatException e){
                     throw new MyArrayDataException
                             (
-                             "Элемент массива stringArray[" + i + "][" + j + "]: \""
-                             + stringArray[i][j] + "\" не является числом!"
+                             "Элемент массива stringArray[" + i + "][" + j + "]:\""
+                             + stringsArray[i][j] + "\" не является числом!"
                             );
                 }
             }
