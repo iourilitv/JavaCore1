@@ -1,5 +1,7 @@
 package Lesson_2.HW.MainTask;
 
+import Lesson_2.FactorialException;
+
 /**
  * Java Core. Продвинутый уровень.
  * Вебинар 03 июня 2019 MSK (UTC+3).
@@ -16,6 +18,23 @@ package Lesson_2.HW.MainTask;
  * 3. В методе main() вызвать полученный метод, обработать возможные
  * исключения MySizeArrayException и MyArrayDataException и вывести результат расчета.
 */
-public class MyExceptions {
+class MyExceptions {
+    //private static int maxLength = 3;
+
+    public static void testArraySizeException(
+            String[][] stringArray, int maxArrayLength
+                                              ) throws MyArraySizeException{
+
+        if (stringArray.length > maxArrayLength) throw new MyArraySizeException
+                (
+                "Длина массива превышает " + maxArrayLength + "!"
+                );
+    }
+
+    /*public static void testArrayDataException(String[][] stringArray) throws MyArrayDataException{
+        if (stringArray.length > maxLength) throw new MyArrayDataException(
+                "Элемент массива с индексом " + index + " не является числом!"
+        );
+    }*/
 
 }
