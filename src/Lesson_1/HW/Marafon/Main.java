@@ -1,12 +1,12 @@
-package Lesson_1.Marafon;
+package Lesson_1.HW.Marafon;
 
-import Lesson_1.Marafon.Course.Course;
-import Lesson_1.Marafon.Course.Cross;
-import Lesson_1.Marafon.Course.Wall;
-import Lesson_1.Marafon.Team.Cat;
-import Lesson_1.Marafon.Team.Dog;
-import Lesson_1.Marafon.Team.Human;
-import Lesson_1.Marafon.Team.Team;
+import Lesson_1.HW.Marafon.Course.Course;
+import Lesson_1.HW.Marafon.Course.Cross;
+import Lesson_1.HW.Marafon.Course.Wall;
+import Lesson_1.HW.Marafon.Team.Cat;
+import Lesson_1.HW.Marafon.Team.Dog;
+import Lesson_1.HW.Marafon.Team.Human;
+import Lesson_1.HW.Marafon.Team.Team;
 
 /**
  * Java Core. Продвинутый уровень.

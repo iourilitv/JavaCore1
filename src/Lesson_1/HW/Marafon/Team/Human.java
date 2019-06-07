@@ -1,4 +1,4 @@
-package Lesson_1.Marafon.Team;
+package Lesson_1.HW.Marafon.Team;
 
 public class Human implements Competitor {
     String name;
