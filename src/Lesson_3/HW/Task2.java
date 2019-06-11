@@ -17,5 +17,5 @@ package Lesson_3.HW;
  * main(), прописывая add() и get().
  *
  */
-public class Main2 {
+public class Task2 {
 }
