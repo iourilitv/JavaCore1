@@ -1,6 +1,8 @@
 package Lesson_3.HW;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.ListIterator;
 
 /**
  * Java Core. Продвинутый уровень.
@@ -11,9 +13,9 @@ import java.util.*;
  * 1. Создать массив с набором слов (10-20 слов, среди которых должны встречаться
  * повторяющиеся). Найти и вывести список уникальных слов, из которых состоит массив
  * (дубликаты не считаем). Посчитать, сколько раз встречается каждое слово.
- * Способ 1. Через копирование массива в список и обработки с помощью итератора.
+ * Способ 2. Через копирование массива в список и подсчета за один цикл.
  */
-public class Task1way1 {
+public class Task1way2 {
     public static void main(String[] args) {
         //создаем тестовый массив строк с дубликатами
         String[] words = {"abc", "aaa", "abb", "acc", "abc",
@@ -27,12 +29,9 @@ public class Task1way1 {
         ArrayList<String> wordsList = new ArrayList<>(words.length);
 
         //копируем массив в коллекцию
-        //аналогично можно сделать циклом:
-        // for (int i = 0; i < words.length; i++) {
-        //    wordsList.add(i, words[i]);
-        // }
-        Collections.addAll(wordsList, words);
-
+        for (int i = 0; i < words.length; i++) {
+            wordsList.add(i, words[i]);
+        }
         //в цикле сравниваем текущий элемент с другими и суммируем количество повторений
         for (int i = 0; i < wordsList.size(); i++) {
             int num = 0;
