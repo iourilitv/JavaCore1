@@ -1,8 +1,6 @@
 package Lesson_3.HW;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Java Core. Продвинутый уровень.
@@ -13,7 +11,9 @@ import java.util.ListIterator;
  * 1. Создать массив с набором слов (10-20 слов, среди которых должны встречаться
  * повторяющиеся). Найти и вывести список уникальных слов, из которых состоит массив
  * (дубликаты не считаем). Посчитать, сколько раз встречается каждое слово.
- * Способ 2. Через копирование массива в список и подсчета за один цикл.
+ * Способ 2.
+ * Через копирование массива в список и подсчета повторений за один цикл с помощью HashMap.
+ * Преимущества перед способом 1 - сохраняются значения повторений слова в массиве.
  */
 public class Task1way2 {
     public static void main(String[] args) {
@@ -26,37 +26,23 @@ public class Task1way2 {
         System.out.println(Arrays.toString(words));
 
         //создаем коллекцию емкостью равной длине массива
-        ArrayList<String> wordsList = new ArrayList<>(words.length);
+        Map<String, Integer> wordsMap = new HashMap<>(words.length);
 
-        //копируем массив в коллекцию
-        for (int i = 0; i < words.length; i++) {
-            wordsList.add(i, words[i]);
-        }
         //в цикле сравниваем текущий элемент с другими и суммируем количество повторений
-        for (int i = 0; i < wordsList.size(); i++) {
-            int num = 0;
-            //устанавливаем итератор с начала списка
-            ListIterator<String> iterator = wordsList.listIterator();
-            //запоминаем текущий элемент
-            String word = wordsList.get(i);
-            //находим совпадения с текущим элементом и удаляем их из списка,
-            // одновременно суммируя их количество
-            while(iterator.hasNext()) {
-                if (word == iterator.next()) {
-                    num++;
-                    iterator.remove();
-                }
-            }
-            //добавляем текущий элемент(теперь он в списке встречается один раз)
-            wordsList.add(i, word);
-
-            //выводим в консоль текущий элемент и количество повторений
-            System.out.print(word + ":" + num + " ");
-            // Результат:
-            // abc:3 aaa:1 abb:1 acc:3 cbb:2 ccc:1 bbb:1 bab:2 cbc:1
+        for (int i = 0; i < words.length; i++) {
+            //с помощью метода merge добавляем текущий элемент в отображение(список) со значением 1,
+            // а если его еще нет, увеличиваем значение на 1.
+            //это заменяет кучу кода через применение методов getOrDefault (), put().
+            wordsMap.merge(words[i], 1, Integer::sum);
         }
-        //урезаем список до его фактического размера
-        wordsList.trimToSize();
+
+        //выводим в консоль список текущих элементов и количество повторений
+        for (Map.Entry w: wordsMap.entrySet()) {
+            System.out.print(w.getKey() + ":" + w.getValue() + " ");
+
+        }
+        // Результат:
+
     }
 
 }
