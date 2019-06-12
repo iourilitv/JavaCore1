@@ -1,4 +1,9 @@
 package Lesson_3.HW;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Java Core. Продвинутый уровень.
  * Вебинар 03 июня 2019 MSK (UTC+3).
@@ -18,4 +23,12 @@ package Lesson_3.HW;
  *
  */
 public class Task2 {
+    public static void main(String[] args) {
+        PhoneNumbers phoneNumbers = new PhoneNumbers("Ivanov", new ArrayList<>());
+
+        Map<String, PhoneNumbers> phonebook = new HashMap<>();
+
+        System.out.println(phoneNumbers.getLastname() + " " + phoneNumbers.getPhoneNumbers());
+    }
+
 }
