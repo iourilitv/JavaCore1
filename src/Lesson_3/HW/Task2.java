@@ -2,6 +2,7 @@ package Lesson_3.HW;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,12 +24,37 @@ import java.util.Map;
  *
  */
 public class Task2 {
+    public static Map<String, Subscriber> phoneBook = new HashMap<>();
+
     public static void main(String[] args) {
-        PhoneNumbers phoneNumbers = new PhoneNumbers("Ivanov", new ArrayList<>());
+        phoneBook.put("Ivanov", new Subscriber("Ivanov", new ArrayList<>()));
 
-        Map<String, PhoneNumbers> phonebook = new HashMap<>();
+        add("Ivanov", "900-909092", "12121234455", "485743537");
+        System.out.println(phoneBook.get("Ivanov").getLastName() + ": " + Subscriber.get("Ivanov"));
 
-        System.out.println(phoneNumbers.getLastname() + " " + phoneNumbers.getPhoneNumbers());
+        add("Ivanov", "900-909092", "12121234455");
+        System.out.println(phoneBook.get("Ivanov").getLastName() + ": " + Subscriber.get("Ivanov"));
+        //Результат:
+        //Ivanov: [900-909092, 12121234455]
+
+        add("Petrov", "122434", "097654");
+        System.out.println(phoneBook.get("Petrov").getLastName() + ": " + Subscriber.get("Petrov"));
+
+
     }
 
+    public static void add(String key, String... phones){
+        String[] arr = phones;
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            list.add(arr[i]);
+        }
+        phoneBook.put(key, new Subscriber(key, list));
+    }
+
+    /*void phoneBookInfo(){
+        for (phoneBook pb: ) {
+
+        }
+    }*/
 }
