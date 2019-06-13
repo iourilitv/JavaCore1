@@ -19,4 +19,20 @@ public class Subscriber {//Абонент
         return phoneNumbers;
     }
 
+    /**
+     * Метод возвращающий данные абонента.
+     * @return строку с данными абонента.
+     */
+    public String subscriberInfo(){
+        //собираем буферную строку данных абонента
+        StringBuilder msg = new StringBuilder();
+        msg.append("LastName:" + lastName + ". Phones:");
+        for (String s: phoneNumbers) {
+            msg = msg.append(s + ", ");
+        }
+        //заменяем последние ", " на "."
+        msg.replace(msg.length() - 2, msg.length() - 1, ".");
+        //возвращаем обычную строку
+        return msg.toString();
+    }
 }

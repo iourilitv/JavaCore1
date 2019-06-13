@@ -1,7 +1,5 @@
 package Lesson_3.HW;
 
-import java.util.ArrayList;
-
 /**
  * Java Core. Продвинутый уровень.
  * Вебинар 03 июня 2019 MSK (UTC+3).
@@ -22,21 +20,30 @@ import java.util.ArrayList;
  */
 public class Task2 {
     public static void main(String[] args) {
-
+        //добавляем первого абонента в телефонный справочник
         PhoneBook.add("Ivanov", "900-909092", "12121234455", "485743537");
         System.out.println(PhoneBook.getPhoneBook().get("Ivanov").getLastName() + ": " + PhoneBook.get("Ivanov"));
-
-        PhoneBook.add("Ivanov", "900-909092", "12121234455");
-        System.out.println(PhoneBook.getPhoneBook().get("Ivanov").getLastName() + ": " + PhoneBook.get("Ivanov"));
-
-        PhoneBook.add("Petrov", "122434", "097654");
-        System.out.println(PhoneBook.getPhoneBook().get("Petrov").getLastName() + ": " + PhoneBook.get("Petrov"));
-
         //Результат:
         //Ivanov: [900-909092, 12121234455, 485743537]
+
+        //изменяем телефоны у первого абонента в телефонном справочнике
+        PhoneBook.add("Ivanov", "900-909092", "12121234455");
+        System.out.println(PhoneBook.getPhoneBook().get("Ivanov").getLastName() + ": " + PhoneBook.get("Ivanov"));
+        //Результат:
         //Ivanov: [900-909092, 12121234455]
+
+        //добавляем первого абонента в телефонный справочник
+        PhoneBook.add("Petrov", "122434", "097654");
+        System.out.println(PhoneBook.getPhoneBook().get("Petrov").getLastName() + ": " + PhoneBook.get("Petrov"));
+        //Результат:
         //Petrov: [122434, 097654]
 
+        //выводим в консоль весь телефонный справочник
+        PhoneBook.phoneBookInfo();
+        //Результат:
+        //Phone book.
+        //LastName:Petrov. Phones:122434, 097654.
+        //LastName:Ivanov. Phones:900-909092, 12121234455.
     }
 
 }
