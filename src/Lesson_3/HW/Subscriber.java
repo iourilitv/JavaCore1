@@ -21,9 +21,7 @@ public class Subscriber {
         return phoneNumbers;
     }
 
-
-
-    public static List<String> get(String key){
+    /*public static List<String> get(String key){
         return Task2.phoneBook.get(key).phoneNumbers;
-    }
+    }*/
 }
