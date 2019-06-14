@@ -52,10 +52,16 @@ class PhoneBook {
     //TODO improvement 2.Добавил
     //TODO improvement 1.Добавил
     public void add(String key, String... phones){
-        String[] arr = phones;
         HashSet<String> hs = new HashSet<>();
-        for (int i = 0; i < arr.length; i++) {
+
+        //TODO improving the method phoneBook.add with foreach instead of for.Удалил
+        //String[] arr = phones;
+        /*for (int i = 0; i < arr.length; i++) {
             hs.add(arr[i]);
+        }*/
+        //TODO improving the method phoneBook.add with foreach instead of for.Добавил
+        for (String arr: phones) {
+            hs.add(arr);
         }
         phoneBook.put(key, new Subscriber(key, hs));
     }
