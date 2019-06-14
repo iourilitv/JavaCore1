@@ -39,7 +39,8 @@ class PhoneBook {
         }
         phoneBook.put(key, new Subscriber(key, list));
     }*/
-    //TODO improvement 1.Добавил
+    //TODO improvement 2.Удалил
+    /*//TODO improvement 1.Добавил
     public void add(String key, String... phones){
         String[] arr = phones;
         List<String> list = new ArrayList<>();
@@ -47,6 +48,16 @@ class PhoneBook {
             list.add(arr[i]);
         }
         phoneBook.put(key, new Subscriber(key, list));
+    }*/
+    //TODO improvement 2.Добавил
+    //TODO improvement 1.Добавил
+    public void add(String key, String... phones){
+        String[] arr = phones;
+        HashSet<String> hs = new HashSet<>();
+        for (int i = 0; i < arr.length; i++) {
+            hs.add(arr[i]);
+        }
+        phoneBook.put(key, new Subscriber(key, hs));
     }
 
     /**
@@ -58,8 +69,14 @@ class PhoneBook {
     /*public static List<String> get(String key){
         return phoneBook.get(key).getPhoneNumbers();
     }*/
-    //TODO improvement 1.Добавил
+    //TODO improvement 2.Удалил
+    /*//TODO improvement 1.Добавил
     public List<String> get(String key){
+        return phoneBook.get(key).getPhoneNumbers();
+    }*/
+    //TODO improvement 2.Добавил
+    //TODO improvement 1.Добавил
+    public HashSet<String> get(String key){
         return phoneBook.get(key).getPhoneNumbers();
     }
 
