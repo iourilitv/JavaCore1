@@ -83,6 +83,13 @@ class PhoneBook {
     //TODO improvement 4.2.Turn method phoneBook.get into phoneBook.getSubscriberPhones with Exception.Добавил
     //TODO improvement 2.Добавил
     //TODO improvement 1.Добавил
+
+    /**
+     * Метод запроса телефонов абонента в телефонном справочнике.
+     * @param key  - ключ (он же фамилия) абонента.
+     * @return отражение(список) телефонов абонента.
+     * @throws MyException - исключение, если абонета нет в телефонном справочнике.
+     */
     public HashSet<String> getSubscriberPhones(String key) throws MyException{
         try{
             phoneBook.get(key).getPhoneNumbers();
@@ -93,7 +100,12 @@ class PhoneBook {
         return phoneBook.get(key).getPhoneNumbers();
     }
 
-    //TODO improvement 4.1.New method phoneBook.findSubscriber.Добавил
+    /**
+     * TODO improvement 4.1.New method phoneBook.findSubscriber.Добавил
+     * Метод запроса данных абонента в телефонном справочнике.
+     * @param name - ключ (он же фамилия) абонента.
+     * @return строку с данными абонента, либо сообщения, что такого абонента нет в списке.
+     */
     public String findSubscriber(String name){
         String msg;
         if (phoneBook.containsKey(name)){

@@ -1,8 +1,8 @@
 package Lesson_3.HW;
 
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+/*import java.util.List; TODO Удалить!
+import java.util.Map;*/
 
 //TODO improvement 1.Удалил
 //public class Subscriber {//Абонент
