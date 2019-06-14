@@ -51,7 +51,11 @@ class Subscriber {//Абонент
             msg = msg.append(s + ", ");
         }
         //заменяем последние ", " на "."
-        msg.replace(msg.length() - 2, msg.length() - 1, ".");
+        //TODO improving.Deleted odd space in the end of the string.Удалил
+        //msg.replace(msg.length() - 2, msg.length() - 1, ".");
+        //TODO improving.Deleted odd space in the end of the string.Удалил
+        msg.replace(msg.length() - 2, msg.length() - 0, ".");
+
         //возвращаем обычную строку
         return msg.toString();
     }
