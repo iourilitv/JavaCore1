@@ -2,10 +2,26 @@ package Lesson_3.HW;
 
 import java.util.*;
 
-public class PhoneBook {
-    private static Map<String, Subscriber> phoneBook = new HashMap<>();//телефонный справочник
+//TODO improvement 1.Удалил
+//public class PhoneBook {
+//TODO improvement 1.Добавил
+class PhoneBook {
+    //TODO improvement 1.Удалил
+    //private static Map<String, Subscriber> phoneBook = new HashMap<>();//телефонный справочник
+    //TODO improvement 1.Добавил
+    Map<String, Subscriber> phoneBook;//телефонный справочник
 
-    public static Map<String, Subscriber> getPhoneBook() {
+    //TODO improvement 1.Добавил
+    public PhoneBook() {
+        this.phoneBook = new HashMap<>();
+    }
+
+    //TODO improvement 1.Удалил
+    /*public static Map<String, Subscriber> getPhoneBook() {
+        return phoneBook;
+    }*/
+    //TODO improvement 1.Добавил
+    public Map<String, Subscriber> getPhoneBook() {
         return phoneBook;
     }
 
@@ -14,7 +30,17 @@ public class PhoneBook {
      * @param key - ключ (он же фамилия) абонента.
      * @param phones - массив телефонных номеров абонента.
      */
-    public static void add(String key, String... phones){
+    //TODO improvement 1.Удалил
+    /*public static void add(String key, String... phones){
+        String[] arr = phones;
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            list.add(arr[i]);
+        }
+        phoneBook.put(key, new Subscriber(key, list));
+    }*/
+    //TODO improvement 1.Добавил
+    public void add(String key, String... phones){
         String[] arr = phones;
         List<String> list = new ArrayList<>();
         for (int i = 0; i < arr.length; i++) {
@@ -28,14 +54,35 @@ public class PhoneBook {
      * @param key - ключ (он же фамилия) абонента.
      * @return списочный массив телефонов абонента.
      */
-    public static List<String> get(String key){
+    //TODO improvement 1.Удалил
+    /*public static List<String> get(String key){
+        return phoneBook.get(key).getPhoneNumbers();
+    }*/
+    //TODO improvement 1.Добавил
+    public List<String> get(String key){
         return phoneBook.get(key).getPhoneNumbers();
     }
 
     /**
      * Метод вывода в консоль телефонного справочника.
      */
-    public static void phoneBookInfo(){
+    //TODO improvement 1.Удалил
+    /*public static void phoneBookInfo(){
+        System.out.println("Phone book.");
+        // Map.Entry - описывает пару (ключ - значение)
+        // entrySet - возращает множество со значениями карты
+        for (Map.Entry<String, Subscriber> phb : phoneBook.entrySet()) {
+            //System.out.println(phb.getKey() + ": " + phb.getValue().getPhoneNumbers());
+            //Результат.
+            //... //Ivanov: [900-909092, 12121234455] //...
+
+            System.out.println(phb.getValue().subscriberInfo());
+            //Результат.
+            //... //LastName:Ivanov. Phones:900-909092, 12121234455.//...
+        }
+    }*/
+    //TODO improvement 1.Добавил
+    public void phoneBookInfo(){
         System.out.println("Phone book.");
         // Map.Entry - описывает пару (ключ - значение)
         // entrySet - возращает множество со значениями карты

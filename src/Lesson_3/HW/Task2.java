@@ -25,25 +25,41 @@ package Lesson_3.HW;
 public class Task2 {
     public static void main(String[] args) {
         //добавляем первого абонента в телефонный справочник
-        PhoneBook.add("Ivanov", "900-909092", "12121234455", "485743537");
-        System.out.println(PhoneBook.getPhoneBook().get("Ivanov").getLastName() + ": " + PhoneBook.get("Ivanov"));
+        //TODO improvement 1.Удалил
+        //PhoneBook.add("Ivanov", "900-909092", "12121234455", "485743537");
+        //System.out.println(PhoneBook.getPhoneBook().get("Ivanov").getLastName() + ": " + PhoneBook.get("Ivanov"));
+        //TODO improvement 1.Добавил
+        PhoneBook phoneBook = new PhoneBook();
+        phoneBook.add("Ivanov", "900-909092", "12121234455", "485743537");
+        System.out.println(phoneBook.getPhoneBook().get("Ivanov").getLastName() + ": " + phoneBook.get("Ivanov"));
         //Результат:
         //Ivanov: [900-909092, 12121234455, 485743537]
 
         //изменяем телефоны у первого абонента в телефонном справочнике
-        PhoneBook.add("Ivanov", "900-909092", "12121234455");
-        System.out.println(PhoneBook.getPhoneBook().get("Ivanov").getLastName() + ": " + PhoneBook.get("Ivanov"));
+        //TODO improvement 1.Удалил
+        //PhoneBook.add("Ivanov", "900-909092", "12121234455");
+        //System.out.println(PhoneBook.getPhoneBook().get("Ivanov").getLastName() + ": " + PhoneBook.get("Ivanov"));
+        //TODO improvement 1.Добавил
+        phoneBook.add("Ivanov", "900-909092", "12121234455");
+        System.out.println(phoneBook.getPhoneBook().get("Ivanov").getLastName() + ": " + phoneBook.get("Ivanov"));
         //Результат:
         //Ivanov: [900-909092, 12121234455]
 
         //добавляем первого абонента в телефонный справочник
-        PhoneBook.add("Petrov", "122434", "097654");
-        System.out.println(PhoneBook.getPhoneBook().get("Petrov").getLastName() + ": " + PhoneBook.get("Petrov"));
+        //TODO improvement 1.Удалил
+        //PhoneBook.add("Petrov", "122434", "097654");
+        //System.out.println(PhoneBook.getPhoneBook().get("Petrov").getLastName() + ": " + PhoneBook.get("Petrov"));
+        //TODO improvement 1.Добавил
+        phoneBook.add("Petrov", "122434", "097654");
+        System.out.println(phoneBook.getPhoneBook().get("Petrov").getLastName() + ": " + phoneBook.get("Petrov"));
         //Результат:
         //Petrov: [122434, 097654]
 
         //выводим в консоль весь телефонный справочник
-        PhoneBook.phoneBookInfo();
+        //TODO improvement 1.Удалил
+        //PhoneBook.phoneBookInfo();
+        //TODO improvement 1.Добавил
+        phoneBook.phoneBookInfo();
         //Результат:
         //Phone book.
         //LastName:Petrov. Phones:122434, 097654.

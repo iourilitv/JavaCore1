@@ -2,7 +2,10 @@ package Lesson_3.HW;
 
 import java.util.List;
 
-public class Subscriber {//Абонент
+//TODO improvement 1.Удалил
+//public class Subscriber {//Абонент
+//TODO improvement 1.Добавил
+class Subscriber {//Абонент
     private String lastName;
     private List<String> phoneNumbers;
 
