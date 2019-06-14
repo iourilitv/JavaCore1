@@ -66,18 +66,43 @@ class PhoneBook {
      * @return списочный массив телефонов абонента.
      */
     //TODO improvement 1.Удалил
-    /*public static List<String> get(String key){
-        return phoneBook.get(key).getPhoneNumbers();
+    /*public static List<String> getSubscriberPhones(String key){
+        return phoneBook.getSubscriberPhones(key).getPhoneNumbers();
     }*/
     //TODO improvement 2.Удалил
     /*//TODO improvement 1.Добавил
-    public List<String> get(String key){
-        return phoneBook.get(key).getPhoneNumbers();
+    public List<String> getSubscriberPhones(String key){
+        return phoneBook.getSubscriberPhones(key).getPhoneNumbers();
     }*/
+    //TODO improvement 4.Удалил
+    /*//TODO improvement 2.Добавил
+    //TODO improvement 1.Добавил
+    public HashSet<String> getSubscriberPhones(String key){
+        return phoneBook.getSubscriberPhones(key).getPhoneNumbers();
+    }*/
+    //TODO improvement 4.2.Turn method phoneBook.get into phoneBook.getSubscriberPhones with Exception.Добавил
     //TODO improvement 2.Добавил
     //TODO improvement 1.Добавил
-    public HashSet<String> get(String key){
+    public HashSet<String> getSubscriberPhones(String key) throws MyException{
+        try{
+            phoneBook.get(key).getPhoneNumbers();
+        }
+        catch(NullPointerException e){
+            throw new MyException("There isn't this subscriber in the phone book!");
+        }
         return phoneBook.get(key).getPhoneNumbers();
+    }
+
+    //TODO improvement 4.1.New method phoneBook.findSubscriber.Добавил
+    public String findSubscriber(String name){
+        String msg;
+        if (phoneBook.containsKey(name)){
+            msg = phoneBook.get(name).subscriberInfo();
+        }
+        else{
+            msg = "There isn't this subscriber in the phone book!";
+        }
+        return msg;
     }
 
     /**
@@ -151,7 +176,7 @@ class PhoneBook {
      // keySet - возвращает множество ключей
 
     for (String key : map.keySet()) {
-        System.out.println("ID = " + key + ", День недели = " +  map.get(key));
+        System.out.println("ID = " + key + ", День недели = " +  map.getSubscriberPhones(key));
      }
     System.out.println();
 

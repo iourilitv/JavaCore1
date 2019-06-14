@@ -42,7 +42,7 @@ public class Main {
 //
 //        System.out.println(ai.size());
 //
-//        System.out.println(ai.get(0));
+//        System.out.println(ai.getSubscriberPhones(0));
 
 //        if (ai.contains(20)) {
 //            System.out.println("есть 20");
@@ -66,7 +66,7 @@ public class Main {
 //        }
 
 //        for (int i = 0; i < states.size(); i++) {
-//            if(states.get(i).equalsIgnoreCase("Францию")) {
+//            if(states.getSubscriberPhones(i).equalsIgnoreCase("Францию")) {
 //                states.remove(i);
 //            }
 //        }
@@ -98,7 +98,7 @@ public class Main {
 //
 //        for (int i = 0; i < 100; i++) {
 //            int num = random.nextInt(10);
-//            Integer res = hm.get(num);
+//            Integer res = hm.getSubscriberPhones(num);
 //            hm.put(num, res == null ? 1 : res + 1);
 //        }
 //
