@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.net.URL?>
+
+<VBox fx:controller="Lesson_4.HW.netChat.view.NetChatController" xmlns:fx="http://javafx.com/fxml" alignment="center">
+<stylesheets><URL value="@/Lesson_4/HW/netChat/view/StyleNetChat.css"></URL> </stylesheets>
+
+<TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS"></TextArea>
+<HBox>
+    <TextField fx:id="textField" onAction="#sendMsg" HBox.hgrow="ALWAYS" promptText="Введите сообщение..."/>
+    <Button onAction="#sendMsg" fx:id="btn1" text="Send"/>
+</HBox>
+</VBox>
