@@ -45,14 +45,14 @@ public class MainThreadV1 {
 
     public static void main(String[] args) {
         //Реализация четырьмя способами
-        simpleCalculating();//без разбивки на потоки
+        //simpleCalculating();//без разбивки на потоки
         /*Simple. Creating array time:53
                   Array[4999999]:1.0, Array[9999999]:1.0
                   Calculating time:13524
                   Total testing time:13577
                   Array[4999999]:0.06320445, Array[9999999]:0.06892343 */
 
-        threadCalculating1();//Два потока с формулами внутри.
+        //threadCalculating1();//Два потока с формулами внутри.
         /*Thread_1. Creating array time:41
                     T1.Array[4999999]:1.0, T1.Array[9999999]:1.0
                     T1.Splitting array time:51
@@ -62,7 +62,7 @@ public class MainThreadV1 {
                     T1.Total testing time:8793
                     T1.Array[4999999]:0.06320445, T1.Array[9999999]:0.06892343 */
 
-        threadCalculating2();//Два потока с методом(Поток1) и формулой(Поток2).
+        //threadCalculating2();//Два потока с методом(Поток1) и формулой(Поток2).
         /*Thread_2. Creating array time:60
                     T2.Array[4999999]:1.0, T2.Array[9999999]:1.0
                     T2.Splitting array time:61
