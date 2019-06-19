@@ -1,10 +1,10 @@
 package Lesson_5.HW;
 
 /**
- * Java Core. Продвинутый уровень.
+ * Java Core. Продвинутый уровень. Версия 1.
  * Вебинар 03 июня 2019 MSK (UTC+3).
  * Урок 5. Многопоточность.
- * Home Work.
+ * Home Work. Версия 1.
  * @author Yuriy Litvinenko.
  * 1. Необходимо написать два метода, которые делают следующее:
  * 1) Создают одномерный длинный массив, например:
@@ -45,14 +45,14 @@ public class MainThreadV1 {
 
     public static void main(String[] args) {
         //Реализация четырьмя способами
-        //simpleCalculating();//без разбивки на потоки
+        simpleCalculating();//без разбивки на потоки
         /*Simple. Creating array time:53
                   Array[4999999]:1.0, Array[9999999]:1.0
                   Calculating time:13524
                   Total testing time:13577
                   Array[4999999]:0.06320445, Array[9999999]:0.06892343 */
 
-        //threadCalculating1();//Два потока с формулами внутри.
+        threadCalculating1();//Два потока с формулами внутри.
         /*Thread_1. Creating array time:41
                     T1.Array[4999999]:1.0, T1.Array[9999999]:1.0
                     T1.Splitting array time:51
@@ -62,7 +62,7 @@ public class MainThreadV1 {
                     T1.Total testing time:8793
                     T1.Array[4999999]:0.06320445, T1.Array[9999999]:0.06892343 */
 
-        //threadCalculating2();//Два потока с методом(Поток1) и формулой(Поток2).
+        threadCalculating2();//Два потока с методом(Поток1) и формулой(Поток2).
         /*Thread_2. Creating array time:60
                     T2.Array[4999999]:1.0, T2.Array[9999999]:1.0
                     T2.Splitting array time:61
@@ -71,7 +71,9 @@ public class MainThreadV1 {
                     T2.Collecting array time:8
                     T2.Total testing time:8909
                     T2.Array[4999999]:0.06320445, T2.Array[9999999]:0.06892343 */
+
         threadCalculating3(); //Два потока, использующие один метод одновременно.
+
         // TODO! Второй поток ждет пока П1 освободит synchronized метод!
         /*Thread_3. Creating array time:54
                     T3.Array[4999999]:1.0, T3.Array[9999999]:1.0
@@ -105,19 +107,12 @@ public class MainThreadV1 {
         return arr;
     }
 
-    static /*synchronized */void calculating(float[] arr, int startIndex){
-        //коррекция формулы из-за разбивки массива
-        if(startIndex == 0){
-            for (int i = 0; i < arr.length; i++) {
-                arr[i] = (float)(arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
-            }
-        }
-        else{
-            //TODO! В формуле i заменяем (i + h), кроме индекса элемента массива,
-            // чтобы вторая часть считалась правильно!
-            for (int i = 0; i < arr.length; i++) {
-                arr[i] = (float)(arr[i] * Math.sin(0.2f + (i + startIndex) / 5) * Math.cos(0.2f + (i + startIndex) / 5) * Math.cos(0.4f + (i + startIndex) / 2));
-            }
+    static void calculating(float[] arr, int startIndex){
+        //коррекция формулы из-за разбивки массива на потоки
+        //чтобы все потоки считались правильно, в формуле i(кроме индекса элемента массива)
+        //заменяем на (i + h)
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = (float)(arr[i] * Math.sin(0.2f + (i + startIndex) / 5) * Math.cos(0.2f + (i + startIndex) / 5) * Math.cos(0.4f + (i + startIndex) / 2));
         }
     }
 
@@ -130,18 +125,13 @@ public class MainThreadV1 {
         //перезаписываем массив
         //засекаем время
         long a = System.currentTimeMillis();
-        /*for (int i = 0; i < arr.length; i++) {
-            arr[i] = (float)(arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
-        }*/
+
         calculating(arr, 0);
         //выводим время выполнения цикла перезаписи
         System.out.println("Calculating time:" + (System.currentTimeMillis() - a));
         System.out.println("Total testing time:" + (System.currentTimeMillis() - tA));
         System.out.println("Array[" + (h - 1) + "]:" + arr[h - 1] + ", Array[" + (size - 1) + "]:" + arr[size - 1]);
 
-        //arr[size - 1] = 1;
-        //arr[size - 1] = (float)(arr[size - 1] * Math.sin(0.2f + (size - 1) / 5) * Math.cos(0.2f + (size - 1) / 5) * Math.cos(0.4f + (size - 1) / 2));
-        //System.out.println("Array[" + (h - 1) + "]:" + arr[h - 1] + ", Array[" + (size - 1) + "]:" + arr[size - 1]);
     }
 
     static void threadCalculating1(){
@@ -171,7 +161,7 @@ public class MainThreadV1 {
                 for (int i = 0; i < a1.length; i++) {
                     a1[i] = (float)(a1[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
                 }
-                //calculating(a1);//только в одном потоке можно запустить этот метод
+
                 //выводим время выполнения цикла перезаписи
                 System.out.println("T1.Calculating a1 array time:" + (System.currentTimeMillis() - a));
             }
@@ -184,8 +174,9 @@ public class MainThreadV1 {
                 //засекаем время
                 long a = System.currentTimeMillis();
                 //перезаписываем массив
-                //TODO! В формуле i заменяем (i + h), кроме индекса элемента массива,
-                // чтобы вторая часть считалась правильно!
+                //коррекция формулы из-за разбивки массива на потоки
+                //чтобы все потоки считались правильно, в формуле i(кроме индекса элемента массива)
+                //заменяем на (i + h)
                 for (int i = 0; i < a2.length; i++) {
                     a2[i] = (float)(a2[i] * Math.sin(0.2f + (i + h) / 5) * Math.cos(0.2f + (i + h) / 5) * Math.cos(0.4f + (i + h) / 2));
                 }
@@ -253,8 +244,9 @@ public class MainThreadV1 {
                 //засекаем время
                 long a = System.currentTimeMillis();
                 //перезаписываем массив
-                //TODO! В формуле i заменяем (i + h), кроме индекса элемента массива,
-                // чтобы вторая часть считалась правильно!
+                //коррекция формулы из-за разбивки массива на потоки
+                //чтобы все потоки считались правильно, в формуле i(кроме индекса элемента массива)
+                //заменяем на (i + h)
                 for (int i = 0; i < a2.length; i++) {
                     a2[i] = (float)(a2[i] * Math.sin(0.2f + (i + h) / 5) * Math.cos(0.2f + (i + h) / 5) * Math.cos(0.4f + (i + h) / 2));
                 }
