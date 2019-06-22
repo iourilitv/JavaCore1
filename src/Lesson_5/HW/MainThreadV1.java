@@ -1,5 +1,7 @@
 package Lesson_5.HW;
 
+import java.util.Arrays;
+
 /**
  * Java Core. Продвинутый уровень. Версия 1.
  * Вебинар 03 июня 2019 MSK (UTC+3).
@@ -103,9 +105,13 @@ public class MainThreadV1 {
         long a = System.currentTimeMillis();
         //создаем  и наполняем массив единицами
         float[] arr = new float[size];
-        for (int i = 0; i < arr.length; i++) {
+        //TODO Цикл можно заменить одной командой
+        /*for (int i = 0; i < arr.length; i++) {
             arr[i] = 1;
-        }
+        }*/
+        //TODO Цикл можно заменить одной командой
+        Arrays.fill(arr, 1f);
+
         //выводим время выполнения метода наполнения массива
         System.out.println("Creating array time:" + (System.currentTimeMillis() - a));
         return arr;

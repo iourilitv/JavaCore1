@@ -1,5 +1,7 @@
 package Lesson_5.HW;
 
+import java.util.Arrays;
+
 /**
  * Java Core. Продвинутый уровень. Версия 2.
  * Вебинар 03 июня 2019 MSK (UTC+3).
@@ -32,19 +34,30 @@ public class Calculation {
         }
     }
 
+    /**
+     * Метод создания и наполнения начального массива
+     * @return начальный массив
+     */
     private float[] createArray(){
         //засекаем время
         long a = System.currentTimeMillis();
         //создаем  и наполняем массив единицами
         float[] arr = new float[size];
-        for (int i = 0; i < arr.length; i++) {
+        //TODO Цикл можно заменить одной командой
+        /*for (int i = 0; i < arr.length; i++) {
             arr[i] = 1;
-        }
+        }*/
+        //TODO Цикл можно заменить одной командой
+        Arrays.fill(arr, 1f);
+
         //выводим время выполнения метода наполнения массива
         System.out.println("Creating array time:" + (System.currentTimeMillis() - a));
         return arr;
     }
 
+    /**
+     * Метод пересчета с разбивкой на N потоков, использующих один метод одновременно
+     */
     void threadCalculating(){
         //засекаем общее время вичислений
         long tA = System.currentTimeMillis();
@@ -112,6 +125,11 @@ public class Calculation {
 
     }
 
+    /**
+     * Метод сшивания в начальный массив результатов пересчета в массивах потоков
+     * @param arr - начальный массив
+     * @return пересчитанный начальный массив
+     */
     float[] collectArr(float[] arr){
         //засекаем время
         long a = System.currentTimeMillis();
