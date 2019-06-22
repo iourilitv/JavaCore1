@@ -19,17 +19,23 @@ public class Main {
     private Vector<ClientHandler> clients;
 
     public Main() {
+        //создаем список клиентов в виде синхронизированного ArrayList
         clients = new Vector<>();
+        //инициализируем обхекты с пустыми значениями, чтобы не получить исключение, что объекта нет
         ServerSocket server = null;
         Socket socket = null;
 
         try {
+            //создаем сокет для серверной части
             server = new ServerSocket(8189);
             System.out.println("Сервер запущен");
 
             while (true) {
+                //создаем сокет для клиентской части. При создании объекта типа Socket неявно
+                //устанавливается соединение клиента с сервером
                 socket = server.accept();
                 System.out.println("Клиент подключился");
+                //
                 clients.add(new ClientHandler(socket, this));
             }
 
