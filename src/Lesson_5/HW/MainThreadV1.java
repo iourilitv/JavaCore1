@@ -94,6 +94,10 @@ public class MainThreadV1 {
                     T3.Array[4999999]:0.06320445, T3.Array[9999999]:0.06892343 */
     }
 
+    /**
+     * Метод создания и наполнения начального массива
+     * @return начальный массив
+     */
     static float[] createArray(){
         //засекаем время
         long a = System.currentTimeMillis();
@@ -107,6 +111,11 @@ public class MainThreadV1 {
         return arr;
     }
 
+    /**
+     * Метод пересчета предложенного массива
+     * @param arr - предложенный массив
+     * @param startIndex - индекс начального элемента массива(требуется для частей массива)
+     */
     static void calculating(float[] arr, int startIndex){
         //коррекция формулы из-за разбивки массива на потоки
         //чтобы все потоки считались правильно, в формуле i(кроме индекса элемента массива)
@@ -116,6 +125,9 @@ public class MainThreadV1 {
         }
     }
 
+    /**
+     * Метод простого пересчета массива без разбивки на потоки
+     */
     static void simpleCalculating(){
         long tA = System.currentTimeMillis();
         System.out.println("Simple.");
@@ -134,6 +146,9 @@ public class MainThreadV1 {
 
     }
 
+    /**
+     * Метод пересчета с разбивкой на два потока с формулами внутри
+     */
     static void threadCalculating1(){
         long tA = System.currentTimeMillis();
         System.out.println("Thread_1.");
@@ -207,6 +222,9 @@ public class MainThreadV1 {
         System.out.println("T1.Array[" + (h - 1) + "]:" + arr[h - 1] + ", T1.Array[" + (size - 1) + "]:" + arr[size - 1]);
     }
 
+    /**
+     * Метод пересчета с разбивкой на два потока с методом(Поток1) и формулой(Поток2)
+     */
     static void threadCalculating2(){
         long tA = System.currentTimeMillis();
         System.out.println("Thread_2.");
@@ -277,6 +295,9 @@ public class MainThreadV1 {
         System.out.println("T2.Array[" + (h - 1) + "]:" + arr[h - 1] + ", T2.Array[" + (size - 1) + "]:" + arr[size - 1]);
     }
 
+    /**
+     * Метод пересчета с разбивкой на два потока, использующие один метод одновременно
+     */
     static void threadCalculating3(){
         long tA = System.currentTimeMillis();
         System.out.println("Thread_3.");
