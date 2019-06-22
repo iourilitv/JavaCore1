@@ -5,6 +5,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
 
+/**
+ * Java Core. Продвинутый уровень.
+ * Вебинар 03 июня 2019 MSK (UTC+3).
+ * Урок 6. Работа с сетью.
+ * Home work.
+ * @author Yuriy Litvinenko.
+ * 1. Разобраться с кодом.
+ * 2. Корректно закрывать сокеты и удалять клиентов и списка.
+ * Серверная часть сетевого чата. Все сообщения клиентов транслируются друг другу через сервер.
+ */
 public class Main {
     private Vector<ClientHandler> clients;
 

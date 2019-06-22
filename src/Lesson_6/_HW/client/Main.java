@@ -6,6 +6,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Java Core. Продвинутый уровень.
+ * Вебинар 03 июня 2019 MSK (UTC+3).
+ * Урок 6. Работа с сетью.
+ * Home work.
+ * @author Yuriy Litvinenko.
+ * 1. Разобраться с кодом.
+ * 2. Корректно закрывать сокеты и удалять клиентов и списка.
+ * Клиентская часть сетевого чата. Все сообщения клиентов транслируются друг другу через сервер.
+ * Чтобы запустить несколько клиентов одновременно, нужно в Edit Configurations
+ * класса client.Main установить Allow parallel run(справа вверху)
+ */
 public class Main extends Application {
 
     @Override
