@@ -13,7 +13,6 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
 public class Controller implements Initializable {
     @FXML
     TextArea textArea;
