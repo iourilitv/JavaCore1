@@ -40,6 +40,10 @@ public class EchoServer {
                 String str = in.readUTF();
                 //добавляем условие выхода сервера из сеанса
                 if (str.equals( "/end" )) {
+
+                    //TODO временно
+                    //System.out.println("Клиент отключился");
+
                     break ;
                 }
                 //возвращаем клиенту эхо от сервера

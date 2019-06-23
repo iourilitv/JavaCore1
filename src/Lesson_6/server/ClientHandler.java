@@ -5,6 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Слушатель для сетевых клиентов. Логика работы с отдельным клиентом
+ */
 public class ClientHandler {
 
     private Socket socket;
@@ -28,6 +31,12 @@ public class ClientHandler {
                             if (str.equals("/end")) {
                                 break;
                             }
+
+                            //TODO добавляем синхронизированный списочный массив клиентов.Добавил
+                            //System.out.println("Client " + str);
+                            //out.writeUTF(str);
+                            //TODO добавляем синхронизированный списочный массив клиентов.Добавил
+                            //вызываем метод в экземпляре класса Main (server)
                             server.broadCastMsg(str);
                         }
                     } catch (IOException e) {
@@ -57,6 +66,11 @@ public class ClientHandler {
         }
     }
 
+    //TODO добавляем синхронизированный списочный массив клиентов
+    /**
+     * Метод отправки сообщения слушателем клиента
+     * @param msg
+     */
     public void sendMsg(String msg) {
         try {
             out.writeUTF(msg);

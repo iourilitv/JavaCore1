@@ -25,12 +25,18 @@ public class Controller implements Initializable {
     Button btn1;
 
     Socket socket;
-    DataInputStream in;
-    DataOutputStream out;
+    DataInputStream in;//входящий на клиента от сервера поток
+    DataOutputStream out;//исходящий поток от клиента на сервер
 
     final String IP_ADRESS = "localhost";
     final int PORT = 8189;
 
+    /**
+     * Метод запуска клиента
+     * Переопределяем метод интерфейса Initializable
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -44,12 +50,16 @@ public class Controller implements Initializable {
                 public void run() {
                     try {
                         while (true) {
+                            //читаем сообщение в кодировке UTF
                             String str = in.readUTF();
                             textArea.appendText(str + "\n");
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
-                    } finally {
+                    }
+                    //TODO перенесен из главного потока.
+                    //иначе возникает исключение java.io.EOFException
+                    finally {
                         try {
                             socket.close();
                         } catch (IOException e) {
@@ -61,10 +71,24 @@ public class Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //TODO перенесен поток клиента.
+        //иначе возникает исключение java.io.EOFException
+        /*finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }*/
     }
 
+    /**
+     * Метод отправки сообщения от клиента
+     * Переопределяем метод интерфейса Initializable
+     */
     public void sendMsg() {
         try {
+            //сообщение из текстового поля клиента отправляем на сервер в кодировке UTF
             out.writeUTF(textField.getText());
             textField.clear();
             textField.requestFocus();
