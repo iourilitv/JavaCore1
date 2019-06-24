@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <VBox alignment="center" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121"
-      fx:controller="Lesson_6.client.Controller">
+      fx:controller="Lesson_6._HW.client.Controller">
 
     <TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS" />
     <HBox>

@@ -2,6 +2,7 @@ package Lesson_6._HW.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -19,7 +20,8 @@ public class ClientHandler {
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
 
-            new Thread(new Runnable() {
+            //TODO исправление ошибки выхода.Удалил
+            /*new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -50,6 +52,52 @@ public class ClientHandler {
                         }
                     }
                 }
+            }).start();*/
+            //TODO исправление ошибки выхода.Добавил
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        while (true) {
+                            String str = in.readUTF();
+                            if (str.equals("/end")) {
+                                //TODO Исправление StartServer/java.net.SocketException: Socket closed.Добавил
+                                //TODO работает и здесь и в finally
+                                //удаляем клиента их списка
+                                //server.closeClient(socket);
+
+                                break;
+                            }
+                            server.broadCastMsg(str);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            in.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            out.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            socket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        //TODO Исправление StartServer/java.net.SocketException: Socket closed.Добавил
+                        //TODO работает и здесь и в if (str.equals("/end"))
+                        //удаляем клиента из списка
+                        //TODO не нашел как вернуть индекс элемента с этим сокетом
+                        // поэтому реализовано, через метод перебирающий список
+                        server.closeClient(socket);
+
+                    }
+                }
             }).start();
 
         } catch (IOException e) {
@@ -64,4 +112,10 @@ public class ClientHandler {
             e.printStackTrace();
         }
     }
+
+    //TODO исправление ошибки выхода.Добавил
+    public Socket getSocket() {
+        return socket;
+    }
+
 }

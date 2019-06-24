@@ -3,6 +3,7 @@ package Lesson_6._HW.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Vector;
 
 /**
@@ -21,7 +22,7 @@ public class Main {
     public Main() {
         //создаем список клиентов в виде синхронизированного ArrayList
         clients = new Vector<>();
-        //инициализируем обхекты с пустыми значениями, чтобы не получить исключение, что объекта нет
+        //инициализируем объекты с пустыми значениями, чтобы не получить исключение, что объекта нет
         ServerSocket server = null;
         Socket socket = null;
 
@@ -35,8 +36,12 @@ public class Main {
                 //устанавливается соединение клиента с сервером
                 socket = server.accept();
                 System.out.println("Клиент подключился");
-                //
+                //добавляем клиента в список
                 clients.add(new ClientHandler(socket, this));
+
+                //TODO временно
+                System.out.println("Main.try.while. after line clients.add(...) - Arrays.toString(clients.toArray()):\n" + Arrays.toString(clients.toArray()));
+
             }
 
         } catch (IOException e) {
@@ -55,9 +60,29 @@ public class Main {
         }
     }
 
+    /**
+     * Метод отправки всем одного сообщения
+     * @param msg
+     */
     public void broadCastMsg(String msg) {
         for (ClientHandler o : clients) {
             o.sendMsg(msg);
+        }
+    }
+
+    //TODO исправление ошибки выхода.Добавил
+    /**
+     * Метод перебирающий списочный массив и удаляющий элемент списка с совпадающим сокетом
+     * @param socket - сокет элемента, который требуется удалить из списка
+     */
+    public void closeClient(Socket socket){
+        for (int i = 0; i < clients.size(); i++) {
+            if(socket.equals(clients.get(i).getSocket())){
+                clients.remove(i);
+
+                //TODO временно
+                System.out.println("Main. closeClient. /end. after remove. clients.toString:\n" + clients.toString());
+            }
         }
     }
 }
