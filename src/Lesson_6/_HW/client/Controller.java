@@ -45,10 +45,17 @@ public class Controller implements Initializable {//Initializable - для ав�
                 public void run() {
                     try {
                         while (true) {
-                            //TODO Исправление err1.java.io.EOFException.Удалил.Работает
+                            //TODO UPD HW.Есть у препода
+                            /*//TODO Исправление err1.java.io.EOFException.Удалил.Работает
                             //String str = in.readUTF();
-                            //textArea.appendText(str + "\n");
 
+                            //TODO UPD HW.Добавил чтобы клиенты не висели после закрытия сервера
+                            //контроллер клиента принимает сообщение от ClientHandler сервера
+                            //if(str.equals("/serverclosed")) break;
+
+                            //textArea.appendText(str + "\n");*/
+
+                            //TODO UPD HW.Нет у препода. Не нужно было бороться с исплючением в клиенте
                             //TODO Исправление err1.java.io.EOFException.Добавил.Работает
                             try{
                                 String str = in.readUTF();
@@ -89,5 +96,15 @@ public class Controller implements Initializable {//Initializable - для ав�
             e.printStackTrace();
         }
     }
+
+    //TODO UPD HW. Пример идеи - как закрыть клиента по нажатию крестика закрыть окно
+    /*@FXML
+    private void closeButtonAction(){
+        // get a handle to the stage
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        out.writeUTF("/close");
+        // do what you have to do
+        stage.close();
+    }*/
 
 }

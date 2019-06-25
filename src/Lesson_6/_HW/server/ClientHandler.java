@@ -54,6 +54,7 @@ public class ClientHandler {
                 }
             }).start();*/
             //TODO исправление ошибки выхода.Добавил
+            //анонимный класс
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -61,10 +62,16 @@ public class ClientHandler {
                         while (true) {
                             String str = in.readUTF();
                             if (str.equals("/end")) {
-                                //TODO Исправление StartServer/java.net.SocketException: Socket closed.Добавил
-                                //TODO работает и здесь и в finally
+
+                                //TODO UPD HW.Добавил
+                                //закрываем клиента после удаления его из списка
+                                out.writeUTF("/serverclosed");
+
+                                //TODO UPD HW.Удалил
+                                /*//TODO Исправление StartServer/java.net.SocketException: Socket closed.Добавил
+                                //TODO работает и здесь и в finally. Правильнее в finally
                                 //удаляем клиента их списка
-                                //server.closeClient(socket);
+                                //server.closeClient(socket);*/
 
                                 break;
                             }
@@ -89,14 +96,19 @@ public class ClientHandler {
                             e.printStackTrace();
                         }
 
-                        //TODO Исправление StartServer/java.net.SocketException: Socket closed.Добавил
+                        //TODO UPD HW.Удалил
+                        /*//TODO Исправление StartServer/java.net.SocketException: Socket closed.Добавил
                         //TODO работает и здесь и в if (str.equals("/end"))
                         //удаляем клиента из списка
                         //TODO не нашел как вернуть индекс элемента с этим сокетом
                         // поэтому реализовано, через метод перебирающий список
-                        server.closeClient(socket);
+                        server.closeClient(socket);*/
 
                     }
+                    //TODO UPD HW.Добавил
+                    //TODO Важно. this здесь - это объект анонимного класса Thread и обратиться к нему
+                    // можно только через основной класс ClientHandler
+                    server.unsubscribe(ClientHandler.this);
                 }
             }).start();
 

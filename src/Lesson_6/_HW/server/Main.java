@@ -14,6 +14,7 @@ import java.util.Vector;
  * @author Yuriy Litvinenko.
  * 1. Разобраться с кодом.
  * 2. Корректно закрывать сокеты и удалять клиентов и списка.
+ *   Это позволит побороть только исключение из-за отправки сервером сообщения в закрытый сокет.
  * Серверная часть сетевого чата. Все сообщения клиентов транслируются друг другу через сервер.
  */
 public class Main {
@@ -36,8 +37,12 @@ public class Main {
                 //устанавливается соединение клиента с сервером
                 socket = server.accept();
                 System.out.println("Клиент подключился");
+
                 //добавляем клиента в список
-                clients.add(new ClientHandler(socket, this));
+                //TODO UPD HW.Удалил
+                //clients.add(new ClientHandler(socket, this));
+                //TODO UPD HW.Добавил
+                subscribe(new ClientHandler(socket, this));
 
                 //TODO временно
                 System.out.println("Main.try.while. after line clients.add(...) - Arrays.toString(clients.toArray()):\n" + Arrays.toString(clients.toArray()));
@@ -60,6 +65,24 @@ public class Main {
         }
     }
 
+    //TODO UPD HW.Добавил
+    /**
+     * Метод добавления клиента в списочный массив
+     * @param client - подключивщийся клиент
+     */
+    public void subscribe(ClientHandler client){
+        clients.add(client);
+    }
+
+    //TODO UPD HW.Добавил
+    /**
+     * Метод удаления клиента из списочного массива
+     * @param client - отключивщийся клиент
+     */
+    public void unsubscribe(ClientHandler client){
+        clients.remove(client);
+    }
+
     /**
      * Метод отправки всем одного сообщения
      * @param msg
@@ -70,11 +93,12 @@ public class Main {
         }
     }
 
-    //TODO исправление ошибки выхода.Добавил
+    //TODO UPD HW.Удалил
+    /*//TODO исправление ошибки выхода.Добавил
     /**
      * Метод перебирающий списочный массив и удаляющий элемент списка с совпадающим сокетом
      * @param socket - сокет элемента, который требуется удалить из списка
-     */
+     /
     public void closeClient(Socket socket){
         for (int i = 0; i < clients.size(); i++) {
             if(socket.equals(clients.get(i).getSocket())){
@@ -84,5 +108,5 @@ public class Main {
                 System.out.println("Main. closeClient. /end. after remove. clients.toString:\n" + clients.toString());
             }
         }
-    }
+    }*/
 }
