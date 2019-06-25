@@ -15,7 +15,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class Controller implements Initializable {//Initializable - для автоматического подключения клиента
     @FXML
     TextArea textArea;
 
