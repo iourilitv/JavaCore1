@@ -71,7 +71,20 @@ public class ClientHandler {
                                 out.writeUTF("/serverclosed");//TODO выдает исключение в клиенте
                                 break;
                             }
-                            server.broadCastMsg(nick + ": " + str);
+
+
+                            //TODO HW_task2.Добавил
+                            if(str.startsWith("/w")) {
+                                /*String[] temp = str.split(" ");
+                                String nickOfRecipient = temp[1];
+                                String msg = str;//TODO отфильтровать*/
+                                //ClientHandler.this вместо nick, чтобы отправить предупреждение отправителю,
+                                //что нельзя отправлять самому себе
+                                server.sendMsgToNick(ClientHandler.this, str);
+                            }
+                            else{
+                                server.broadCastMsg(nick + ": " + str);
+                            }
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -115,6 +128,11 @@ public class ClientHandler {
         return socket;
     }
 
+    //TODO HW_task2.Добавил
+    public String getNick() {
+        return nick;
+    }
+
     //TODO HW_task3.Добавил
     /**
      * Метод проверки не авторизовался ли кто-то уже под этим ником(есть ли в списке клиент с таким ником)
@@ -132,4 +150,6 @@ public class ClientHandler {
         }
         return flag;
     }
+
+
 }

@@ -100,4 +100,28 @@ public class MainServer {
         }
     }
 
+    //TODO HW_task2.Добавил
+    /**
+     * Метод сортировки и отправки персональных сообщений
+     * @param str
+     */
+    public void sendMsgToNick(ClientHandler sender, String str){
+        String[] temp = str.split(" ");
+        String nickOfRecipient = temp[1];
+        String msg = str;//TODO отфильтровать
+
+        if(!sender.getNick().equals(nickOfRecipient)){
+            for (ClientHandler c: clients) {
+                if(c.getNick().equals(nickOfRecipient)){
+                    c.sendMsg("Персонально от " + sender.getNick() + ": " + msg);
+                    break;
+                }
+            }
+        }
+        else{
+            //TODO  добавить не отправлять отправителю
+            sender.sendMsg("Нельзя отправлять самому себе!");
+        }
+    }
+
 }
