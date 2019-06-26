@@ -47,7 +47,7 @@ public class MainServer {
                 //устанавливается соединение клиента с сервером
                 socket = server.accept();
                 System.out.println("Клиент подключился");
-
+                //создаем объект нового клиента
                 new ClientHandler(socket, this);
             }
 
@@ -106,9 +106,14 @@ public class MainServer {
      * @param str
      */
     public void sendMsgToNick(ClientHandler sender, String str){
-        String[] temp = str.split(" ");
+        //TODO когда добавится адресная книга, этот блок не понадобится
+        //разделяем по пробелу на три ячейки массива
+        //3 - limit - количество возвращаемых строк.
+        String[] temp = str.split(" ", 3);
+        //выделяем ник адресата
         String nickOfRecipient = temp[1];
-        String msg = str;//TODO отфильтровать
+        //выделяем собственно текст сообщения
+        String msg = temp[2];
 
         if(!sender.getNick().equals(nickOfRecipient)){
             for (ClientHandler c: clients) {
@@ -119,7 +124,7 @@ public class MainServer {
             }
         }
         else{
-            //TODO  добавить не отправлять отправителю
+            //отправка предупреждение отправителю
             sender.sendMsg("Нельзя отправлять самому себе!");
         }
     }

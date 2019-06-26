@@ -75,9 +75,6 @@ public class ClientHandler {
 
                             //TODO HW_task2.Добавил
                             if(str.startsWith("/w")) {
-                                /*String[] temp = str.split(" ");
-                                String nickOfRecipient = temp[1];
-                                String msg = str;//TODO отфильтровать*/
                                 //ClientHandler.this вместо nick, чтобы отправить предупреждение отправителю,
                                 //что нельзя отправлять самому себе
                                 server.sendMsgToNick(ClientHandler.this, str);
@@ -150,6 +147,5 @@ public class ClientHandler {
         }
         return flag;
     }
-
 
 }
