@@ -30,7 +30,16 @@ public class ClientHandler {
                             String str = in.readUTF();
                             // если сообщение начинается с /auth
                             if(str.startsWith("/auth")) {
-                                String[] tokens = str.split(" ");
+                                //TODO HW_task1.ERR_1.Удалил
+                                //String[] tokens = str.split(" ");
+                                //TODO HW_task1.ERR_1.Добавил.Работает
+                                //чтобы избежать ошибки при пустом вводе в поля login или пароль
+                                int splitLimit = 3;
+                                String[] tokens = str.split(" ", splitLimit);
+
+                                //TODO временно
+                                //System.out.println("tokens.length: " + tokens.length);
+
                                 // Вытаскиваем данные из БД //здесь: tokens[1] - логин, tokens[2] - пароль
                                 String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
                                 if (newNick != null ) {
