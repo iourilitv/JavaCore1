@@ -106,8 +106,8 @@ public class ClientHandler {
 
                     }
                     //TODO UPD HW.Добавил
-                    //TODO Важно. this здесь - это объект анонимного класса Thread и обратиться к нему
-                    // можно только через основной класс ClientHandler
+                    //TODO Важно. если указать просто this - здесь это объект анонимного класса Thread.
+                    // А обратится обратиться к объекту основного класса ClientHandler, нужно добавить его к this
                     server.unsubscribe(ClientHandler.this);
                 }
             }).start();
