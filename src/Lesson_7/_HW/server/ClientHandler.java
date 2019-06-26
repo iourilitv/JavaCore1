@@ -11,7 +11,6 @@ public class ClientHandler {
     private DataInputStream in;
     private DataOutputStream out;
     private MainServer server;
-    //TODO 1. DB connect.Добавил
     private String nick;
 
     public ClientHandler(Socket socket, MainServer server) {
@@ -26,7 +25,6 @@ public class ClientHandler {
                 @Override
                 public void run() {
                     try {
-                        //TODO 1. DB connect.Добавил
                         // цикл для авторизации. Крутится бескоечно, пока не авторизуется
                         while (true) {
                             String str = in.readUTF();
@@ -53,13 +51,10 @@ public class ClientHandler {
                             String str = in.readUTF();
                             if (str.equals("/end")) {
                                 //закрываем клиента после удаления его из списка
-                                out.writeUTF("/serverclosed");
+                                out.writeUTF("/serverclosed");//TODO выдает исключение в клиенте
                                 break;
                             }
-                            //TODO 1. DB connect.Удалил
-                            //server.broadCastMsg(str);
-                            //TODO 1. DB connect.Добавил
-                            server.broadCastMsg(nick + ": " + str);//"Client: "
+                            server.broadCastMsg(nick + ": " + str);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -80,7 +75,7 @@ public class ClientHandler {
                             e.printStackTrace();
                         }
                     }
-                    //TODO Важно. this здесь - это объект анонимного класса Thread и обратиться к нему
+                    //Важно. this здесь - это объект анонимного класса Thread и обратиться к нему
                     // можно только через основной класс ClientHandler
                     server.unsubscribe(ClientHandler.this);
                 }

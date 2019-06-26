@@ -3,12 +3,11 @@ package Lesson_7._HW.server;
 import java.sql.*;
 
 /**
- * //TODO 1. DB connect. Добавил класс
  * Класс для организации сервиса авторизации и связи с БД
  * Связь БД и приложения осуществляется через посредника, JDBC драйвер(библиотека).
  */
 public class AuthService {
-    //TODO 1. DB connect.Добавил
+
     //объект для установления связи
     private static Connection connection;
     //объект для отправки запросов в JDBC драйвер(библиотека) с помощью метода connect(),
@@ -16,24 +15,24 @@ public class AuthService {
     // И получает результат (объект класса ResultSet) с помощью executeQuery(sql)
     private static Statement stmt;
 
-    /** //TODO 1. DB connect.Добавил
+    /**
      * Метод подключения к БД
      * //@throws SQLException
      */
-    public static void connect() throws SQLException {//TODO лишнее  throws SQLException
+    public static void connect() throws SQLException {
         try {
             // обращение к драйверу. просто инициализирует класс, с которым потом будем работать
-            Class.forName("org.sqlite.JDBC");//TODO ERR.java.lang.ClassNotFoundException: org.sqlite.JDBC//Причина - не подключен jdbc
+            Class.forName("org.sqlite.JDBC");
             // установка подключения
-            connection = DriverManager.getConnection("jdbc:sqlite:mainDB.db");//TODO неверное имя DBUsers.db путь к БД
+            connection = DriverManager.getConnection("jdbc:sqlite:mainDB.db");
             // создание Statement для возможности отправки запросов
             stmt = connection.createStatement();
-        } catch (ClassNotFoundException e) {//TODO неверное ClassNotFoundException//Exception
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    /** //TODO 1. DB connect.Добавил
+    /**
      * Метод запрашивающий в БД nickname по совпадению логина и пароля.
      * @param login - логин
      * @param pass - пароль
@@ -61,7 +60,7 @@ public class AuthService {
         return null;
     }
 
-    /** //TODO 1. DB connect.Добавил
+    /**
      * Метод отключения от БД
      */
     public static void disconnect() {

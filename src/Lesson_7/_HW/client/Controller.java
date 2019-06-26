@@ -12,10 +12,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-//TODO 1. DB connect.Удалил
-//public class Controller implements Initializable {//Initializable - для автоматического подключения клиента
-//TODO 1. DB connect.Удалил
-public class Controller {//теперь не нужна автоматическое подключение
+public class Controller {
     @FXML
     TextArea textArea;
 
@@ -29,30 +26,24 @@ public class Controller {//теперь не нужна автоматическ
     DataInputStream in;
     DataOutputStream out;
 
-    //TODO 1. DB connect.Добавил
     @FXML
     HBox bottomPanel;
 
-    //TODO 1. DB connect.Добавил
     @FXML
     HBox upperPanel;
 
-    //TODO 1. DB connect.Добавил
     @FXML
     TextField loginFiled;
 
-    //TODO 1. DB connect.Добавил
     @FXML
     PasswordField passwordField;
 
-    //TODO 1. DB connect.Добавил
     private boolean isAuthorized;
 
     final String IP_ADRESS = "localhost";
     final int PORT = 8189;
 
-    //TODO 1. DB connect.Добавил
-    // метод для показа нижней панели или верхней
+    //метод для показа нижней панели или верхней
     public void setAuthorized(boolean isAuthorized) {
         this.isAuthorized = isAuthorized;
 
@@ -69,62 +60,6 @@ public class Controller {//теперь не нужна автоматическ
         }
     }
 
-    //TODO 1. DB connect.Удалил.
-    /*@Override
-    public void initialize(URL location, ResourceBundle resources) {
-        try {
-            socket = new Socket(IP_ADRESS, PORT);
-
-            in = new DataInputStream(socket.getInputStream());
-            out = new DataOutputStream(socket.getOutputStream());
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        while (true) {
-                            //TODO UPD HW.Есть у препода
-                            ///TODO Исправление err1.java.io.EOFException.Удалил.Работает
-                            //String str = in.readUTF();
-
-                            //TODO UPD HW.Добавил чтобы клиенты не висели после закрытия сервера
-                            //контроллер клиента принимает сообщение от ClientHandler сервера
-                            //if(str.equals("/serverclosed")) break;
-
-                            //textArea.appendText(str + "\n");/
-
-                            //TODO UPD HW.Нет у препода. Не нужно было бороться с исплючением в клиенте
-                            //TODO Исправление err1.java.io.EOFException.Добавил.Работает
-                            try{
-                                String str = in.readUTF();
-                                textArea.appendText(str + "\n");
-                            } catch (EOFException e) {
-                                //TODO временно
-                                System.out.println("Приложение закрыто по EOFException");
-
-                                //TODO закрыть приложение(окно) после остановки.Добавил.Работает
-                                Platform.exit();
-
-                                //TODO удалять нельзя, иначе бесконечный цикл
-                                break;
-                            }
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            socket.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }).start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
-    //TODO 1. DB connect.Добавил
     /**
      * Метод подсоединения аналогичный серверному
      */
@@ -175,7 +110,6 @@ public class Controller {//теперь не нужна автоматическ
         }
     }
 
-    //TODO 1. DB connect.Добавил
     //метод для авторизации
     public void tryToAuth() {
         if(socket == null || socket.isClosed()) {

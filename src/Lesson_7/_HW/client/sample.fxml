@@ -5,7 +5,6 @@
 <VBox alignment="center" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121"
       fx:controller="Lesson_7._HW.client.Controller">
 
-    <!--//TODO 1. DB connect.Добавил-->
     <!--верхняя панель для авторизации-->
     <HBox fx:id="upperPanel">
         <TextField HBox.hgrow="ALWAYS" promptText="Логин" fx:id="loginFiled"></TextField>
@@ -14,13 +13,6 @@
     </HBox>
 
     <TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS" />
-
-    <!--//TODO 1. DB connect.Удалил-->
-    <!--
-    <HBox>
-        <TextField fx:id="textField" onAction="#sendMsg" promptText="Введите текст" HBox.hgrow="ALWAYS" />
-        <Button fx:id="btn1" onAction="#sendMsg" text="Send" />
-    </HBox>-->
 
     <!--нижняя панель для отправки сообщений-->
     <HBox fx:id="bottomPanel" managed="false" visible="false"> <!--в момент старта место в ?памяти? под окно не выделяется, пока оно невидимо-->
