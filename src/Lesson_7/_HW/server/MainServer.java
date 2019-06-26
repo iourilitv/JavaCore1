@@ -69,6 +69,11 @@ public class MainServer {
         }
     }
 
+    //TODO HW_task3.Добавил
+    public Vector<ClientHandler> getClients() {
+        return clients;
+    }
+
     /**
      * Метод добавления клиента в списочный массив
      * @param client - подключивщийся клиент

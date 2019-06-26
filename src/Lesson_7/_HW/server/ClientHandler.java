@@ -25,7 +25,7 @@ public class ClientHandler {
                 @Override
                 public void run() {
                     try {
-                        // цикл для авторизации. Крутится бескоечно, пока не авторизуется
+                        // цикл для авторизации. Крутится бесконечно, пока не авторизуется
                         while (true) {
                             String str = in.readUTF();
                             // если сообщение начинается с /auth
@@ -33,13 +33,30 @@ public class ClientHandler {
                                 String[] tokens = str.split(" ");
                                 // Вытаскиваем данные из БД //здесь: tokens[1] - логин, tokens[2] - пароль
                                 String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
-                                if (newNick != null) {
-                                    // отправляем сообщение об успешной авторизации
+                                if (newNick != null ) {
+
+                                    //TODO HW_task3.Добавил
+                                    //проверяем не авторизовался ли кто-то уже под этим ником
+                                    if(!isThisNickAuthorized(newNick)){
+                                        //отправляем сообщение об успешной авторизации
+                                        sendMsg("/authok");
+                                        nick = newNick;
+                                        //подписываем клиента при успешной авторизации и выходим из цикла
+                                        server.subscribe(ClientHandler.this);
+                                        break;
+                                    }
+                                    else{
+                                        sendMsg("Пользователь с таким логином уже авторизован!");
+                                    }
+
+                                    //TODO HW_task3.Удалил
+                                    /*//отправляем сообщение об успешной авторизации
                                     sendMsg("/authok");
                                     nick = newNick;
                                     //подписываем клиента при успешной авторизации и выходим из цикла
                                     server.subscribe(ClientHandler.this);
-                                    break;
+                                    break;*/
+
                                 } else {
                                     sendMsg("Неверный логин/пароль!");
                                 }
@@ -98,4 +115,21 @@ public class ClientHandler {
         return socket;
     }
 
+    //TODO HW_task3.Добавил
+    /**
+     * Метод проверки не авторизовался ли кто-то уже под этим ником(есть ли в списке клиент с таким ником)
+     * @param nick - проверяемый ник
+     * @return true, если такой клиент с таким ником уже авторизован
+     */
+    boolean isThisNickAuthorized(String nick){
+        boolean flag = false;
+
+        for (ClientHandler c: server.getClients()) {
+            if(c.nick.equals(nick)){
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
 }
