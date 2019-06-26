@@ -23,7 +23,7 @@ public class AuthService {
     public static void connect() throws SQLException {//TODO лишнее  throws SQLException
         try {
             // обращение к драйверу. просто инициализирует класс, с которым потом будем работать
-            Class.forName("org.sqlite.JDBC");//TODO ERR.java.lang.ClassNotFoundException: org.sqlite.JDBC
+            Class.forName("org.sqlite.JDBC");//TODO ERR.java.lang.ClassNotFoundException: org.sqlite.JDBC//Причина - не подключен jdbc
             // установка подключения
             connection = DriverManager.getConnection("jdbc:sqlite:mainDB.db");//TODO неверное имя DBUsers.db путь к БД
             // создание Statement для возможности отправки запросов
