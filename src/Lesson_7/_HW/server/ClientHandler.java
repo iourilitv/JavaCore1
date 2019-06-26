@@ -35,9 +35,11 @@ public class ClientHandler {
                                 String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
                                 if (newNick != null ) {
 
-                                    //TODO HW_task3.Добавил
                                     //проверяем не авторизовался ли кто-то уже под этим ником
-                                    if(!isThisNickAuthorized(newNick)){
+                                    //TODO HW_task3.Вариант1.Добавил
+                                    //if(!isThisNickAuthorized(newNick)){
+                                    //TODO HW_task3.Вариант2.Добавил
+                                    if(!server.isThisNickAuthorized(newNick)){
                                         //отправляем сообщение об успешной авторизации
                                         sendMsg("/authok");
                                         nick = newNick;
@@ -125,18 +127,19 @@ public class ClientHandler {
         return socket;
     }
 
-    //TODO HW_task2.Добавил
+    //TODO HW_task2 и HW_task3.Вариант2.Добавил
+    //геттер для nick
     public String getNick() {
         return nick;
     }
 
-    //TODO HW_task3.Добавил
+    //TODO HW_task3.Вариант1.Добавил
     /**
      * Метод проверки не авторизовался ли кто-то уже под этим ником(есть ли в списке клиент с таким ником)
      * @param nick - проверяемый ник
      * @return true, если такой клиент с таким ником уже авторизован
      */
-    boolean isThisNickAuthorized(String nick){
+    /*boolean isThisNickAuthorized(String nick){
         boolean flag = false;
 
         for (ClientHandler c: server.getClients()) {
@@ -146,6 +149,6 @@ public class ClientHandler {
             }
         }
         return flag;
-    }
+    }*/
 
 }

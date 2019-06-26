@@ -23,6 +23,8 @@ import java.util.Vector;
  *    с ником nick3 должно прийти сообщение «Привет».
  * 3. *Добавить в авторизацию проверка пользователя и не авторизовывать пользователя
  *    под ником, который уже авторизован.
+ *     Реализовал двумя способами отличия в расположении метода isThisNickAuthorized:
+ *     Вариант1 - в классе ClientHandler; Вариант2 - в классе MainServer.
  */
 public class MainServer {
     private Vector<ClientHandler> clients;
@@ -129,4 +131,21 @@ public class MainServer {
         }
     }
 
+    //TODO HW_task3.Вариант2.Добавил.
+    /**
+     * Метод проверки не авторизовался ли кто-то уже под этим ником(есть ли в списке клиент с таким ником)
+     * @param nick - проверяемый ник
+     * @return true, если такой клиент с таким ником уже авторизован
+     */
+    boolean isThisNickAuthorized(String nick){
+        boolean flag = false;
+
+        for (ClientHandler c: clients) {
+            if(c.getNick().equals(nick)){
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
 }
