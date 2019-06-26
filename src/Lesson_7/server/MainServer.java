@@ -3,19 +3,25 @@ package Lesson_7.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Vector;
 
 /**
  * Java Core. Продвинутый уровень.
  * Вебинар 03 июня 2019 MSK (UTC+3).
- * Урок 7. Написание сетевого чата. Часть I. Прикручиваем наш чат к DB SQLite.
+ * Урок 7. Написание сетевого чата. Часть I.
+ * Прикручиваем наш чат к DB SQLite.
+ * Организуем сервис авторизации.
  * @author Artem Evdokimov.
  */
-public class Main {
+public class MainServer {
     private Vector<ClientHandler> clients;
 
-    public Main() {
+    //TODO 1. DB connect.Удалил
+    //public MainServer() {
+    //TODO 1. DB connect.Добавил
+    public MainServer() throws SQLException {//TODO лишнее  throws SQLException
         //создаем список клиентов в виде синхронизированного ArrayList
         clients = new Vector<>();
         //инициализируем объекты с пустыми значениями, чтобы не получить исключение, что объекта нет
@@ -23,6 +29,12 @@ public class Main {
         Socket socket = null;
 
         try {
+            //TODO 1. DB connect.Добавил
+            //устанавливаем связь с БД в момент запуска сервера
+            AuthService.connect();
+            //TODO временно.тестируем запрос авторизации//TODO ERR.java.lang.ClassNotFoundException: org.sqlite.JDBC
+            //String str = AuthService.getNickByLoginAndPass("login1", "password1");
+
             //создаем сокет для серверной части
             server = new ServerSocket(8189);
             System.out.println("Сервер запущен");
@@ -33,14 +45,15 @@ public class Main {
                 socket = server.accept();
                 System.out.println("Клиент подключился");
 
+                //TODO 1. DB connect.Удалил
+                // подписку пересена в ClientHandler в цикл авторизации while, т.к.нельзя подписывать неавторизованных клиентов
                 //добавляем клиента в список
-                //TODO UPD HW.Удалил
-                //clients.add(new ClientHandler(socket, this));
-                //TODO UPD HW.Добавил
-                subscribe(new ClientHandler(socket, this));
+                //subscribe(new ClientHandler(socket, this));
+                //TODO 1. DB connect.Добавил
+                new ClientHandler(socket, this);
 
                 //TODO временно
-                System.out.println("Main.try.while. after line clients.add(...) - Arrays.toString(clients.toArray()):\n" + Arrays.toString(clients.toArray()));
+                System.out.println("MainServer.try.while. after line clients.add(...) - Arrays.toString(clients.toArray()):\n" + Arrays.toString(clients.toArray()));
 
             }
 
@@ -57,10 +70,12 @@ public class Main {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //TODO 1. DB connect.Добавил
+            //отключаем БД при закрытии серверного приложения
+            AuthService.disconnect();
         }
     }
 
-    //TODO UPD HW.Добавил
     /**
      * Метод добавления клиента в списочный массив
      * @param client - подключивщийся клиент
@@ -69,7 +84,6 @@ public class Main {
         clients.add(client);
     }
 
-    //TODO UPD HW.Добавил
     /**
      * Метод удаления клиента из списочного массива
      * @param client - отключивщийся клиент
@@ -88,20 +102,4 @@ public class Main {
         }
     }
 
-    //TODO UPD HW.Удалил
-    /*//TODO исправление ошибки выхода.Добавил
-    /**
-     * Метод перебирающий списочный массив и удаляющий элемент списка с совпадающим сокетом
-     * @param socket - сокет элемента, который требуется удалить из списка
-     /
-    public void closeClient(Socket socket){
-        for (int i = 0; i < clients.size(); i++) {
-            if(socket.equals(clients.get(i).getSocket())){
-                clients.remove(i);
-
-                //TODO временно
-                System.out.println("Main. closeClient. /end. after remove. clients.toString:\n" + clients.toString());
-            }
-        }
-    }*/
 }
