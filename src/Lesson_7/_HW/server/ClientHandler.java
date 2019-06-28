@@ -85,7 +85,7 @@ public class ClientHandler {
                                 //запрос на отключение
                                 if (str.equals("/end")) {
                                     //закрываем клиента после удаления его из списка
-                                    out.writeUTF("/serverclosed");//TODO выдает исключение в клиенте
+                                    out.writeUTF("/serverclosed");//TODO ERR.выдает исключение в клиенте.Не соотвествовало на приеме в Controller.Заработало
                                     break;
                                 }
                                 //TODO HW_task2.Добавил

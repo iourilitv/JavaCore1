@@ -87,7 +87,7 @@ public class Controller {
                         // блок для разбора сообщений
                         while (true) {
                             String str = in.readUTF();
-                            if(str.equals("/serverClosed")) {
+                            if(str.equals("/serverclosed")) {//было неверно serverClosed //TODO ERR.выдает исключение в клиенте.Не соотвествовало отправленному из ClientHandler.Заработало
                                 break;
                             }
                             textArea.appendText(str + "\n");

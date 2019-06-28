@@ -19,6 +19,7 @@ public class MainServer {
     private Vector<ClientHandler> clients;
 
     public MainServer() throws SQLException {
+
         //создаем список клиентов в виде синхронизированного ArrayList
         clients = new Vector<>();
         //инициализируем объекты с пустыми значениями, чтобы не получить исключение, что объекта нет
@@ -87,7 +88,7 @@ public class MainServer {
      * Метод отправки всем одного сообщения
      * @param msg
      */
-    public void broadCastMsg(String msg) {
+    public void broadcastMsg(String msg) {
         for (ClientHandler o : clients) {
             o.sendMsg(msg);
         }

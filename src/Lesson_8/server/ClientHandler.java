@@ -71,7 +71,7 @@ public class ClientHandler {
                                 //запрос на отключение
                                 if (str.equals("/end")) {
                                     //закрываем клиента после удаления его из списка
-                                    out.writeUTF("/serverclosed");//TODO выдает исключение в клиенте
+                                    out.writeUTF("/serverclosed");//TODO ERR.выдает исключение в клиенте.Не соотвествовало на приеме в Controller.Заработало
                                     break;
                                 }
 
@@ -91,7 +91,7 @@ public class ClientHandler {
                             }
                             //TODO ERR. Не отправлялись сообщения всем.Удалил
                             else{
-                                server.broadCastMsg(nick + ": " + str);
+                                server.broadcastMsg(nick + ": " + str);
                             }
                         }
                     } catch (IOException e) {
@@ -130,10 +130,6 @@ public class ClientHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public Socket getSocket() {
-        return socket;
     }
 
     //геттер для nick

@@ -87,7 +87,7 @@ public class Controller {
                         // блок для разбора сообщений
                         while (true) {
                             String str = in.readUTF();
-                            if(str.equals("/serverClosed")) {
+                            if(str.equals("/serverclosed")) {//было неверно serverClosed //TODO ERR.выдает исключение в клиенте.Не соотвествовало отправленному из ClientHandler.Заработало
                                 break;
                             }
                             textArea.appendText(str + "\n");
@@ -121,6 +121,20 @@ public class Controller {
             out.writeUTF("/auth " + loginFiled.getText() + " " + passwordField.getText());
             loginFiled.clear();//очищаем поле логина
             passwordField.clear();//очищаем поле пароля
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //TODO hwImproving1.Добавил
+    //Метод отправки запроса об отключении на сервер
+    public void dispose() {
+        System.out.println("Отправляем сообщение о закрытии");
+        try {
+            //проверяем подключен ли клиент
+            if(out != null) {
+                out.writeUTF("/end");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
