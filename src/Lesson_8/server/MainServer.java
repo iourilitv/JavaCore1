@@ -9,21 +9,11 @@ import java.util.Vector;
 /**
  * Java Core. Продвинутый уровень.
  * Вебинар 03 июня 2019 MSK (UTC+3).
- * Урок 7. Написание сетевого чата. Часть I. Прикручиваем наш чат к DB SQLite.
- * Home work.
- * @author Yuriy Litvinenko.
- * 1. Разобраться с кодом.
- * DONE - если ничего не ввести в поле login или password, то в клиенте возникает java.io.EOFException,
- *    а в сервере - Exception in thread "Thread-0" java.lang.ArrayIndexOutOfBoundsException: 1
- * 	    at Lesson_7._HW.server.ClientHandler$1.run(ClientHandler.java:35).
- *    Исправить, чтобы выводилось "Неверный логин/пароль!"
- *  - при вводе в TextField в клиенте /end, в TextArea выводится /serverclosed, что вызывает в клиенте java.io.EOFException.
- * DONE 2. *Реализовать личные сообщения так: если клиент пишет «/w nick3 Привет», то только клиенту
- *    с ником nick3 должно прийти сообщение «Привет».
- * DONE 3. *Добавить в авторизацию проверка пользователя и не авторизовывать пользователя
- *    под ником, который уже авторизован.
- *     Реализовал двумя способами отличия в расположении метода isThisNickAuthorized:
- *     Вариант1 - в классе ClientHandler; Вариант2 - в классе MainServer.
+ * Урок 8. Написание сетевого чата. Часть II.
+ * @author Artem Evdokimov.
+ * Improving the home work of Lesson_7.
+ * 1. Закрывать сокет, если нажать крестик закрытия окна в клиенте. Сейчас - исключение.
+ * 2.
  */
 public class MainServer {
     private Vector<ClientHandler> clients;
@@ -70,7 +60,6 @@ public class MainServer {
         }
     }
 
-    //TODO HW_task3.Добавил
     public Vector<ClientHandler> getClients() {
         return clients;
     }
@@ -101,7 +90,6 @@ public class MainServer {
         }
     }
 
-    //TODO HW_task2.Добавил
     /**
      * Метод сортировки и отправки персональных сообщений
      * @param str
@@ -125,17 +113,10 @@ public class MainServer {
 
             //проверка не отправляется ли сообщение самому себе
             if(!sender.getNick().equals(nickOfRecipient)){
+                for (ClientHandler c: clients) {
+                    //в списке авторизованных ищем адресата по нику
+                    if(c.getNick().equals(nickOfRecipient)){
 
-                //TODO hw7Update.Можно проще - через return и добавил сообщение себе - кому отправил.Удалил
-                //boolean flag = false;
-
-                    for (ClientHandler c: clients) {
-                        if(c.getNick().equals(nickOfRecipient)){
-                        //TODO hw7Update.Можно проще - через return и добавил сообщение себе - кому отправил.Удалил
-                        /*c.sendMsg("Персонально от " + sender.getNick() + ": " + msg);
-                        flag = true;
-                        break;*/
-                        //TODO hw7Update.Можно проще - через return и добавил сообщение себе - кому отправил.Добавил
                         //отправляем сообщение адресату
                         c.sendMsg("from " + sender.getNick() + ": " + msg);
                         //отправляем сообщение отправителю
@@ -144,13 +125,7 @@ public class MainServer {
                     }
                 }
                 //если в списке не нашлось клиента с таким ником (цикл не прервался по return)
-                //TODO hw7Update.Можно проще - через return и добавил сообщение себе - кому отправил.Удалил
-                /*if (!flag){
-                    //отправка предупреждения отправителю
-                    sender.sendMsg("Адресат с таким ником не авторизован!");
-                }*/
-                //TODO hw7Update.Можно проще - через return и добавил сообщение себе - кому отправил.Добавил
-                sender.sendMsg("Адресат " + nickOfRecipient + " не найден в чате!");
+                sender.sendMsg("Адресат с ником " + nickOfRecipient + " не найден в чате!");
             }
             else{
                 //отправка предупреждения отправителю
@@ -175,25 +150,11 @@ public class MainServer {
         from.sendMsg("Клиент с ником " + nickTo + " не найден в чате");
     }*/
 
-    //TODO HW_task3.Вариант2.Добавил.
     /**
      * Метод проверки не авторизовался ли кто-то уже под этим ником(есть ли в списке клиент с таким ником)
      * @param nick - проверяемый ник
      * @return true, если такой клиент с таким ником уже авторизован
      */
-    //TODO hw7Update.Удалил
-    /*boolean isThisNickAuthorized(String nick){
-        boolean flag = false;
-
-        for (ClientHandler c: clients) {
-            if(c.getNick().equals(nick)){
-                flag = true;
-                break;
-            }
-        }
-        return flag;
-    }*/
-    //TODO hw7Update.Добавил
     boolean isThisNickAuthorized(String nick){
         for (ClientHandler c: clients) {
             if(c.getNick().equals(nick)){

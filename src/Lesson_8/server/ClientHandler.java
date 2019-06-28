@@ -30,9 +30,7 @@ public class ClientHandler {
                             String str = in.readUTF();
                             // если сообщение начинается с /auth
                             if(str.startsWith("/auth")) {
-                                //TODO HW_task1.ERR_1.Удалил
-                                //String[] tokens = str.split(" ");
-                                //TODO HW_task1.ERR_1.Добавил.Работает
+
                                 //чтобы избежать ошибки при пустом вводе в поля login или пароль
                                 int splitLimit = 3;
                                 String[] tokens = str.split(" ", splitLimit);
@@ -42,9 +40,6 @@ public class ClientHandler {
                                 if (newNick != null ) {
 
                                     //проверяем не авторизовался ли кто-то уже под этим ником
-                                    //TODO HW_task3.Вариант1.Удалил
-                                    //if(!isThisNickAuthorized(newNick)){
-                                    //TODO HW_task3.Вариант2.Добавил
                                     if(!server.isThisNickAuthorized(newNick)){
                                         //отправляем сообщение об успешной авторизации
                                         sendMsg("/authok");
@@ -54,17 +49,8 @@ public class ClientHandler {
                                         break;
                                     }
                                     else{
-                                        sendMsg("Пользователь с таким ником уже авторизован!");
+                                        sendMsg("Пользователь " + newNick + " уже авторизован!");
                                     }
-
-                                    //TODO HW_task3.Удалил
-                                    /*//отправляем сообщение об успешной авторизации
-                                    sendMsg("/authok");
-                                    nick = newNick;
-                                    //подписываем клиента при успешной авторизации и выходим из цикла
-                                    server.subscribe(ClientHandler.this);
-                                    break;*/
-
                                 } else {
                                     sendMsg("Неверный логин/пароль!");
                                 }
@@ -74,7 +60,7 @@ public class ClientHandler {
                         // блок для отправки сообщений
                         while (true) {
                             String str = in.readUTF();
-                            //TODO hw7Update.Добавил. Все служебные сообщения в одном блоке для удобства
+
                             //отлавливаем все служебные сообщения
                             if (str.startsWith("/")){
 
@@ -84,7 +70,7 @@ public class ClientHandler {
                                     out.writeUTF("/serverclosed");//TODO выдает исключение в клиенте
                                     break;
                                 }
-                                //TODO HW_task2.Добавил
+
                                 //оправка персонального сообщения
                                 if(str.startsWith("/w")) {
                                     //ClientHandler.this вместо nick, чтобы отправить предупреждение отправителю,
@@ -141,29 +127,9 @@ public class ClientHandler {
         return socket;
     }
 
-    //TODO HW_task2 и HW_task3.Вариант2.Добавил
     //геттер для nick
     public String getNick() {
         return nick;
     }
-
-    //TODO hw7Update.Лучше этот метод реализовать в MainServer
-    //TODO HW_task3.Вариант1.Добавил
-    /**
-     * Метод проверки не авторизовался ли кто-то уже под этим ником(есть ли в списке клиент с таким ником)
-     * @param nick - проверяемый ник
-     * @return true, если такой клиент с таким ником уже авторизован
-     */
-    /*boolean isThisNickAuthorized(String nick){
-        boolean flag = false;
-
-        for (ClientHandler c: server.getClients()) {
-            if(c.nick.equals(nick)){
-                flag = true;
-                break;
-            }
-        }
-        return flag;
-    }*/
 
 }
