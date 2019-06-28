@@ -51,6 +51,10 @@ public class ClientHandler {
                                         nick = newNick;
                                         //подписываем клиента при успешной авторизации и выходим из цикла
                                         server.subscribe(ClientHandler.this);
+
+                                        //TODO ERR. Server always write Client have connected.Добавил
+                                        System.out.println("Клиент с ником " + nick + " подключился.");
+
                                         break;
                                     }
                                     else{

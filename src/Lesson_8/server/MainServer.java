@@ -37,7 +37,10 @@ public class MainServer {
                 //создаем сокет для клиентской части. При создании объекта типа Socket неявно
                 //устанавливается соединение клиента с сервером
                 socket = server.accept();
-                System.out.println("Клиент подключился");
+
+                //TODO ERR. Server always write Client have connected.Удалил
+                //System.out.println("Клиент подключился");
+
                 //создаем объект нового клиента
                 new ClientHandler(socket, this);
             }
