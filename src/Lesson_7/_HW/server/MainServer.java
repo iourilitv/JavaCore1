@@ -109,8 +109,8 @@ public class MainServer {
      */
     public void sendMsgToNick(ClientHandler sender, String str){
         //TODO когда добавится адресная книга, этот блок не понадобится
-        String nickOfRecipient;// = "";//ник адресата
-        String msg;// = "";//текст сообщения адресату
+        String nickOfRecipient;//ник адресата
+        String msg;//текст сообщения адресату
         //разделяем по пробелу на splitLimit ячеек массива,
         //чтобы избежать ошибки при неполном вводе сервисного сообщения
         //limit = splitLimit - количество возвращаемых строк.
@@ -126,19 +126,32 @@ public class MainServer {
 
             //проверка не отправляется ли сообщение самому себе
             if(!sender.getNick().equals(nickOfRecipient)){
-                boolean flag = false;
+
+                //TODO hw7Update.Можно проще - через return и добавил сообщение себе - кому отправил.Удалил
+                //boolean flag = false;
+
                     for (ClientHandler c: clients) {
-                    if(c.getNick().equals(nickOfRecipient)){
-                        c.sendMsg("Персонально от " + sender.getNick() + ": " + msg);
+                        if(c.getNick().equals(nickOfRecipient)){
+                        //TODO hw7Update.Можно проще - через return и добавил сообщение себе - кому отправил.Удалил
+                        /*c.sendMsg("Персонально от " + sender.getNick() + ": " + msg);
                         flag = true;
-                        break;
+                        break;*/
+                        //TODO hw7Update.Можно проще - через return и добавил сообщение себе - кому отправил.Добавил
+                        //отправляем сообщение адресату
+                        c.sendMsg("from " + sender.getNick() + ": " + msg);
+                        //отправляем сообщение отправителю
+                        sender.sendMsg("to " + nickOfRecipient + ": " + msg);
+                        return;
                     }
                 }
-                //если в списке не нашлось клиента с таким ником
-                if (!flag){
+                //если в списке не нашлось клиента с таким ником (цикл не прервался по return)
+                //TODO hw7Update.Можно проще - через return и добавил сообщение себе - кому отправил.Удалил
+                /*if (!flag){
                     //отправка предупреждения отправителю
                     sender.sendMsg("Адресат с таким ником не авторизован!");
-                }
+                }*/
+                //TODO hw7Update.Можно проще - через return и добавил сообщение себе - кому отправил.Добавил
+                sender.sendMsg("Адресат " + nickOfRecipient + " не найден в чате!");
             }
             else{
                 //отправка предупреждения отправителю
@@ -151,13 +164,26 @@ public class MainServer {
         }
     }
 
+    //TODO hw7Update.Можно по другому, если проверку реализовать в ClientHandler перед вызовом sendMsgToNick
+    /*public void sendPersonalMsg(ClientHandler from, String nickTo, String msg) {
+        for (ClientHandler o : clients) {
+            if (o.getNick().equals(nickTo)) {
+                o.sendMsg("from " + from.getNick() + ": " + msg);
+                from.sendMsg("to " + nickTo + ": " + msg);
+                return;
+            }
+        }
+        from.sendMsg("Клиент с ником " + nickTo + " не найден в чате");
+    }*/
+
     //TODO HW_task3.Вариант2.Добавил.
     /**
      * Метод проверки не авторизовался ли кто-то уже под этим ником(есть ли в списке клиент с таким ником)
      * @param nick - проверяемый ник
      * @return true, если такой клиент с таким ником уже авторизован
      */
-    boolean isThisNickAuthorized(String nick){
+    //TODO hw7Update.Удалил
+    /*boolean isThisNickAuthorized(String nick){
         boolean flag = false;
 
         for (ClientHandler c: clients) {
@@ -167,5 +193,14 @@ public class MainServer {
             }
         }
         return flag;
+    }*/
+    //TODO hw7Update.Добавил
+    boolean isThisNickAuthorized(String nick){
+        for (ClientHandler c: clients) {
+            if(c.getNick().equals(nick)){
+                return true;
+            }
+        }
+        return false;
     }
 }

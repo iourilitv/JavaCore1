@@ -37,15 +37,12 @@ public class ClientHandler {
                                 int splitLimit = 3;
                                 String[] tokens = str.split(" ", splitLimit);
 
-                                //TODO временно
-                                //System.out.println("tokens.length: " + tokens.length);
-
                                 // Вытаскиваем данные из БД //здесь: tokens[1] - логин, tokens[2] - пароль
                                 String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
                                 if (newNick != null ) {
 
                                     //проверяем не авторизовался ли кто-то уже под этим ником
-                                    //TODO HW_task3.Вариант1.Добавил
+                                    //TODO HW_task3.Вариант1.Удалил
                                     //if(!isThisNickAuthorized(newNick)){
                                     //TODO HW_task3.Вариант2.Добавил
                                     if(!server.isThisNickAuthorized(newNick)){
@@ -57,7 +54,7 @@ public class ClientHandler {
                                         break;
                                     }
                                     else{
-                                        sendMsg("Пользователь с таким логином уже авторизован!");
+                                        sendMsg("Пользователь с таким ником уже авторизован!");
                                     }
 
                                     //TODO HW_task3.Удалил
@@ -77,21 +74,29 @@ public class ClientHandler {
                         // блок для отправки сообщений
                         while (true) {
                             String str = in.readUTF();
-                            if (str.equals("/end")) {
-                                //закрываем клиента после удаления его из списка
-                                out.writeUTF("/serverclosed");//TODO выдает исключение в клиенте
-                                break;
-                            }
+                            //TODO hw7Update.Добавил. Все служебные сообщения в одном блоке для удобства
+                            //отлавливаем все служебные сообщения
+                            if (str.startsWith("/")){
 
-
-                            //TODO HW_task2.Добавил
-                            if(str.startsWith("/w")) {
-                                //ClientHandler.this вместо nick, чтобы отправить предупреждение отправителю,
-                                //что нельзя отправлять самому себе
-                                server.sendMsgToNick(ClientHandler.this, str);
-                            }
-                            else{
-                                server.broadCastMsg(nick + ": " + str);
+                                //запрос на отключение
+                                if (str.equals("/end")) {
+                                    //закрываем клиента после удаления его из списка
+                                    out.writeUTF("/serverclosed");//TODO выдает исключение в клиенте
+                                    break;
+                                }
+                                //TODO HW_task2.Добавил
+                                //оправка персонального сообщения
+                                if(str.startsWith("/w")) {
+                                    //ClientHandler.this вместо nick, чтобы отправить предупреждение отправителю,
+                                    //что нельзя отправлять самому себе
+                                    //TODO hw7Update.Можно по другому, если проверку реализовать здесь перед sendMsgToNick
+                                    server.sendMsgToNick(ClientHandler.this, str);
+                                    //TODO hw7Update.Можно по другому, если проверку реализовать здесь перед sendMsgToNick
+                                    //server.sendPersonalMsg(ClientHandler.this, tokens[1], tokens[2]);
+                                }
+                                else{
+                                    server.broadCastMsg(nick + ": " + str);
+                                }
                             }
                         }
                     } catch (IOException e) {
@@ -142,6 +147,7 @@ public class ClientHandler {
         return nick;
     }
 
+    //TODO hw7Update.Лучше этот метод реализовать в MainServer
     //TODO HW_task3.Вариант1.Добавил
     /**
      * Метод проверки не авторизовался ли кто-то уже под этим ником(есть ли в списке клиент с таким ником)
