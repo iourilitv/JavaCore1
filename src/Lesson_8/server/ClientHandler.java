@@ -80,9 +80,14 @@ public class ClientHandler {
                                     //TODO hw7Update.Можно по другому, если проверку реализовать здесь перед sendMsgToNick
                                     //server.sendPersonalMsg(ClientHandler.this, tokens[1], tokens[2]);
                                 }
-                                else{
+                                //TODO ERR. Не отправлялись сообщения всем.Удалил
+                                /*else{
                                     server.broadCastMsg(nick + ": " + str);
-                                }
+                                }*/
+                            }
+                            //TODO ERR. Не отправлялись сообщения всем.Удалил
+                            else{
+                                server.broadCastMsg(nick + ": " + str);
                             }
                         }
                     } catch (IOException e) {
