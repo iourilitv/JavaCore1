@@ -12,9 +12,16 @@ import java.util.Vector;
  * Урок 8. Написание сетевого чата. Часть II.
  * @author Artem Evdokimov.
  * Improving the home work of Lesson_7.
- * 1. Закрывать сокет, если нажать крестик закрытия окна в клиенте. Сейчас - исключение.
- * 2. Добавить "черный" список каждому клиенту. Чтобы нельзя было отправлять общее
+ * DONE 1. Закрывать сокет, если нажать крестик закрытия окна в клиенте. Сейчас - исключение.
+ * DONE 2. Добавить "черный" список каждому клиенту. Чтобы нельзя было отправлять общее
  *    или личное сообщение, если отправитель в черном списке у получателя - режим Антиспам.
+ * DONE 3. Добавить отображение списка авторизованных пользователей.
+ * DONE ERR1. В клиенте возникает java.net.SocketException: Socket closed. У препада - таже проблема.
+ * Это происходит только в следующем случае,
+ * клиент авторизовался;
+ * отлогинился, отправив /end (сообщения на отключение в консоли нет);
+ * и закрыл окно по кресту.
+ * Если не авторизовываться и закрыть окно - все работает.
  */
 public class MainServer {
     private Vector<ClientHandler> clients;
@@ -75,6 +82,10 @@ public class MainServer {
      */
     public void subscribe(ClientHandler client){
         clients.add(client);
+
+        //TODO hwImproving3.Добавил
+        //рассылаем новый список клиентов
+        broadcastClientList();
     }
 
     /**
@@ -83,6 +94,10 @@ public class MainServer {
      */
     public void unsubscribe(ClientHandler client){
         clients.remove(client);
+
+        //TODO hwImproving3.Добавил
+        //рассылаем новый список клиентов
+        broadcastClientList();
     }
 
     //TODO hwImproving2.Удавил
@@ -96,7 +111,6 @@ public class MainServer {
         }
     }*/
     //TODO hwImproving2.Добавил
-
     /**
      * Метод отправки всем одного сообщения с проверкой черного списка отправителя
      * @param from - отправитель
@@ -182,5 +196,22 @@ public class MainServer {
             }
         }
         return false;
+    }
+
+    //TODO hwImproving3.Добавил
+    //Метод отправки списка пользователей в виде строки всем клиентам
+    public void broadcastClientList() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("/clientlist ");
+        //дополняем строку списком ников подключенных клиентов
+        for (ClientHandler o : clients) {
+            sb.append(o.getNick() + " ");
+        }
+        //собираем окончательное сообщение
+        String out = sb.toString();
+        //отправляем список каждому пользователю
+        for (ClientHandler o : clients) {
+            o.sendMsg(out);
+        }
     }
 }

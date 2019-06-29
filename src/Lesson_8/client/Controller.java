@@ -1,10 +1,9 @@
 package Lesson_8.client;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 import java.io.DataInputStream;
@@ -22,10 +21,6 @@ public class Controller {
     @FXML
     Button btn1;
 
-    Socket socket;
-    DataInputStream in;
-    DataOutputStream out;
-
     @FXML
     HBox bottomPanel;
 
@@ -37,6 +32,16 @@ public class Controller {
 
     @FXML
     PasswordField passwordField;
+
+    //TODO hwImproving3.Добавил
+    //ListView - динамическое представление для работы с GUI framework JavaFX
+    @FXML
+    ListView<String> clientList;
+
+    //TODO hwImproving3.Спустил ниже - после @FXML
+    Socket socket;
+    DataInputStream in;
+    DataOutputStream out;
 
     private boolean isAuthorized;
 
@@ -52,11 +57,21 @@ public class Controller {
             upperPanel.setManaged(true);
             bottomPanel.setVisible(false);
             bottomPanel.setManaged(false);
+
+            //TODO hwImproving3.Добавил
+            clientList.setVisible(false);
+            clientList.setManaged(false);
+
         } else {
             upperPanel.setVisible(false);//делаем окно видимым (по умолчанию в sample visible="false")
             upperPanel.setManaged(false);//выделяется место под HBox, если окно видимо (по умолчанию в sample managed="false")
             bottomPanel.setVisible(true);
             bottomPanel.setManaged(true);
+
+            //TODO hwImproving3.Добавил
+            clientList.setVisible(true);
+            clientList.setManaged(true);
+
         }
     }
 
@@ -90,7 +105,31 @@ public class Controller {
                             if(str.equals("/serverclosed")) {//было неверно serverClosed //TODO ERR.выдает исключение в клиенте.Не соотвествовало отправленному из ClientHandler.Заработало
                                 break;
                             }
-                            textArea.appendText(str + "\n");
+
+                            //TODO hwImproving3.Удалил
+                            //textArea.appendText(str + "\n");
+                            //TODO hwImproving3.Добавил
+                            //обрабатываем запрос от сервера на добавление клиента в список
+                            if (str.startsWith("/clientlist")) {
+                                String[] tokens = str.split(" ");
+                                //всегда, когда меняем графическую часть интерфейса, нужно
+                                //всю работу осуществлять в отдельном потоке для работы с интеграцией с GUI.
+                                // Это особенность JavaFX
+                                //TODO возможно это уже реализовано в TreeView? Но лучше вставлять всегда
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //обновляем список пользователей
+                                        clientList.getItems().clear();
+                                        for (int i = 1; i < tokens.length; i++) {
+                                            clientList.getItems().add(tokens[i]);
+                                        }
+                                    }
+                                });
+                            } else {
+                                textArea.appendText(str + "\n");
+                            }
+
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -126,13 +165,37 @@ public class Controller {
         }
     }
 
+    //TODO L8hwTask5.Добавил
+    //Метод обработки двойного клика на пользователе в списке
+    public void selectClient(MouseEvent mouseEvent) {
+        if(mouseEvent.getClickCount() == 2) {
+            //TODO Временно
+            System.out.println("Двойной клик");
+
+            //TODO L8hwTask5.Добавил
+            //добавить действия
+            /*Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    //MiniStage ms = new MiniStage(clientList.getSelectionModel().getSelectedItem(), out, tex
+                    //ms.show();
+
+                }
+            });*/
+        }
+    }
+
     //TODO hwImproving1.Добавил
     //Метод отправки запроса об отключении на сервер
     public void dispose() {
         System.out.println("Отправляем сообщение о закрытии");
         try {
             //проверяем подключен ли клиент
-            if(out != null) {
+            //TODO ERR1.Временно.Удалил
+            //if(out != null) {
+            //TODO ERR1.Временно.Добавил
+            if(out != null && !socket.isClosed()) {
+
                 out.writeUTF("/end");
             }
         } catch (IOException e) {

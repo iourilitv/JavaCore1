@@ -12,12 +12,30 @@
         <Button text="Авторизоваться" onAction="#tryToAuth"/>
     </HBox>
 
-    <TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS" />
-
+    <!--//TODO hwImproving3.Удалил-->
+    <!--<TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS" />-->
     <!--нижняя панель для отправки сообщений-->
-    <HBox fx:id="bottomPanel" managed="false" visible="false"> <!--в момент старта место в ?памяти? под окно не выделяется, пока оно невидимо-->
+    <!--<HBox fx:id="bottomPanel" managed="false" visible="false"> //в момент старта место в ?памяти? под окно не выделяется, пока оно невидимо
         <TextField fx:id="textField" onAction="#sendMsg" promptText="Введите текст" HBox.hgrow="ALWAYS" />
         <Button fx:id="btn1" onAction="#sendMsg" text="Send" />
+    </HBox>-->
+
+    <!--//TODO hwImproving3.Добавил-->
+    <HBox VBox.vgrow="ALWAYS">
+        <!--левая панель для отправки и отображения сообщений в чате-->
+        <VBox HBox.hgrow="ALWAYS">
+            <!--верхняя панель для отображения сообщений в чате-->
+            <TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS" />
+            <!--нижняя панель для отправки сообщений-->
+            <!--в момент старта место в ?памяти? под окно не выделяется, пока оно невидимо-->
+            <HBox fx:id="bottomPanel" managed="false" visible="false">
+                <TextField fx:id="textField" onAction="#sendMsg" promptText="Введите текст" HBox.hgrow="ALWAYS" />
+                <Button fx:id="btn1" onAction="#sendMsg" text="Send" />
+            </HBox>
+        </VBox>
+        <!--кликабельный список пользователей(правая панель)-->
+        <!--//TODO L8hwTask5.+Добавил onMouseClicked="#selectClient" +Добавил prefWidth="200" -->
+        <ListView fx:id="clientList" managed="false" visible="false" onMouseClicked="#selectClient" prefWidth="200" ></ListView>
     </HBox>
 
 </VBox>

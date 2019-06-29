@@ -101,12 +101,12 @@ public class ClientHandler {
                                     sendMsg("Вы добавили пользователя " + tokens[1] + " в черный список");
                                 }
 
-                                //TODO зачем?
+                                //TODO есть у препада. зачем?
                                 /*else{
                                     //server.broadCastMsg(nick + ": " + str);
                                     server.broadcastMsg(ClientHandler.this,nick + ": " + str);
                                 }*/
-                            }
+                            }//if "/"
                             //TODO ERR. Не отправлялись сообщения всем.Удалил
                             else{
                                 //TODO hwImproving2.Удалил
@@ -114,7 +114,7 @@ public class ClientHandler {
                                 //TODO hwImproving2.Добавил
                                 server.broadcastMsg(ClientHandler.this,nick + ": " + str);
                             }
-                        }
+                        }//while
                     } catch (IOException e) {
                         e.printStackTrace();
                     } finally {
