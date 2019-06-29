@@ -13,7 +13,8 @@ import java.util.Vector;
  * @author Artem Evdokimov.
  * Improving the home work of Lesson_7.
  * 1. Закрывать сокет, если нажать крестик закрытия окна в клиенте. Сейчас - исключение.
- * 2.
+ * 2. Добавить "черный" список каждому клиенту. Чтобы нельзя было отправлять общее
+ *    или личное сообщение, если отправитель в черном списке у получателя - режим Антиспам.
  */
 public class MainServer {
     private Vector<ClientHandler> clients;
@@ -84,13 +85,28 @@ public class MainServer {
         clients.remove(client);
     }
 
+    //TODO hwImproving2.Удавил
     /**
      * Метод отправки всем одного сообщения
      * @param msg
      */
-    public void broadcastMsg(String msg) {
+    /*public void broadcastMsg(String msg) {
         for (ClientHandler o : clients) {
             o.sendMsg(msg);
+        }
+    }*/
+    //TODO hwImproving2.Добавил
+
+    /**
+     * Метод отправки всем одного сообщения с проверкой черного списка отправителя
+     * @param from - отправитель
+     * @param msg - рассылаемое сообщение
+     */
+    public void broadcastMsg(ClientHandler from, String msg) {
+        for (ClientHandler o : clients) {
+            if (!o.checkBlackList(from.getNick())) {
+                o.sendMsg(msg);
+            }
         }
     }
 

@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientHandler {
 
@@ -13,8 +15,14 @@ public class ClientHandler {
     private MainServer server;
     private String nick;
 
+    //TODO hwImproving2.Добавил
+    List<String> blackList;
+
     public ClientHandler(Socket socket, MainServer server) {
         try {
+            //TODO hwImproving2.Добавил
+            this.blackList = new ArrayList<>();
+
             this.socket = socket;
             this.server = server;
             this.in = new DataInputStream(socket.getInputStream());
@@ -84,14 +92,27 @@ public class ClientHandler {
                                     //TODO hw7Update.Можно по другому, если проверку реализовать здесь перед sendMsgToNick
                                     //server.sendPersonalMsg(ClientHandler.this, tokens[1], tokens[2]);
                                 }
-                                //TODO ERR. Не отправлялись сообщения всем.Удалил
+
+                                //TODO hwImproving2.Добавил
+                                //добавляем пользователя в черный список
+                                if (str.startsWith("/blacklist ")) {
+                                    String[] tokens = str.split(" ");
+                                    blackList.add(tokens[1]);
+                                    sendMsg("Вы добавили пользователя " + tokens[1] + " в черный список");
+                                }
+
+                                //TODO зачем?
                                 /*else{
-                                    server.broadCastMsg(nick + ": " + str);
+                                    //server.broadCastMsg(nick + ": " + str);
+                                    server.broadcastMsg(ClientHandler.this,nick + ": " + str);
                                 }*/
                             }
                             //TODO ERR. Не отправлялись сообщения всем.Удалил
                             else{
-                                server.broadcastMsg(nick + ": " + str);
+                                //TODO hwImproving2.Удалил
+                                //server.broadcastMsg(nick + ": " + str);
+                                //TODO hwImproving2.Добавил
+                                server.broadcastMsg(ClientHandler.this,nick + ": " + str);
                             }
                         }
                     } catch (IOException e) {
@@ -124,17 +145,23 @@ public class ClientHandler {
         }
     }
 
+    //геттер для nick
+    public String getNick() {
+        return nick;
+    }
+
+    //TODO hwImproving2.Добавил
+    //Метод проверки есть ли пользователь в черном списке
+    public boolean checkBlackList(String nick) {
+        return blackList.contains(nick);
+    }
+
     public void sendMsg(String msg) {
         try {
             out.writeUTF(msg);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    //геттер для nick
-    public String getNick() {
-        return nick;
     }
 
 }
