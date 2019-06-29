@@ -34,8 +34,8 @@
             </HBox>
         </VBox>
         <!--кликабельный список пользователей(правая панель)-->
-        <!--//TODO L8hwTask5.+Добавил onMouseClicked="#selectClient" +Добавил prefWidth="200" -->
-        <ListView fx:id="clientList" managed="false" visible="false" onMouseClicked="#selectClient" prefWidth="200" ></ListView>
+        <!--//TODO L8hwTask5.+Добавил onMouseClicked="#selectClient" +Добавил prefWidth="200"-Удалил, т.к.поле сузилось-->
+        <ListView fx:id="clientList" managed="false" visible="false" onMouseClicked="#selectClient" ></ListView>
     </HBox>
 
 </VBox>
