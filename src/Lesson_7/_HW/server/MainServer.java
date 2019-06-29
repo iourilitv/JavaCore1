@@ -18,7 +18,7 @@ import java.util.Vector;
  *    а в сервере - Exception in thread "Thread-0" java.lang.ArrayIndexOutOfBoundsException: 1
  * 	    at Lesson_7._HW.server.ClientHandler$1.run(ClientHandler.java:35).
  *    Исправить, чтобы выводилось "Неверный логин/пароль!"
- *  - при вводе в TextField в клиенте /end, в TextArea выводится /serverclosed, что вызывает в клиенте java.io.EOFException.
+ * DONE - при вводе в TextField в клиенте /end, в TextArea выводится /serverclosed, что вызывает в клиенте java.io.EOFException.
  * DONE 2. *Реализовать личные сообщения так: если клиент пишет «/w nick3 Привет», то только клиенту
  *    с ником nick3 должно прийти сообщение «Привет».
  * DONE 3. *Добавить в авторизацию проверка пользователя и не авторизовывать пользователя
