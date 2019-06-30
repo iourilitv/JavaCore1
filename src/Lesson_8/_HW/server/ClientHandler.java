@@ -52,6 +52,10 @@ public class ClientHandler {
                                         server.subscribe(ClientHandler.this);
                                         //выводим сообщение в консоль сервера об успешном подключении клиента
                                         System.out.println("Клиент с ником " + nick + " подключился.");
+
+                                        //TODO L8hwTask4.
+                                        //Найти как очистить ареа от старых сообщений, чтобы после отлогинивания было чистое поле
+
                                         break;
                                     }
                                     else{

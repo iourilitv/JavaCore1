@@ -12,11 +12,24 @@
         <Button text="Авторизоваться" onAction="#tryToAuth"/>
     </HBox>
 
+    <!--//TODO L8hwTask1.Добавил.ERR Не приходят от других сообщения.Удалил-->
+    <!--<TextArea fx:id="textArea" editable="false" managed="true" visible="true" />-->
+
     <HBox VBox.vgrow="ALWAYS">
         <!--левая панель для отправки и отображения сообщений в чате-->
         <VBox HBox.hgrow="ALWAYS">
+
+            <!--//TODO L8hwTask1.Удалил-->
             <!--верхняя панель для отображения сообщений в чате-->
-            <TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS" />
+            <!--<TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS" /> -->
+            <!--//TODO L8hwTask1.Добавил-->
+            <!--для каждой метки каждого сообщения отдельные боксы-->
+            <!--<ScrollPane fx:id="scrollPane" managed="false" visible="false" VBox.vgrow="ALWAYS" >-->
+                <VBox fx:id="vBoxChat" HBox.hgrow="ALWAYS">
+                    <!--для каждого сообщения отдельная метка-->
+                    <!--<Label fx:id="msg_label"/>-->
+                </VBox>
+            <!--</ScrollPane>-->
             <!--нижняя панель для отправки сообщений-->
             <!--в момент старта место в ?памяти? под окно не выделяется, пока оно невидимо-->
             <HBox fx:id="bottomPanel" managed="false" visible="false">
