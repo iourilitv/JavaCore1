@@ -15,9 +15,9 @@ import java.util.Vector;
  * 1. Форматирование сообщения, свой-чужой. Свои справа, чужие слева.
  * 2. Регистрация нового пользователя. Через БД.
  * 3. Переподключение клиента при падении сервера.
- * 4. Хранить черный список в БД + проверка л/с(чтобы нельзя было отправлять общее или личное сообщение, если отправитель
- *     в черном списке у отправителя и получателя).
- * 4.1. Добавить исключение получения сообщения всем на стороне клиента, у которого отправитель в черном списке.
+ * DONE 4. Хранить черный список в БД + проверка л/с(чтобы нельзя было отправлять общее или личное сообщение, если отправитель
+ *     в черном списке у отправителя и получателя). Добавить исключение получения сообщения всем на стороне клиента,
+ *     у которого отправитель в черном списке.
  * 5. Переработать отправку л/с с учетом он-лайн списка (разработать диалоговое окно).
  */
 public class MainServer {
@@ -95,17 +95,20 @@ public class MainServer {
      */
     public void broadcastMsg(ClientHandler from, String msg) {
         for (ClientHandler o : clients) {
+            //проверяем не находится ли отправитель черном списке получателя
             if (!o.checkBlackList(from.getNick())) {
+                //отправляем сообщение адресату
                 o.sendMsg(msg);
             }
         }
     }
 
+    //TODO L8hwTask4.Удалил
     /**
      * Метод сортировки и отправки персональных сообщений
-     * @param str
+     * //@param str
      */
-    public void sendMsgToNick(ClientHandler sender, String str){
+    /*public void sendMsgToNick(ClientHandler sender, String str){
         //TODO когда добавится адресная книга, этот блок не понадобится
         String nickOfRecipient;//ник адресата
         String msg;//текст сообщения адресату
@@ -127,12 +130,9 @@ public class MainServer {
                 for (ClientHandler c: clients) {
                     //в списке авторизованных ищем адресата по нику
                     if(c.getNick().equals(nickOfRecipient)){
-
-                        //отправляем сообщение адресату
                         c.sendMsg("from " + sender.getNick() + ": " + msg);
                         //отправляем сообщение отправителю
                         sender.sendMsg("to " + nickOfRecipient + ": " + msg);
-                        return;
                     }
                 }
                 //если в списке не нашлось клиента с таким ником (цикл не прервался по return)
@@ -147,9 +147,39 @@ public class MainServer {
             //отправка предупреждения отправителю
             sender.sendMsg("Неверный синтаксис сервисного сообщения!");
         }
-    }
+    }*/
+    //TODO L8hwTask4.Добавил
+    /**
+     * Метод отправки персональных сообщений с проверкой черного списка получателя
+     * @param sender - объект отправителя
+     * @param nickOfRecipient - ник адресата(получателя)
+     * @param msg - отправляемое сообщение
+     */
+    public void sendMsgToNick(ClientHandler sender, String nickOfRecipient, String msg){
+        //в списке авторизованных ищем адресата(получателя) по нику
+        for (ClientHandler r: clients) {
+            //проверяем есть ли соотвествие
+            if(r.getNick().equals(nickOfRecipient)){
 
-    //TODO hw7Update.Можно по другому, если проверку реализовать в ClientHandler перед вызовом sendMsgToNick
+                //TODO L8hwTask4.Добавил
+                //проверяем не находится ли отправитель черном списке получателя
+                if(!r.checkBlackList(sender.getNick())){
+                    //отправляем сообщение адресату
+                    r.sendMsg("from " + sender.getNick() + ": " + msg);
+                    //отправляем сообщение отправителю
+                    sender.sendMsg("to " + nickOfRecipient + ": " + msg);
+                    return;
+                } else{
+                    //если отправитель черном списке получателя (цикл не прервался по return)
+                    sender.sendMsg("Вы в черном списке адресата с ником " + nickOfRecipient + " !");
+                    return;
+                }
+            }
+        }
+        //если в списке не нашлось клиента с таким ником (цикл не прервался по return)
+        sender.sendMsg("Адресат с ником " + nickOfRecipient + " не найден в чате!");
+    }
+    //TODO L8hwTask4.Удалил
     /*public void sendPersonalMsg(ClientHandler from, String nickTo, String msg) {
         for (ClientHandler o : clients) {
             if (o.getNick().equals(nickTo)) {

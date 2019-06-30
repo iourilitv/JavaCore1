@@ -78,10 +78,44 @@ public class ClientHandler {
                                 if(str.startsWith("/w")) {
                                     //ClientHandler.this вместо nick, чтобы отправить предупреждение отправителю,
                                     //что нельзя отправлять самому себе
+
+                                    //TODO L8hwTask4.Удалил
                                     //TODO hw7Update.Можно по другому, если проверку реализовать здесь перед sendMsgToNick
-                                    server.sendMsgToNick(ClientHandler.this, str);
-                                    //TODO hw7Update.Можно по другому, если проверку реализовать здесь перед sendMsgToNick
-                                    //server.sendPersonalMsg(ClientHandler.this, tokens[1], tokens[2]);
+                                    //server.sendMsgToNick(ClientHandler.this, str);
+                                    //TODO L8hwTask4.Добавил
+                                    //TODO когда добавится адресная книга, этот блок не понадобится
+                                    String nickOfRecipient;//ник адресата
+                                    String msg;//текст сообщения адресату
+                                    //разделяем по пробелу на splitLimit ячеек массива,
+                                    //чтобы избежать ошибки при неполном вводе сервисного сообщения
+                                    //limit = splitLimit - количество возвращаемых строк.
+                                    int splitLimit = 3;
+                                    String[] temp = str.split(" ", splitLimit);
+                                    //проверка корректности синтаксиса сервисного сообщения
+                                    if(temp.length >= splitLimit){
+                                        //выделяем ник адресата
+                                        nickOfRecipient = temp[1];
+                                        //выделяем собственно текст сообщения
+                                        msg = temp[2];
+                                        //проверка не отправляется ли сообщение самому себе
+                                        if(!ClientHandler.this.getNick().equals(nickOfRecipient)){
+                                            //проверяем не находится ли получатель черном списке отправителя
+                                            if(!ClientHandler.this.checkBlackList(nickOfRecipient)){
+                                                //отправляем сообщение адресату
+                                                server.sendMsgToNick(ClientHandler.this, nickOfRecipient, msg);
+                                            } else{
+                                                //если получатель находится в черном списке адресата (цикл не прервался по return)
+                                                //отправляем сообщение отправителю(себе)
+                                                ClientHandler.this.sendMsg("Адресат с ником " + nickOfRecipient + " в вашем черном списке!");
+                                            }
+                                        } else{
+                                            //отправка предупреждения отправителю
+                                            ClientHandler.this.sendMsg("Нельзя отправлять самому себе!");
+                                        }
+                                    } else{
+                                        //отправка предупреждения отправителю
+                                        ClientHandler.this.sendMsg("Неверный синтаксис сервисного сообщения!");
+                                    }
                                 }
                                 //добавляем пользователя в черный список
                                 if (str.startsWith("/blacklist ")) {
@@ -91,7 +125,14 @@ public class ClientHandler {
                                 }
                             }//if "/"
                             else{
-                                server.broadcastMsg(ClientHandler.this,nick + ": " + str);
+
+                                //TODO L8hwTask4.Удалил
+                                //server.broadcastMsg(ClientHandler.this,nick + ": " + str);
+                                //TODO L8hwTask4.Добавил
+                                if(!ClientHandler.this.checkBlackList(nick)){
+                                    //отправляем сообщение всем
+                                    server.broadcastMsg(ClientHandler.this,nick + ": " + str);
+                                }
                             }
                         }//while
                     } catch (IOException e) {

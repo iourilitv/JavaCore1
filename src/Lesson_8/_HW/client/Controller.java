@@ -118,7 +118,10 @@ public class Controller {
                                     }
                                 });
                             } else {
+
+                                //TODO L8hwTask4.Удалил
                                 textArea.appendText(str + "\n");
+                                //TODO L8hwTask4.Добавил
                             }
 
                         }
