@@ -129,14 +129,7 @@ public class ClientHandler {
                                 }
                             }//if "/"
                             else{
-
-                                //TODO L8hwTask4.Удалил
-                                //server.broadcastMsg(ClientHandler.this,nick + ": " + str);
-                                //TODO L8hwTask4.Добавил
-                                if(!ClientHandler.this.checkBlackList(nick)){
-                                    //отправляем сообщение всем
-                                    server.broadcastMsg(ClientHandler.this,nick + ": " + str);
-                                }
+                                server.broadcastMsg(ClientHandler.this,nick + ": " + str);
                             }
                         }//while
                     } catch (IOException e) {

@@ -161,7 +161,6 @@ public class Controller {
                                         vBoxChat.getChildren().add(vBox);
                                     }
                                 });
-
                             }
                         }
                     } catch (IOException e) {
@@ -246,31 +245,31 @@ public class Controller {
     //метод для отправки сообщений
     public void sendMsg(ActionEvent actionEvent) {
         try {
-            Label label = new Label(textField.getText());
-            VBox vBox = new VBox();
+            //не показываем служебные сообщения у себя
+            if(!textField.getText().startsWith("/")) {
+                Label label = new Label(textField.getText());
+                VBox vBox = new VBox();
 
-            //условие (от кого?) для определения расположения
-            //вытаскиваем из события источник (кнопка или текстовое поле)
-            //и сравниваем с теми же источниками контроллера отправителя
-            if (actionEvent.getSource().equals(this.btn1) ||
-                actionEvent.getSource().equals(this.textField)
-                ) {//if (если мое - сообщение справа)
-                vBox.setAlignment(Pos.TOP_RIGHT);
-            } else {
-                vBox.setAlignment(Pos.TOP_LEFT);
+                //условие (от кого?) для определения расположения
+                //вытаскиваем из события источник (кнопка или текстовое поле)
+                //и сравниваем с теми же источниками контроллера отправителя
+                if (actionEvent.getSource().equals(this.btn1) ||
+                        actionEvent.getSource().equals(this.textField)
+                    ) {//if (если мое - сообщение справа)
+                    vBox.setAlignment(Pos.TOP_RIGHT);
+                } else {
+                    vBox.setAlignment(Pos.TOP_LEFT);
+                }
+                //добавляем метку в бокс
+                vBox.getChildren().add(label);
+                //добавляем vBox в общий бокс чата
+                vBoxChat.getChildren().add(vBox);
 
-                //TODO переписал по своему ниже до catch
             }
-            //добавляем метку в бокс
-            vBox.getChildren().add(label);
-            //добавляем vBox в общий бокс чата
-            vBoxChat.getChildren().add(vBox);
-
-            //msg_label.requestFocus();//TODO проверка показа нижнего сообщения.Не работает
-
             out.writeUTF(textField.getText());
             textField.clear();
             textField.requestFocus();
+
         } catch(IOException e){
             e.printStackTrace();
         }
