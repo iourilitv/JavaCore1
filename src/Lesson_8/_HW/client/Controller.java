@@ -3,11 +3,16 @@ package Lesson_8._HW.client;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -45,6 +50,19 @@ public class Controller {
     //ListView - динамическое представление для работы с GUI framework JavaFX
     @FXML
     ListView<String> clientList;
+
+    //для privateChat.fxml
+    @FXML
+    VBox prVBoxChat;
+
+    @FXML
+    TextField prTextField;
+
+    @FXML
+    Button prBtnSend;
+
+    @FXML
+    HBox prBottomPanel;
 
     Socket socket;
     DataInputStream in;
@@ -199,7 +217,7 @@ public class Controller {
 
     //TODO L8hwTask5.Добавил
     //Метод обработки двойного клика на пользователе в списке
-    public void selectClient(MouseEvent mouseEvent) {
+    public void selectClient(MouseEvent mouseEvent) throws IOException {
         if (mouseEvent.getClickCount() == 2) {
             //TODO Временно
             System.out.println("Двойной клик");
@@ -214,6 +232,18 @@ public class Controller {
 
                 }
             });*/
+
+            //TODO временно
+            System.out.println("Controller.");
+            System.out.println(".clientList.getItems(): " + clientList.getItems());
+            //...: [nick1, nick2]
+            System.out.println(".clientList.getSelectionModel().getSelectedItem(): " + clientList.getSelectionModel().getSelectedItem());
+            //...: nick2
+
+            //TODO перенес в PrivateChatStage.Добавил
+            //создаем новое окно
+            PrivateChatStage prChStage = new PrivateChatStage(clientList.getItems(), clientList.getSelectionModel().getSelectedItem(), this);
+
         }
     }
 
@@ -242,7 +272,7 @@ public class Controller {
         }
     }*/
     //TODO L8hwTask1.Добавил
-    //метод для отправки сообщений
+    //метод для отправки сообщений в общем чате //TODO L8hwTask5.С одним контроллером.Добавил - в общем чате
     public void sendMsg(ActionEvent actionEvent) {
         try {
             //не показываем служебные сообщения у себя
@@ -275,4 +305,37 @@ public class Controller {
         }
     }
 
+    //TODO L8hwTask5.С одним контроллером.Добавил
+    //метод для отправки сообщений в приватном чате
+    public void sendMsgInPrivateChat (ActionEvent actionEvent) {
+        try {
+            //не показываем служебные сообщения у себя
+            if (!prTextField.getText().startsWith("/")) {//TODO Удалить?
+                Label label = new Label(prTextField.getText());
+                VBox vBox = new VBox();
+
+                //условие (от кого?) для определения расположения
+                //вытаскиваем из события источник (кнопка или текстовое поле)
+                //и сравниваем с теми же источниками контроллера отправителя
+                if (actionEvent.getSource().equals(this.prBtnSend) ||
+                        actionEvent.getSource().equals(this.prTextField)
+                ) {//if (если мое - сообщение справа)
+                    vBox.setAlignment(Pos.TOP_RIGHT);
+                } else {
+                    vBox.setAlignment(Pos.TOP_LEFT);
+                }
+                //добавляем метку в бокс
+                vBox.getChildren().add(label);
+                //добавляем vBox в общий бокс чата
+                prVBoxChat.getChildren().add(vBox);
+
+            }
+            out.writeUTF(prTextField.getText());
+            prTextField.clear();
+            prTextField.requestFocus();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

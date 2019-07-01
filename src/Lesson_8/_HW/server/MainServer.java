@@ -179,9 +179,14 @@ public class MainServer {
                 //проверяем не находится ли отправитель черном списке получателя
                 if(!r.checkBlackList(sender.getNick())){
                     //отправляем сообщение адресату
-                    r.sendMsg("from " + sender.getNick() + ": " + msg);
+
+                    //TODO L8hwTask5.С одним контроллером.Удалил
+                    //r.sendMsg("from " + sender.getNick() + ": " + msg);
                     //отправляем сообщение отправителю
-                    sender.sendMsg("to " + nickOfRecipient + ": " + msg);
+                    //sender.sendMsg("to " + nickOfRecipient + ": " + msg);
+                    //TODO L8hwTask5.С одним контроллером.Добавил
+                    r.sendMsg(sender.getNick() + ": " + msg);
+
                     return;
                 } else{
                     //если отправитель черном списке получателя (цикл не прервался по return)
@@ -193,17 +198,6 @@ public class MainServer {
         //если в списке не нашлось клиента с таким ником (цикл не прервался по return)
         sender.sendMsg("Адресат с ником " + nickOfRecipient + " не найден в чате!");
     }
-    //TODO L8hwTask4.Удалил
-    /*public void sendPersonalMsg(ClientHandler from, String nickTo, String msg) {
-        for (ClientHandler o : clients) {
-            if (o.getNick().equals(nickTo)) {
-                o.sendMsg("from " + from.getNick() + ": " + msg);
-                from.sendMsg("to " + nickTo + ": " + msg);
-                return;
-            }
-        }
-        from.sendMsg("Клиент с ником " + nickTo + " не найден в чате");
-    }*/
 
     /**
      * Метод проверки не авторизовался ли кто-то уже под этим ником(есть ли в списке клиент с таким ником)
