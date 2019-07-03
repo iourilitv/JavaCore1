@@ -180,7 +180,7 @@ public class MainServer {
                     if(msg.startsWith("/inv")){
 
                         //TODO Временно.OK
-                        System.out.println("MainServer.sendMsgToNick. nick:" + sender.getNick() + " sent msg:" + msg);
+                        //System.out.println("MainServer.sendMsgToNick. nick:" + sender.getNick() + " sent msg:" + msg);
 
                         //отправляем сообщение адресату //отправляем приглашение партнеру початиться приватно
                         r.sendMsg(msg);
