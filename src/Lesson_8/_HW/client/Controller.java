@@ -124,8 +124,6 @@ public class Controller {
                             /*//TODO L8hwTask5.Добавил
                             //проверяем запросы инициализации приватного чата
                             if (str.startsWith("/inv")) {//всегда в строке ник партнера
-
-
                                 //передаем первое сообщение на проверку
                                 //обрабатываем "/invto" и отправляем "/invok" или "/invnot"
                                 out.writeUTF(initPrivateChat(str));
@@ -176,7 +174,8 @@ public class Controller {
                                     }
                                 });
                             } else {
-                                //выводим сообщение в свое окно чата
+                                //TODO L8hwTask5.inv-messages_receiving_to_main_chat.Удалил
+                                /*//выводим сообщение в свое окно чата
                                 //TODO L8hwTask1.Удалил
                                 //textArea.appendText(str + "\n");
                                 //TODO L8hwTask1.Добавил
@@ -191,7 +190,27 @@ public class Controller {
                                         //добавляем vBox в общий бокс чата
                                         vBoxChat.getChildren().add(vBox);
                                     }
-                                });
+                                });*/
+                                //TODO L8hwTask5.inv-messages_receiving_to_main_chat.Добавил
+                                //отсеиваем служебные сообщения, чтобы не показывать в окне чата
+                                if (!str.startsWith("/")) {
+                                    //выводим сообщение в свое окно чата
+                                    //TODO L8hwTask1.Удалил
+                                    //textArea.appendText(str + "\n");
+                                    //TODO L8hwTask1.Добавил
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Label label = new Label(str + "\n");
+                                            VBox vBox = new VBox();
+                                            vBox.setAlignment(Pos.TOP_LEFT);
+                                            //добавляем метку в бокс
+                                            vBox.getChildren().add(label);
+                                            //добавляем vBox в общий бокс чата
+                                            vBoxChat.getChildren().add(vBox);
+                                        }
+                                    });
+                                }
                             }
                         }
                     } catch (IOException e) {
