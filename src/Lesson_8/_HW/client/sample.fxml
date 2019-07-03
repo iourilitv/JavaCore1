@@ -38,7 +38,7 @@
             </HBox>
         </VBox>
         <!--кликабельный список пользователей(правая панель)-->
-        <!--//TODO L8hwTask5.initChatPreviously.+Добавил onMouseClicked="#tryToInviteIntoPrivateChat"-->
+        <!--//TODO L8hwTask5.+Добавил onMouseClicked="#tryToInviteIntoPrivateChat"-->
         <ListView fx:id="clientList" managed="false" visible="false" onMouseClicked="#tryToInviteIntoPrivateChat" ></ListView>
     </HBox>
 

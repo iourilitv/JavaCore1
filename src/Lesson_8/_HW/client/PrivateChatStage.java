@@ -25,17 +25,9 @@ import java.util.List;
 public class PrivateChatStage extends Stage {
 
     String chatCompanionNick;
-    //TODO L8hwTask5.initChatPreviously.Удалил
-    //Controller controller;
-    //DataOutputStream out;
 
-    //TODO L8hwTask5.initChatPreviously.Добавил
     public PrivateChatStage(String chatCompanionNick) throws IOException {
         this.chatCompanionNick = chatCompanionNick;
-
-        //TODO L8hwTask5.initChatPreviously.Удалил
-        //this.controller = controller;
-        //this.out = controller.out;
 
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResourceAsStream("privateChat.fxml"));
@@ -47,10 +39,7 @@ public class PrivateChatStage extends Stage {
         privateStage.show();
 
         //TODO временно.
-        //System.out.println("PrivateChatStage.");
         System.out.println("PrivateChatStage.chatCompanionNick: " + chatCompanionNick);
     }
-
-
 
 }

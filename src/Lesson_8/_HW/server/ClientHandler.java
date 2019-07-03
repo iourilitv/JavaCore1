@@ -74,7 +74,7 @@ public class ClientHandler {
                                     break;
                                 }
 
-                                //TODO L8hwTask5.initChatPreviously.Добавил.ERR.Добавил
+                                //TODO L8hwTask5.Добавил.
                                 //сервер принимает от клиента служебное сообщение и переправляет его на сервер партнеру
                                 if (str.startsWith("/inv")) {
 
@@ -85,11 +85,10 @@ public class ClientHandler {
                                     String[] temp = str.split(" ", 2);
                                     //кому отправлять
                                     String chatCompanionNick = temp[1];
-                                    //TODO проверяем не отправляем ли самому себе
+                                    //TODO проверяем не отправляем ли самому себе.Лишнее?
                                     if(!ClientHandler.this.getNick().equals(temp[1])){
                                         //переписываем изначальное сообщение от клиента - заменяем на отправителя
 
-                                        //TODO L8hwTask5.initChatPreviously.Добавил.
                                         String msg = temp[0] + " " + ClientHandler.this.getNick();
 
                                         //TODO Временно.OK
@@ -99,97 +98,6 @@ public class ClientHandler {
                                         server.sendMsgToNick(ClientHandler.this, chatCompanionNick, msg);
                                     }
                                 }
-
-                                //TODO L8hwTask5.initChatPreviously.Добавил.ERR.Удалил
-                                /*if (str.startsWith("/inv")){
-
-                                    //TODO Временно.OK
-                                    System.out.println("ClientHandler. inside startsWith(_/inv_). str" + str);
-
-                                    //выделяем ник партнера по чату из служебного сообщения
-                                    String[] temp = str.split(" ", 2);
-                                    //кому отправлять
-                                    String chatCompanionNick = temp[1];
-
-                                    //TODO лишнее?
-                                    //проверяем от кого пришло сообщение (invto - свое приглашение)
-                                    //пришло от моего клиента на сервер - на сервер партнеру
-                                    if(temp[0].equals("/invto")){//приглашение с ником партнера
-
-                                        //TODO Временно.OK
-                                        System.out.println(".1. inside if(temp[0].equals(\"/invto\") str:" + str);
-
-                                        //если не от приглашающего
-                                        //отправляем приглашение партнеру початиться приватно
-                                        String msg = "/invfrom " + ClientHandler.this.getNick();//мой ник
-
-                                        //TODO Временно.OK
-                                        System.out.println(".2.inside if(temp[0].equals(\\\"/invto\\\") msg to out:" + msg);
-
-                                        //сервер принимает от меня приглашение и переправляет его на сервер партнеру
-                                        server.sendMsgToNick(ClientHandler.this, chatCompanionNick, msg);
-                                    }
-                                    //пришло от моего сервера на сервер партнера - клиенту партнера
-                                    if(temp[0].equals("/invfrom")){//приглашение с моим ником
-                                        //если не от приглашающего
-                                        //партнер присылает подтверждение, что готов початиться приватно
-                                        String msg = "/invfrom " + chatCompanionNick;//мой ник
-                                        //сервер принимает от партнера подтверждение початиться и переправляет его мне
-                                        //sendMsg(msg);
-                                        server.sendMsgToNick(ClientHandler.this, chatCompanionNick, msg);
-                                    }
-                                    //пришло от клиента партнера на сервер партнера - на мой сервер
-                                    if(temp[0].equals("/invfromok")){//приглашение с моим ником
-
-                                        //TODO Временно.OK
-                                        System.out.println(".3. inside if(temp[0].equals(\"/invfromok\") str:" + str);
-
-                                        //если не от приглашающего
-                                        //партнер присылает подтверждение, что готов початиться приватно
-                                        String msg = "/invfromok " + ClientHandler.this.getNick();//его ник
-
-                                        //TODO Временно.OK
-                                        System.out.println(".4.inside if(temp[0].equals(\\\"/invfromok\\\") msg to out:" + msg);
-
-                                        //сервер принимает от партнера подтверждение початиться и переправляет его мне
-                                        //sendMsg(msg);
-                                        server.sendMsgToNick(ClientHandler.this, chatCompanionNick, msg);
-                                    }
-                                    //пришло от сервера партнера на мой сервер - моему клиенту
-                                    if (temp[0].equals("/invfromok")){//подтверждение с ником партнера
-
-                                        //TODO Временно.OK
-                                        //System.out.println("ClientHandler.startsWith_/inv_.str:" + str);
-
-                                        //отправляем служебное сообщение для открытия окна приватной переписки
-                                        String msg = "/invok " + chatCompanionNick;//его ник
-
-                                        //TODO Временно.OK
-                                        System.out.println("ClientHandler.startsWith_/inv_.temp[0].equals(invfromok).(/invok + chatCompanionNick):" + msg);
-
-                                        sendMsg(msg);
-                                        //server.sendMsgToNick(ClientHandler.this, chatCompanionNick, msg);
-                                    }
-                                }
-
-                                //TODO L8hwTask5.initChatPreviously.Добавил.Удалил
-                                if (str.startsWith("/invok")){
-
-                                    //TODO Временно.OK
-                                    //System.out.println("ClientHandler.startsWith_/inv_.str:" + str);
-
-                                    //выделяем ник партнера по чату из служебного сообщения
-                                    //String[] temp = str.split(" ", 2);
-                                    //String chatCompanionNick = temp[1];
-
-                                    //отправляем служебное сообщение для открытия окна приватной переписки
-                                    String msg = "/invok " + chatCompanionNick;
-
-                                    //TODO Временно.OK
-                                    System.out.println("ClientHandler.startsWith_/inv_.str(/invok + chatCompanionNick):" + str);
-
-                                    server.sendMsgToNick(ClientHandler.this, chatCompanionNick, msg);
-                                }*/
 
                                 //оправка персонального сообщения
                                 if(str.startsWith("/w")) {

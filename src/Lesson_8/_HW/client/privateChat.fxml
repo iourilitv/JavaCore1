@@ -6,21 +6,7 @@
 <!--//TODO L8hwTask5.Добавил-->
 <VBox alignment="center" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121"
     fx:controller="Lesson_8._HW.client.Controller">
-    <!--//TODO L8hwTask5.С одним контроллером.Заменил .PrivateChatController на .Controller-->
 
-    <!--//TODO L8hwTask5.С одним контроллером.Удалил-->
-    <!--верхний блок для отправки и отображения сообщений в чате-->
-    <!--<VBox fx:id="vBoxChat" HBox.hgrow="ALWAYS">-->
-        <!--для каждой метки каждого сообщения отдельные боксы-->
-    <!--</VBox>-->
-
-    <!--нижняя панель для отправки сообщений-->
-    <!--<HBox fx:id="bottomPanel">
-        <TextField fx:id="textField" onAction="#sendMsg" promptText="Введите текст" HBox.hgrow="ALWAYS" />
-        <Button fx:id="btn1" onAction="#sendMsg" text="Send" />
-    </HBox>-->
-
-    <!--//TODO L8hwTask5.С одним контроллером.Добавил-->
     <VBox fx:id="prVBoxChat" HBox.hgrow="ALWAYS">
         <!--для каждой метки каждого сообщения отдельные боксы-->
     </VBox>

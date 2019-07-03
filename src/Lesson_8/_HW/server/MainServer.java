@@ -87,13 +87,6 @@ public class MainServer {
         broadcastClientList();
     }
 
-    //TODO L8hwTask5.initChatPreviously.Добавил.НЕ надо.Удалить
-    /*public void subscribePrivateChat(ClientHandler sender, String chatСompanionNick, String msg){
-        //отправляем партнеру запрос на приватный чат
-        sendMsgToNick(sender, chatСompanionNick, msg);
-
-    }*/
-
     /**
      * Метод отправки всем одного сообщения с проверкой черного списка отправителя
      * @param sender - отправитель
@@ -106,11 +99,6 @@ public class MainServer {
             //проверяем не находится ли отправитель черном списке получателя
             //if (!o.checkBlackList(sender.getNick())) {
             //TODO L8hwTask1.Добавил
-            /*//проверяем не находится ли отправитель черном списке получателя и
-            // не отправляет ли он сам себе*/
-            //TODO L8hwTask4.Добавил.ERR отправляются всем-сообщения получателю в черном списке отправителя.Восстановил
-            //if (!o.checkBlackList(sender.getNick()) && !o.equals(sender)) {
-            //TODO L8hwTask4.Добавил.ERR отправляются всем-сообщения получателю в черном списке отправителя.Восстановил
             //проверяем не отправляет ли он сам себе,
             //а также не находится ли отправитель в черном списке получателя и наоборот,
             if (!o.equals(sender) && !o.checkBlackList(sender.getNick()) &&
@@ -184,11 +172,11 @@ public class MainServer {
                 //проверяем не находится ли отправитель черном списке получателя
                 if(!r.checkBlackList(sender.getNick())){
 
-                    //TODO L8hwTask5.initChatPreviously.Удалил
+                    //TODO L8hwTask5.Удалил
                     //r.sendMsg("from " + sender.getNick() + ": " + msg);
                     //отправляем сообщение отправителю
                     //sender.sendMsg("to " + nickOfRecipient + ": " + msg);
-                    //TODO L8hwTask5.initChatPreviously.Добавил
+                    //TODO L8hwTask5.Добавил
                     if(msg.startsWith("/inv")){
 
                         //TODO Временно.OK
