@@ -262,6 +262,14 @@ public class Controller {
                 //TODO Временно.OK
                 System.out.println(".2. before out:/invok + chatCompanionNick:" + chatCompanionNick);
 
+                //TODO L8hwTask5.Добавил.ERR.Не открыв.второе окно.Добавил
+                try {
+                    //если мой(второй) приватный чат не занят, открыть новое окно
+                    startPrivateChat();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 //отправляем на мой сервер подтверждение
                 return "/invok " + chatCompanionNick;
             } else {
@@ -284,8 +292,10 @@ public class Controller {
         //если от партнера пришло подтверждение, что все готово начать чат
         if (str.startsWith("/invok")) {
             try {
+
+                //TODO L8hwTask5.Добавил.ERR.Не открыв.второе окно.Удалил
                 //отправляем подтверждение, что мы уже готовы чатиться
-                out.writeUTF("/invok " + chatCompanionNick);
+                //out.writeUTF("/invok " + chatCompanionNick);
 
                 //если приватный чат инициализирован, открыть новое окно
                 startPrivateChat();
