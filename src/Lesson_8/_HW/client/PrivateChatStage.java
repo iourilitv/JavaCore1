@@ -24,38 +24,31 @@ import java.util.List;
  */
 public class PrivateChatStage extends Stage {
 
-    private List<String> clientList;
-    private String nick;
-    Controller controller;
-    DataOutputStream out;
+    String chatCompanionNick;
+    //TODO L8hwTask5.initChatPreviously.Удалил
+    //Controller controller;
+    //DataOutputStream out;
 
-    //TODO L8hwTask5.С одним контроллером.Удалил
-    /*//создаем экземпляр контроллера персонального чата
-    PrivateChatController prChController;*/
+    //TODO L8hwTask5.initChatPreviously.Добавил
+    public PrivateChatStage(String chatCompanionNick) throws IOException {
+        this.chatCompanionNick = chatCompanionNick;
 
-    public PrivateChatStage(List<String> clientList, String nick, Controller controller) throws IOException {
-        this.clientList = clientList;
-        this.nick = nick;
-        this.controller = controller;
+        //TODO L8hwTask5.initChatPreviously.Удалил
+        //this.controller = controller;
+        //this.out = controller.out;
 
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResourceAsStream("privateChat.fxml"));
 
-        //TODO L8hwTask5.С одним контроллером.Удалил
-        //prChController = loader.getController();
-
         Stage privateStage = new Stage();
-        privateStage.setTitle("Private chat");//primaryStage.
+        privateStage.setTitle("Private chat with " + chatCompanionNick);
         Scene scene = new Scene(root, 348, 348);
         privateStage.setScene(scene);
         privateStage.show();
 
-        //TODO L8hwTask5.С одним контроллером.Удалил
-        //prChController.out = controller.out;
-
         //TODO временно.
-        System.out.println("PrivateChatStage.");
-        System.out.println(".out: " + out);
+        //System.out.println("PrivateChatStage.");
+        System.out.println("PrivateChatStage.chatCompanionNick: " + chatCompanionNick);
     }
 
 

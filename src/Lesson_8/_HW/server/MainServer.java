@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -25,21 +27,17 @@ public class MainServer {
     private Vector<ClientHandler> clients;
 
     public MainServer() throws SQLException {
-
         //создаем список клиентов в виде синхронизированного ArrayList
         clients = new Vector<>();
         //инициализируем объекты с пустыми значениями, чтобы не получить исключение, что объекта нет
         ServerSocket server = null;
         Socket socket = null;
-
         try {
             //устанавливаем связь с БД в момент запуска сервера
             AuthService.connect();
-
             //создаем сокет для серверной части
             server = new ServerSocket(8189);
             System.out.println("Сервер запущен");
-
             while (true) {
                 //создаем сокет для клиентской части. При создании объекта типа Socket неявно
                 //устанавливается соединение клиента с сервером
@@ -88,6 +86,13 @@ public class MainServer {
         //рассылаем новый список клиентов
         broadcastClientList();
     }
+
+    //TODO L8hwTask5.initChatPreviously.Добавил.НЕ надо.Удалить
+    /*public void subscribePrivateChat(ClientHandler sender, String chatСompanionNick, String msg){
+        //отправляем партнеру запрос на приватный чат
+        sendMsgToNick(sender, chatСompanionNick, msg);
+
+    }*/
 
     /**
      * Метод отправки всем одного сообщения с проверкой черного списка отправителя
@@ -178,15 +183,26 @@ public class MainServer {
                 //TODO L8hwTask4.Добавил
                 //проверяем не находится ли отправитель черном списке получателя
                 if(!r.checkBlackList(sender.getNick())){
-                    //отправляем сообщение адресату
 
-                    //TODO L8hwTask5.С одним контроллером.Удалил
+                    //TODO L8hwTask5.initChatPreviously.Удалил
                     //r.sendMsg("from " + sender.getNick() + ": " + msg);
                     //отправляем сообщение отправителю
                     //sender.sendMsg("to " + nickOfRecipient + ": " + msg);
-                    //TODO L8hwTask5.С одним контроллером.Добавил
-                    r.sendMsg(sender.getNick() + ": " + msg);
+                    //TODO L8hwTask5.initChatPreviously.Добавил
+                    if(msg.startsWith("/inv")){
 
+                        //TODO Временно.OK
+                        System.out.println("MainServer.sendMsgToNick. nick:" + sender.getNick() + " sent msg:" + msg);
+
+                        //отправляем сообщение адресату //отправляем приглашение партнеру початиться приватно
+                        r.sendMsg(msg);
+                        return;
+                    }
+
+                    //отправляем сообщение адресату
+                    r.sendMsg("from " + sender.getNick() + ": " + msg);
+                    //отправляем сообщение отправителю
+                    sender.sendMsg("to " + nickOfRecipient + ": " + msg);
                     return;
                 } else{
                     //если отправитель черном списке получателя (цикл не прервался по return)
