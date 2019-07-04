@@ -20,28 +20,44 @@ public class Controller {
     VBox vBoxChat;
 
     @FXML
+    HBox bottomPanel;
+
+    @FXML
     TextField textField;
 
     @FXML
     Button btn1;
 
     @FXML
-    HBox bottomPanel;
-
-    @FXML
     HBox upperPanel;
 
     @FXML
-    TextField loginFiled;
+    TextField loginField;
 
     @FXML
     PasswordField passwordField;
+
+    //TODO L8hwTask2.Registration form.Добавил
+    @FXML
+    VBox registrationForm;
+    //TODO L8hwTask2.Registration form.Добавил
+    @FXML
+    TextField regFormNickField;
+    //TODO L8hwTask2.Registration form.Добавил
+    @FXML
+    TextField regFormLoginField;
+    //TODO L8hwTask2.Registration form.Добавил
+    @FXML
+    PasswordField regFormPasswordField;
+    //TODO L8hwTask2.Registration form.Добавил
+    @FXML
+    TextArea regFormTextArea;
 
     //ListView - динамическое представление для работы с GUI framework JavaFX
     @FXML
     ListView<String> clientList;
 
-    //для privateChat.fxml
+    //TODO ???переменные с pr в начале - для privateChat.fxml???
     @FXML
     VBox prVBoxChat;
 
@@ -60,6 +76,9 @@ public class Controller {
 
     private boolean isAuthorized;
 
+    //TODO L8hwTask2.Registration form.Добавил
+    private boolean isRegistred;
+
     //TODO L8hwTask5.initChatPreviously.Добавил
     private String chatCompanionNick = "";
 
@@ -73,6 +92,11 @@ public class Controller {
         if (!isAuthorized) {
             upperPanel.setVisible(true);
             upperPanel.setManaged(true);
+
+            //TODO L8hwTask2.Registration form.Добавил
+            registrationForm.setVisible(false);
+            registrationForm.setManaged(false);
+
             bottomPanel.setVisible(false);
             bottomPanel.setManaged(false);
             clientList.setVisible(false);
@@ -110,6 +134,9 @@ public class Controller {
                                 //TODO вывод служ.сообщ. до авторизации клиента.Оставить
                                 //TODO.ERR Не приходят от других сообщения.Удалил
                                 //textArea.appendText(str + "\n");
+
+                                //TODO L8hwTask2.Registration form.Добавил
+                                regFormTextArea.appendText(str + "\n");
                             }
                         }
 
@@ -194,6 +221,11 @@ public class Controller {
         }
     }
 
+    //TODO L8hwTask2.Registration form.Добавил
+    //метод запроса на регистрацию
+    public void tryToRegister(){
+        //TODO описать метод по аналогии с tryToAuth()
+    }
     //метод для авторизации
     public void tryToAuth() {
         if (socket == null || socket.isClosed()) {
@@ -202,8 +234,8 @@ public class Controller {
         }
         try {
             // отправка сообщений на сервер для авторизации
-            out.writeUTF("/auth " + loginFiled.getText() + " " + passwordField.getText());
-            loginFiled.clear();//очищаем поле логина
+            out.writeUTF("/auth " + loginField.getText() + " " + passwordField.getText());
+            loginField.clear();//очищаем поле логина
             passwordField.clear();//очищаем поле пароля
         } catch (IOException e) {
             e.printStackTrace();

@@ -2,12 +2,51 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <VBox alignment="center" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121"
       fx:controller="Lesson_8._HW.client.Controller">
 
+    <!--//TODO L8hwTask2.Registration form.Удалил-->
+    <!--верхняя панель для авторизации-->
+    <!--<HBox fx:id="upperPanel">
+        <TextField HBox.hgrow="ALWAYS" promptText="Логин" fx:id="loginFiled"></TextField>
+        <PasswordField promptText="Пароль" fx:id="passwordField" onAction="#tryToAuth"/>
+        <Button text="Авторизоваться" onAction="#tryToAuth"/>
+    </HBox>-->
+    <!--//TODO L8hwTask2.Registration form.Добавил-->
+    <!--верхняя панель для авторизации-->
+    <VBox fx:id="registrationForm">
+        <Label text="Регистрационная форма."/>
+        <Label text="Придумайте и введите свои данные."/>
+
+        <Label text="Nickname - имя в чате, состоящее только из латинских букв и цифр"/>
+        <HBox>
+            <Label text="Nickname:"/>
+            <TextField HBox.hgrow="ALWAYS" promptText="Имя в чате" fx:id="regFormNickField"></TextField>
+        </HBox>
+
+        <Label text="Уникальный логин, состоящий только из латинских букв и цифр"/>
+        <HBox>
+            <Label text="Логин:"/>
+            <TextField HBox.hgrow="ALWAYS" promptText="Логин" fx:id="regFormLoginField"></TextField>
+        </HBox>
+
+        <Label text="Пароль, не менее 8-ми символов, состоящий из:\n- латинских букв в верхнем и нижнем регистре;\n- цифр и спецсимволов на клавиатуре."/>
+        <HBox>
+            <Label text="Пароль:"/>
+            <PasswordField promptText="Пароль" fx:id="regFormPasswordField"/>
+        </HBox>
+
+        <!--поле для вывода служебных сообщений во время регистрации-->
+        <TextArea fx:id="regFormTextArea" editable="false"/>
+
+        <Button text="Отправить" onAction="#tryToRegister"/>
+    </VBox>
+
+    <!--//TODO L8hwTask2.Registration form.Добавил-->
     <!--верхняя панель для авторизации-->
     <HBox fx:id="upperPanel">
-        <TextField HBox.hgrow="ALWAYS" promptText="Логин" fx:id="loginFiled"></TextField>
+        <TextField HBox.hgrow="ALWAYS" promptText="Логин" fx:id="loginField"></TextField>
         <PasswordField promptText="Пароль" fx:id="passwordField" onAction="#tryToAuth"/>
         <Button text="Авторизоваться" onAction="#tryToAuth"/>
     </HBox>
@@ -15,6 +54,7 @@
     <!--//TODO L8hwTask1.Добавил.ERR Не приходят от других сообщения.Удалил-->
     <!--<TextArea fx:id="textArea" editable="false" managed="true" visible="true" />-->
 
+    <!--разделенная на два панель основного чата-->
     <HBox VBox.vgrow="ALWAYS">
         <!--левая панель для отправки и отображения сообщений в чате-->
         <VBox HBox.hgrow="ALWAYS">

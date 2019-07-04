@@ -217,6 +217,21 @@ public class MainServer {
         return false;
     }
 
+    //TODO L8hwTask2.Registration logic.Добавил
+    /**
+     * Метод проверки не зарегистрировался ли кто-то уже под этим логином(есть ли в БД)
+     * @param login - проверяемый логин(уникальный)
+     * @return true, если такой клиент с таким ником уже авторизован
+     */
+    boolean isThisNickRegistred(String login){
+        for (ClientHandler c: clients) {
+            if(c.getNick().equals(login)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     //Метод отправки списка пользователей в виде строки всем клиентам
     public void broadcastClientList() {
         StringBuilder sb = new StringBuilder();
