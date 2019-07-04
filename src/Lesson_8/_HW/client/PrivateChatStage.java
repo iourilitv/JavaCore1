@@ -1,17 +1,10 @@
 package Lesson_8._HW.client;
 
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
-import java.util.List;
 
 //TODO L8hwTask5.Добавил
 /**

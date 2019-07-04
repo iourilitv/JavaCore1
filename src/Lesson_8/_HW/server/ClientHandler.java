@@ -79,7 +79,7 @@ public class ClientHandler {
                                 if (str.startsWith("/inv")) {
 
                                     //TODO Временно.OK
-                                    System.out.println("1.ClientHandler. nick:" + ClientHandler.this.getNick() + " received. str" + str);
+                                    //System.out.println("1.ClientHandler. nick:" + ClientHandler.this.getNick() + " received. str" + str);
 
                                     //выделяем ник партнера по чату из служебного сообщения
                                     String[] temp = str.split(" ", 2);

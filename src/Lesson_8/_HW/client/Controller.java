@@ -120,7 +120,7 @@ public class Controller {
                                 break;
                             }
 
-                            //TODO L8hwTask5.Добавил chat_communication
+                            //TODO L8hwTask5.Добавил.ERR.chat_communication
                             if (str.startsWith("/inv")) {//всегда в строке ник партнера
                                 //передаем первое сообщение на проверку в метод инициализации прив.чата
                                 initPrivateChat(str);
