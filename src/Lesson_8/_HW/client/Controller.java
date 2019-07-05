@@ -12,10 +12,12 @@ import javafx.scene.layout.VBox;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.Socket;
 
 public class Controller {
+    @FXML
+    HBox mainChatPanel;
+
     @FXML
     VBox vBoxChat;
 
@@ -36,6 +38,10 @@ public class Controller {
 
     @FXML
     PasswordField passwordField;
+
+    //TODO L8hwTask2.Registration form.Добавил
+    @FXML
+    TextArea authFormTextArea;
 
     //TODO L8hwTask2.Registration form.Добавил
     @FXML
@@ -77,7 +83,7 @@ public class Controller {
     private boolean isAuthorized;
 
     //TODO L8hwTask2.Registration form.Добавил
-    private boolean isRegistred;
+    private boolean isRegistered;
 
     //TODO L8hwTask5.initChatPreviously.Добавил
     private String chatCompanionNick = "";
@@ -89,25 +95,35 @@ public class Controller {
     public void setAuthorized(boolean isAuthorized) {
         this.isAuthorized = isAuthorized;
 
+        //TODO L8hwTask2.Registration form.Добавил.//TODO Удалить?
+        //registrationForm.setVisible(false);
+        //registrationForm.setManaged(false);
+
         if (!isAuthorized) {
-            upperPanel.setVisible(true);
+            upperPanel.setVisible(true);//панель авторизации
             upperPanel.setManaged(true);
 
-            //TODO L8hwTask2.Registration form.Добавил
-            registrationForm.setVisible(false);
-            registrationForm.setManaged(false);
+            //TODO L8hwTask2.Registration logic.Удалил
+            //bottomPanel.setVisible(false);
+            //bottomPanel.setManaged(false);
+            //clientList.setVisible(false);
+            //clientList.setManaged(false);
+            //TODO L8hwTask2.Registration logic.Добавил
+            mainChatPanel.setVisible(false);
+            mainChatPanel.setManaged(false);
 
-            bottomPanel.setVisible(false);
-            bottomPanel.setManaged(false);
-            clientList.setVisible(false);
-            clientList.setManaged(false);
         } else {
             upperPanel.setVisible(false);//делаем окно видимым (по умолчанию в sample visible="false")
             upperPanel.setManaged(false);//выделяется место под HBox, если окно видимо (по умолчанию в sample managed="false")
-            bottomPanel.setVisible(true);
-            bottomPanel.setManaged(true);
-            clientList.setVisible(true);
-            clientList.setManaged(true);
+
+            //TODO L8hwTask2.Registration logic.Удалил
+            //bottomPanel.setVisible(true);
+            //bottomPanel.setManaged(true);
+            //clientList.setVisible(true);
+            //clientList.setManaged(true);
+            //TODO L8hwTask2.Registration logic.Добавил
+            mainChatPanel.setVisible(true);
+            mainChatPanel.setManaged(true);
         }
     }
 
@@ -124,18 +140,36 @@ public class Controller {
                 @Override
                 public void run() {
                     try {
-                        // блок для авторизации
+                        // блок для авторизации и регистрации
+                        //TODO Разобраться сколько циклов нужно один общий или два!
                         while (true) {
                             String str = in.readUTF();
                             if (str.startsWith("/authok")) {
                                 setAuthorized(true);//устанавливаем признак успешной авторизации
                                 break;
                             } else {
-                                //TODO вывод служ.сообщ. до авторизации клиента.Оставить
-                                //TODO.ERR Не приходят от других сообщения.Удалил
-                                //textArea.appendText(str + "\n");
-
                                 //TODO L8hwTask2.Registration form.Добавил
+                                authFormTextArea.appendText(str + "\n");
+                            }
+                        }
+
+                        //TODO Разобраться сколько циклов нужно один общий или два!
+                        //TODO L8hwTask2.Registration form.Добавил
+                        while (true) {
+                            String str = in.readUTF();
+
+                            //TODO L8hwTask2.Registration logic.Добавил
+                            if (str.startsWith("/regok")) {
+                                //устанавливаем признак успешной регистрации
+                                setRegistered(true);
+                                //разделяем сообщение на три части
+                                int splitLimit = 3;
+                                String[] tokens = str.split(" ", splitLimit);
+                                //отправляем сообщение с логином и паролем для регистрации
+                                out.writeUTF("/auth " + tokens[1] + tokens[2]);
+                                break;
+                            } else {
+                                //выводим сообщения в панель регистрационной формы
                                 regFormTextArea.appendText(str + "\n");
                             }
                         }
@@ -221,17 +255,58 @@ public class Controller {
         }
     }
 
-    //TODO L8hwTask2.Registration form.Добавил
-    //метод запроса на регистрацию
+    //TODO L8hwTask2.Registration logic.Добавил
+    //метод запроса на регистрацию по нажатию элемента регистрация в форме авторизации(upperPanel)
     public void tryToRegister(){
-        //TODO описать метод по аналогии с tryToAuth()
+        //открываем окно регистрационной формы
+        setRegistered(false);
     }
-    //метод для авторизации
+
+    //TODO L8hwTask2.Registration logic.Добавил
+    //метод начала процесса регистрации
+    public void setRegistered(boolean isRegistered){
+        //TODO описать метод по аналогии с
+        this.isRegistered = isRegistered;
+
+        if(!isRegistered){
+            registrationForm.setVisible(true);
+            registrationForm.setManaged(true);
+
+            upperPanel.setVisible(false);
+            upperPanel.setManaged(false);
+            mainChatPanel.setVisible(false);
+            mainChatPanel.setManaged(false);
+        } else{
+            registrationForm.setVisible(false);
+            registrationForm.setManaged(false);
+        }
+    }
+
+    //TODO L8hwTask2.Registration logic.Добавил
+    //метод запроса на регистрацию(сохранение) данных из регистрационной формы по событию кнопки Отправить
+    public void getRegistration(){
+        if (socket == null || socket.isClosed()) {
+            // сначала подключаемся к серверу, если не подключен(сокет не создан или закрыт)
+            connect();
+        }
+        try {
+            // отправка на сервер запроса на регистрацию данных введенных в форме регистрации
+            out.writeUTF("/reg " + regFormNickField.getText() + regFormLoginField.getText() + " " + regFormPasswordField.getText());
+            regFormNickField.clear();//очищаем поле имени в чате
+            regFormLoginField.clear();//очищаем поле логина
+            regFormPasswordField.clear();//очищаем поле пароля
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Метод для авторизации. Запускается кнопкой Авторизоваться в форме регистрации(upperPanel)
     public void tryToAuth() {
         if (socket == null || socket.isClosed()) {
             // сначала подключаемся к серверу, если не подключен(сокет не создан или закрыт)
             connect();
         }
+
         try {
             // отправка сообщений на сервер для авторизации
             out.writeUTF("/auth " + loginField.getText() + " " + passwordField.getText());

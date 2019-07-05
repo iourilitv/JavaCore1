@@ -40,7 +40,7 @@
         <!--поле для вывода служебных сообщений во время регистрации-->
         <TextArea fx:id="regFormTextArea" editable="false"/>
 
-        <Button text="Отправить" onAction="#tryToRegister"/>
+        <Button text="Отправить" onAction="#getRegistration"/>
     </VBox>
 
     <!--//TODO L8hwTask2.Registration form.Добавил-->
@@ -48,14 +48,26 @@
     <HBox fx:id="upperPanel">
         <TextField HBox.hgrow="ALWAYS" promptText="Логин" fx:id="loginField"></TextField>
         <PasswordField promptText="Пароль" fx:id="passwordField" onAction="#tryToAuth"/>
+
+        <!--поле для вывода служебных сообщений во время регистрации-->
+        <TextArea fx:id="authFormTextArea" editable="false"/>
+
         <Button text="Авторизоваться" onAction="#tryToAuth"/>
+
+        <!--//TODO L8hwTask2.Registration form.Добавил-->
+        <Button text="Регистрация" onAction="#tryToRegister"/>
+
     </HBox>
 
     <!--//TODO L8hwTask1.Добавил.ERR Не приходят от других сообщения.Удалил-->
     <!--<TextArea fx:id="textArea" editable="false" managed="true" visible="true" />-->
 
     <!--разделенная на два панель основного чата-->
-    <HBox VBox.vgrow="ALWAYS">
+    <!--//TODO L8hwTask2.Registration logic.Удалил-->
+    <!--<HBox VBox.vgrow="ALWAYS">-->
+    <!--//TODO L8hwTask2.Registration logic.Добавил-->
+    <HBox fx:id="mainChatPanel" VBox.vgrow="ALWAYS">
+
         <!--левая панель для отправки и отображения сообщений в чате-->
         <VBox HBox.hgrow="ALWAYS">
 

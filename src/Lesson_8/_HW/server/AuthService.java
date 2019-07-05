@@ -60,6 +60,29 @@ public class AuthService {
         return null;
     }
 
+
+    public static String checkLoginInDB(String login) {
+        // формирование запроса. '%s' - для последовательного подставления значений в соотвествующее место
+        String sql = String.format("SELECT login FROM main where login = '%s'", login);
+
+        try {
+            // оправка запроса и получение ответа из БД
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // если есть строка возвращаем результат, если нет, то вернеться null
+            if(rs.next()) {
+                //индекс колонки в запросе (здесь 1 - это nickname). Но индексация в БД начинается с 1
+                //можно также вызвать и по columnLabel (здесь было бы "nickname"), но по индексу быстрее
+                return rs.getString(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     /**
      * Метод отключения от БД
      */

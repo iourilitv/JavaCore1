@@ -29,8 +29,39 @@ public class ClientHandler {
                 public void run() {
                     try {
                         // цикл для авторизации. Крутится бесконечно, пока не авторизуется
+                        //TODO Разобраться сколько циклов нужно один общий или два!
                         while (true) {
                             String str = in.readUTF();
+
+                            //TODO L8hwTask2.Registration logic.Добавил
+                            //если получено сообщение связанное с регистрацией
+                            if(str.startsWith("/reg")) {
+                                int splitLimit = 4;
+                                String[] tokens = str.split(" ", splitLimit);
+
+                                // Вытаскиваем данные из БД //здесь: tokens[2] - логин, tokens[3] - пароль
+                                String newLogin = AuthService.checkLoginInDB(tokens[2]);
+
+                                //делаем запрос в БП, есть ли такой логин и пароль(ник не уникальный)
+                                if (newLogin == null) {//нет такого в базе
+
+                                    //TODO записываем в БД данные из формы: tokens[1] - имя, tokens[2] - логин, tokens[3] - пароль
+
+                                    //отправляем сообщение c логином и паролем для прохождения авторизации без повторного ввода
+                                    sendMsg("/regok " + tokens[2] + tokens[3]);
+                                    nick = newLogin;//TODO Заменить nick на login, т.к. nick не уникален?
+
+                                    //выводим сообщение в консоль сервера об успешном подключении клиента
+                                    System.out.println("Пользователь с логином " + nick + " зарегистрирован.");
+                                    break;
+
+                                } else {
+                                    //нет, если этот логин уже занят
+                                    sendMsg("Пользователь с логином " + nick + " уже зарегистрирован!\n Введите другой логин.");
+                                }
+
+                            }
+
                             // если сообщение начинается с /auth
                             if(str.startsWith("/auth")) {
 
@@ -40,13 +71,16 @@ public class ClientHandler {
 
                                 // Вытаскиваем данные из БД //здесь: tokens[1] - логин, tokens[2] - пароль
                                 String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
-                                if (newNick != null ) {
+                                if (newNick != null) {
 
                                     //проверяем не авторизовался ли кто-то уже под этим ником
                                     if(!server.isThisNickAuthorized(newNick)){
                                         //отправляем сообщение об успешной авторизации
                                         sendMsg("/authok");
+
+                                        //TODO Исправить. Идентифицировать нужно по логину или ID
                                         nick = newNick;
+
                                         //подписываем клиента при успешной авторизации и выходим из цикла
                                         server.subscribe(ClientHandler.this);
                                         //выводим сообщение в консоль сервера об успешном подключении клиента
@@ -57,10 +91,21 @@ public class ClientHandler {
                                         sendMsg("Пользователь " + newNick + " уже авторизован!");
                                     }
                                 } else {
-                                    sendMsg("Неверный логин/пароль!");
+
+                                    //TODO L8hwTask2.Registration logic.Удалил
+                                    //sendMsg("Неверный логин/пароль!");
+                                    //TODO L8hwTask2.Registration logic.Добавил
+                                    sendMsg("Вы ввели неверный логин/пароль или не зарегистрированы!\nДля регистрации нажмите \"Регистрация\"");
                                 }
                             }
                         }
+
+                        //TODO Разобраться сколько циклов нужно один общий или два!
+                        /*// цикл для регистрации. Крутится бесконечно, пока не зарегистрируется
+                        while (true) {
+                            String str = in.readUTF();
+
+                        }*/
 
                         // блок для отправки сообщений
                         while (true) {
