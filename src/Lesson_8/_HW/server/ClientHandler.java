@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ClientHandler {
@@ -32,6 +33,9 @@ public class ClientHandler {
                         while (true) {
                             String str = in.readUTF();
 
+                            //TODO Временно
+                            System.out.println("while (true). str: " + str);
+
                             //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации
                             if (str.equals("/end")) {
                                 //закрываем клиента после удаления его из списка
@@ -39,36 +43,77 @@ public class ClientHandler {
                                 break;
                             }
 
-                            //TODO L8hwTask2.Registration logic.Добавил
+                            //TODO L8hwTask2.AddUserToDB.Удалил
+                            /*//TODO L8hwTask2.Registration logic.Добавил
                             //если получено сообщение связанное с регистрацией
                             if(str.startsWith("/reg")) {
                                 int splitLimit = 4;
                                 String[] tokens = str.split(" ", splitLimit);
-
-                                // Вытаскиваем данные из БД //здесь: tokens[2] - логин, tokens[3] - пароль
+                                //Вытаскиваем данные из БД //здесь: tokens[2] - логин, tokens[3] - пароль
                                 String newLogin = AuthService.checkLoginInDB(tokens[2]);
-
                                 //делаем запрос в БП, есть ли такой логин и пароль(ник не уникальный)
                                 if (newLogin == null) {//нет такого в базе
-
-                                    //TODO записываем в БД данные из формы: tokens[1] - имя, tokens[2] - логин, tokens[3] - пароль
-
                                     //отправляем сообщение c логином и паролем для прохождения авторизации без повторного ввода
                                     sendMsg("/regok " + tokens[2] + tokens[3]);
                                     nick = newLogin;//TODO Заменить nick на login, т.к. nick не уникален?
-
                                     //выводим сообщение в консоль сервера об успешном подключении клиента
                                     System.out.println("Пользователь с логином " + nick + " зарегистрирован.");
                                     break;
-
                                 } else {
                                     //нет, если этот логин уже занят
                                     sendMsg("Пользователь с логином " + nick + " уже зарегистрирован!\n Введите другой логин.");
                                 }
+                            }*/
+                            //TODO L8hwTask2.AddUserToDB.Добавил
+                            //TODO L8hwTask2.Registration logic.Добавил
+                            //если получено сообщение связанное с регистрацией
+                            if(str.startsWith("/reg")) {
+                                int splitLimit = 4;
+                                //String[] tokens = str.split(" ", splitLimit);//TODO ERR.Пустые поля
+                                String[] tokens = str.split(" ");
 
+                                //TODO Временно
+                                System.out.println("if(str.startsWith(/reg/)). str: " + str);
+
+                                //проверяем есть ли в форме пустые поля
+                                if(tokens.length >= splitLimit) {
+
+                                    String login = tokens[2];
+                                    String password = tokens[3];
+                                    String nickname = tokens[1];
+
+                                    //делаем запрос в БП, есть ли такой логин или ник
+                                    if (AuthService.checkLoginAndNicknameInDB(tokens)) {//нет такого в базе
+
+                                        //записываем в БД данные из формы
+                                        if (AuthService.addUserIntoDB(tokens)) {
+
+                                            //отправляем сообщение c логином и паролем для прохождения авторизации без повторного ввода
+                                            sendMsg("/regok " + login + " " + password);
+                                            //выводим сообщение пользователю об успешной регистрации
+                                            sendMsg("Вы зарегистрированы. Нажмите Авторизоваться, чтобы войти.");
+
+                                            //выводим сообщение в консоль сервера об успешной регистрации клиента
+                                            System.out.println("Пользователь " + nickname + " успешно зарегистрирован.");
+
+                                            //TODO Удалить.
+                                            //break;
+                                        } else {
+                                            //нет, если этот логин уже занят
+                                            sendMsg("Неудачная попытка регистрации!\nПопробуйте еще раз.");
+                                        }
+                                    } else {
+                                        //нет, если этот логин уже занят
+                                        sendMsg("Пользователь с таким логином или именем уже зарегистрирован!\n Введите другие логин и имя.");
+                                    }
+                                } else {
+                                    //есть пустые поля
+                                    sendMsg("Нельзя отправлять форму с пустыми полями!");
+                                }
                             }
 
-                            // если сообщение начинается с /auth
+                            //TODO L8hwTask2.AddUserToDB.Удалил
+                            /*// если сообщение начинается с /auth
                             if(str.startsWith("/auth")) {
 
                                 //чтобы избежать ошибки при пустом вводе в поля login или пароль
@@ -103,8 +148,68 @@ public class ClientHandler {
                                     //TODO L8hwTask2.Registration logic.Добавил
                                     sendMsg("Вы ввели неверный логин/пароль или не зарегистрированы!\nДля регистрации нажмите \"Регистрация\"");
                                 }
+                            }*/
+                            //TODO L8hwTask2.AddUserToDB.Добавил
+                            //если сообщение начинается с /auth
+                            if(str.startsWith("/auth")) {
+
+                                //TODO Временно
+                                System.out.println("if(str.startsWith(\"/auth\" str: " + str);
+
+                                //чтобы избежать ошибки при пустом вводе в поля login или пароль
+                                int splitLimit = 3;
+                                //String[] tokens = str.split(" ", splitLimit);//TODO ERR.Пустые поля
+                                String[] tokens = str.split(" ");
+
+                                //TODO Временно
+                                System.out.println("if(str.startsWith(\"/auth\" tokens: " + Arrays.toString(tokens));
+
+                                //проверяем есть ли в форме пустые поля
+                                if(tokens.length >= splitLimit) {
+
+                                    String login = tokens[1];
+                                    String password = tokens[2];
+
+                                    //TODO Временно
+                                    System.out.println("if(tokens.length >= splitLimit. login:" + login + " password:" + password);
+
+                                    // Вытаскиваем данные из БД //здесь: tokens[1] - логин, tokens[2] - пароль
+                                    String newNick = AuthService.getNickByLoginAndPass(login, password);
+                                    if (newNick != null) {
+
+                                        //проверяем не авторизовался ли кто-то уже под этим ником
+                                        if(!server.isThisNickAuthorized(newNick)){
+                                            //отправляем сообщение об успешной авторизации
+                                            sendMsg("/authok");
+
+                                            //TODO Исправить. Идентифицировать нужно по логину или ID
+                                            nick = newNick;
+
+                                            //подписываем клиента при успешной авторизации и выходим из цикла
+                                            server.subscribe(ClientHandler.this);
+                                            //выводим сообщение в консоль сервера об успешном подключении клиента
+                                            System.out.println("Клиент с ником " + nick + " подключился.");
+                                            break;
+                                        }
+                                        else{
+                                            sendMsg("Пользователь " + newNick + " уже авторизован!");
+                                        }
+                                    } else {
+
+                                        //TODO временно
+                                        System.out.println("1. else newNick != null.");
+
+                                        //TODO L8hwTask2.Registration logic.Удалил
+                                        //sendMsg("Неверный логин/пароль!");
+                                        //TODO L8hwTask2.Registration logic.Добавил
+                                        sendMsg("Вы ввели неверный логин/пароль или не зарегистрированы!\nДля регистрации нажмите \"Регистрация\"");
+                                    }
+                                } else {
+                                    //есть пустые поля
+                                    sendMsg("Нельзя отправлять форму с пустыми полями!");
+                                }
                             }
-                        }
+                        }//while
 
                         // блок для отправки сообщений
                         while (true) {

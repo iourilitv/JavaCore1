@@ -53,9 +53,9 @@
         <!--кнопки этапа авторизации-->
         <HBox fx:id="regFormAuthBtnsBox" managed="true" visible="true">
             <!--кнопка отправки запроса на авторизацию-->
-            <Button fx:id="regFormAuthBtn" text="Авторизоваться" onAction="#tryToAuth"/>
+            <Button fx:id="regFormAuthBtn" managed="true" visible="true" text="Авторизоваться" onAction="#tryToAuth"/>
             <!--кнопка отправки запроса на открытие формы регистрации-->
-            <Button fx:id="regFormRegisterBtn" text="Регистрация" onAction="#tryToRegister"/>
+            <Button fx:id="regFormRegisterBtn" managed="true" visible="true" text="Регистрация" onAction="#tryToRegister"/>
         </HBox>
     </VBox>
 

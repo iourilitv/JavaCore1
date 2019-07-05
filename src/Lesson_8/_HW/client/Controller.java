@@ -13,6 +13,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class Controller {
     @FXML
@@ -32,19 +33,6 @@ public class Controller {
     //ListView - динамическое представление для работы с GUI framework JavaFX
     @FXML
     ListView<String> clientList;
-
-    //@FXML
-    //HBox upperPanel;//TODO delete?
-
-    //@FXML
-    //TextField loginField;//TODO delete?
-
-    //@FXML
-    //PasswordField passwordField;//TODO delete?
-
-    //TODO L8hwTask2.Registration form.Добавил
-    //@FXML
-    //TextArea authFormTextArea;
 
     //TODO L8hwTask2.Registration form.Добавил
     @FXML
@@ -104,10 +92,6 @@ public class Controller {
     DataOutputStream out;
 
     private boolean isAuthorized;
-
-    //TODO L8hwTask2.Registration form.Добавил
-    //TODO лишнее? Удалить?
-    //private boolean isRegistered;
 
     //TODO L8hwTask5.initChatPreviously.Добавил
     private String chatCompanionNick = "";
@@ -171,6 +155,10 @@ public class Controller {
                             String str = in.readUTF();
 
                             //TODO L8hwTask2.Registration logic.Добавил
+                            //в начале всегда очищать поле
+                            regFormTextArea.clear();
+
+                            //TODO L8hwTask2.Registration logic.Добавил
                             //ловим все служебные сообщения, чтобы не выводить их в TextArea
                             if (str.startsWith("/")) {
 
@@ -181,22 +169,32 @@ public class Controller {
 
                                 //если пришло подтверждение авторизации, переходим в форму чата и прерываем процесс
                                 if (str.startsWith("/authok")) {
+
+                                    //TODO L8hwTask2.Registration logic.Добавил
+                                    setRegistered(false);
+
                                     setAuthorized(true);//устанавливаем признак успешной авторизации
                                     break;
                                 }
+
                                 //TODO L8hwTask2.Registration logic.Добавил
                                 //если пришло подтверждение регистрации, отправляем запрос на авторизацию, не прерывая процесс
                                 if (str.startsWith("/regok")) {
                                     //устанавливаем признак успешной регистрации
                                     setRegistered(true);
                                     //разделяем сообщение на три части
-                                    int splitLimit = 3;
-                                    String[] tokens = str.split(" ", splitLimit);
+                                    //TODO Не работает авторизация после регистрации.Удалил.Не достаточно
+                                    //int splitLimit = 3;
+                                    //String[] tokens = str.split(" ", splitLimit);
                                     //отправляем сообщение с логином и паролем для регистрации
-                                    out.writeUTF("/auth " + tokens[1] + tokens[2]);
-                                    //break;//TODO Удалить
+                                    //out.writeUTF("/auth " + tokens[1] + tokens[2]);
                                 }
                             } else {
+
+                                //TODO Временно
+                                System.out.println("else(str.startsWith(\"/\").");
+                                System.out.println(".str: " + str);
+
                                 //выводим сообщения в панель регистрационной формы
                                 regFormTextArea.appendText(str + "\n");
                             }
@@ -294,8 +292,6 @@ public class Controller {
     //TODO L8hwTask2.Registration logic.Добавил
     //метод начала процесса регистрации
     public void setRegistered(boolean isRegistered){
-        //TODO лишнее? Удалить?
-        //this.isRegistered = isRegistered;
 
         //на всякий случай скрываем панель основного чата
         mainChatPanel.setVisible(false);
@@ -341,11 +337,18 @@ public class Controller {
             connect();
         }
         try {
+            //очищаем поле от старых сообщений
+            regFormTextArea.clear();
             // отправка на сервер запроса на регистрацию данных введенных в форме регистрации
-            out.writeUTF("/reg " + regFormNickField.getText() + regFormLoginField.getText() + " " + regFormPasswordField.getText());
-            regFormNickField.clear();//очищаем поле имени в чате
-            regFormLoginField.clear();//очищаем поле логина
-            regFormPasswordField.clear();//очищаем поле пароля
+            out.writeUTF("/reg " + regFormNickField.getText() + " " + regFormLoginField.getText() + " " + regFormPasswordField.getText());
+
+            //TODO Временно
+            System.out.println("getRegistration() str:" + "/reg " + regFormNickField.getText() + " " + regFormLoginField.getText() + " " + regFormPasswordField.getText());
+
+            //TODO Не нужно очищать поле, если не зарегистрировался, чтобы не вбивать еще раз.НЕ работает?
+            //regFormNickField.clear();//очищаем поле имени в чате
+            //regFormLoginField.clear();//очищаем поле логина
+            //regFormPasswordField.clear();//очищаем поле пароля
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -356,6 +359,8 @@ public class Controller {
     public void cancelRegistration(){
         //возвращаем регистрационную форму
         setRegistered(true);
+        regFormLoginField.clear();
+        regFormPasswordField.clear();
         regFormTextArea.clear();
     }
 
@@ -367,10 +372,16 @@ public class Controller {
         }
 
         try {
+            //TODO добавил, чтобы очищать поле
             //очищаем поле от старых сообщений
             regFormTextArea.clear();
+
             // отправка сообщений на сервер для авторизации
             out.writeUTF("/auth " + regFormLoginField.getText() + " " + regFormPasswordField.getText());
+
+            //TODO Временно
+            System.out.println("tryToAuth() str:" + "/auth " + regFormLoginField.getText() + " " + regFormPasswordField.getText());
+
             regFormLoginField.clear();//очищаем поле логина
             regFormPasswordField.clear();//очищаем поле пароля
         } catch (IOException e) {
