@@ -15,59 +15,58 @@
     </HBox>-->
     <!--//TODO L8hwTask2.Registration form.Добавил-->
     <!--верхняя панель для авторизации-->
-    <VBox fx:id="registrationForm">
-        <Label text="Регистрационная форма."/>
-        <Label text="Придумайте и введите свои данные."/>
+    <VBox fx:id="registrationForm" managed="true" visible="true">
+        <VBox fx:id="regFormTopLabelsBox" managed="false" visible="false">
+            <Label text="Регистрационная форма."/>
+            <Label text="Придумайте и введите свои данные."/>
+            <Label text="Nickname - имя в чате, состоящее только из латинских букв и цифр"/>
+            <Label text="Уникальный логин, состоящий только из латинских букв и цифр"/>
+            <Label text="Пароль, не менее 8-ми символов, состоящий из:\n- латинских букв в верхнем и нижнем регистре;\n- цифр и спецсимволов на клавиатуре."/>
+        </VBox>
 
-        <Label text="Nickname - имя в чате, состоящее только из латинских букв и цифр"/>
-        <HBox>
+        <HBox fx:id="regFormNicknameBox" managed="false" visible="false">
             <Label text="Nickname:"/>
             <TextField HBox.hgrow="ALWAYS" promptText="Имя в чате" fx:id="regFormNickField"></TextField>
         </HBox>
 
-        <Label text="Уникальный логин, состоящий только из латинских букв и цифр"/>
         <HBox>
-            <Label text="Логин:"/>
+            <Label text="Логин:" managed="true" visible="true"/>
             <TextField HBox.hgrow="ALWAYS" promptText="Логин" fx:id="regFormLoginField"></TextField>
         </HBox>
 
-        <Label text="Пароль, не менее 8-ми символов, состоящий из:\n- латинских букв в верхнем и нижнем регистре;\n- цифр и спецсимволов на клавиатуре."/>
         <HBox>
-            <Label text="Пароль:"/>
+            <Label text="Пароль:" managed="true" visible="true"/>
             <PasswordField promptText="Пароль" fx:id="regFormPasswordField"/>
         </HBox>
 
         <!--поле для вывода служебных сообщений во время регистрации-->
-        <TextArea fx:id="regFormTextArea" editable="false"/>
+        <TextArea fx:id="regFormTextArea" editable="false" managed="true" visible="true"/>
 
-        <Button text="Отправить" onAction="#getRegistration"/>
+        <!--кнопки этапа регистрации-->
+        <HBox fx:id="regFormRegBtnsBox" managed="false" visible="false">
+            <!--кнопка отправки запроса на сохранение в БД данных из формы регистрации-->
+            <Button fx:id="regFormSendToRegisterBtn" managed="true" visible="true" text="Отправить" onAction="#getRegistration"/>
+            <!--кнопка отправки запроса на сохранение в БД данных из формы регистрации-->
+            <Button fx:id="regFormCancelBtn" managed="true" visible="true" text="Отмена" onAction="#cancelRegistration"/>
+        </HBox>
+
+        <!--кнопки этапа авторизации-->
+        <HBox fx:id="regFormAuthBtnsBox" managed="true" visible="true">
+            <!--кнопка отправки запроса на авторизацию-->
+            <Button fx:id="regFormAuthBtn" text="Авторизоваться" onAction="#tryToAuth"/>
+            <!--кнопка отправки запроса на открытие формы регистрации-->
+            <Button fx:id="regFormRegisterBtn" text="Регистрация" onAction="#tryToRegister"/>
+        </HBox>
     </VBox>
-
-    <!--//TODO L8hwTask2.Registration form.Добавил-->
-    <!--верхняя панель для авторизации-->
-    <HBox fx:id="upperPanel">
-        <TextField HBox.hgrow="ALWAYS" promptText="Логин" fx:id="loginField"></TextField>
-        <PasswordField promptText="Пароль" fx:id="passwordField" onAction="#tryToAuth"/>
-
-        <!--поле для вывода служебных сообщений во время регистрации-->
-        <TextArea fx:id="authFormTextArea" editable="false"/>
-
-        <Button text="Авторизоваться" onAction="#tryToAuth"/>
-
-        <!--//TODO L8hwTask2.Registration form.Добавил-->
-        <Button text="Регистрация" onAction="#tryToRegister"/>
-
-    </HBox>
 
     <!--//TODO L8hwTask1.Добавил.ERR Не приходят от других сообщения.Удалил-->
     <!--<TextArea fx:id="textArea" editable="false" managed="true" visible="true" />-->
 
     <!--разделенная на два панель основного чата-->
-    <!--//TODO L8hwTask2.Registration logic.Удалил-->
+    <!--//TODO L8hwTask2.Registration form.Удалил-->
     <!--<HBox VBox.vgrow="ALWAYS">-->
-    <!--//TODO L8hwTask2.Registration logic.Добавил-->
-    <HBox fx:id="mainChatPanel" VBox.vgrow="ALWAYS">
-
+    <!--//TODO L8hwTask2.Registration form.Добавил-->
+    <HBox fx:id="mainChatPanel" managed="false" visible="false" VBox.vgrow="ALWAYS">
         <!--левая панель для отправки и отображения сообщений в чате-->
         <VBox HBox.hgrow="ALWAYS">
 
@@ -76,22 +75,29 @@
             <!--<TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS" /> -->
             <!--//TODO L8hwTask1.Добавил-->
             <!--для каждой метки каждого сообщения отдельные боксы-->
-            <!--<ScrollPane fx:id="scrollPane" managed="false" visible="false" VBox.vgrow="ALWAYS" >-->
-                <VBox fx:id="vBoxChat" HBox.hgrow="ALWAYS">
-                    <!--для каждого сообщения отдельная метка-->
-                    <!--<Label fx:id="msg_label"/>-->
-                </VBox>
-            <!--</ScrollPane>-->
+            <!--//TODO L8hwTask2.Registration form.Удалил-->
+            <!--<VBox fx:id="vBoxChat" managed="true" visible="true" HBox.hgrow="ALWAYS">-->
+            <!--//TODO L8hwTask2.Registration form.Добавил-->
+            <VBox fx:id="vBoxChat" managed="true" visible="true" HBox.hgrow="ALWAYS">
+                <!--для каждого сообщения отдельная метка-->
+            </VBox>
+
             <!--нижняя панель для отправки сообщений-->
             <!--в момент старта место в ?памяти? под окно не выделяется, пока оно невидимо-->
-            <HBox fx:id="bottomPanel" managed="false" visible="false">
+            <!--//TODO L8hwTask2.Registration form.Удалил-->
+            <!--<HBox fx:id="bottomPanel" managed="false" visible="false">-->
+            <!--//TODO L8hwTask2.Registration form.Добавил-->
+            <HBox fx:id="bottomPanel" managed="true" visible="true">
                 <TextField fx:id="textField" onAction="#sendMsg" promptText="Введите текст" HBox.hgrow="ALWAYS" />
                 <Button fx:id="btn1" onAction="#sendMsg" text="Send" />
             </HBox>
         </VBox>
         <!--кликабельный список пользователей(правая панель)-->
         <!--//TODO L8hwTask5.+Добавил onMouseClicked="#tryToInviteIntoPrivateChat"-->
-        <ListView fx:id="clientList" managed="false" visible="false" onMouseClicked="#tryToInviteIntoPrivateChat" ></ListView>
+        <!--//TODO L8hwTask2.Registration form.Удалил-->
+        <!--<ListView fx:id="clientList" managed="false" visible="false" onMouseClicked="#tryToInviteIntoPrivateChat" ></ListView>-->
+        <!--//TODO L8hwTask2.Registration form.Добавил-->
+        <ListView fx:id="clientList" managed="true" visible="true" onMouseClicked="#tryToInviteIntoPrivateChat" ></ListView>
     </HBox>
 
 </VBox>

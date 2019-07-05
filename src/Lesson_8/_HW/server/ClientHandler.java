@@ -28,10 +28,16 @@ public class ClientHandler {
                 @Override
                 public void run() {
                     try {
-                        // цикл для авторизации. Крутится бесконечно, пока не авторизуется
-                        //TODO Разобраться сколько циклов нужно один общий или два!
+                        // цикл для авторизации и регистрации. Крутится бесконечно, пока не авторизуется
                         while (true) {
                             String str = in.readUTF();
+
+                            //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации
+                            if (str.equals("/end")) {
+                                //закрываем клиента после удаления его из списка
+                                out.writeUTF("/serverclosed");
+                                break;
+                            }
 
                             //TODO L8hwTask2.Registration logic.Добавил
                             //если получено сообщение связанное с регистрацией
@@ -99,13 +105,6 @@ public class ClientHandler {
                                 }
                             }
                         }
-
-                        //TODO Разобраться сколько циклов нужно один общий или два!
-                        /*// цикл для регистрации. Крутится бесконечно, пока не зарегистрируется
-                        while (true) {
-                            String str = in.readUTF();
-
-                        }*/
 
                         // блок для отправки сообщений
                         while (true) {

@@ -217,7 +217,7 @@ public class MainServer {
         return false;
     }
 
-    //TODO L8hwTask2.Registration logic.Добавил
+    //TODO L8hwTask2.Registration logic.Добавил.Лишнее!Удалить
     /**
      * Метод проверки не зарегистрировался ли кто-то уже под этим логином(есть ли в БД)
      * @param login - проверяемый логин(уникальный)
