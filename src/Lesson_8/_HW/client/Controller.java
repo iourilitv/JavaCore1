@@ -150,9 +150,15 @@ public class Controller {
                 @Override
                 public void run() {
                     try {
+                        //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации.Добавил
+                        boolean serverClosed = false;
+
                         // блок для авторизации и регистрации
                         while (true) {
                             String str = in.readUTF();
+
+                            //TODO Временно
+                            System.out.println("блок для авторизации и регистрации. while str: " + str);
 
                             //TODO L8hwTask2.Registration logic.Добавил
                             //в начале всегда очищать поле
@@ -162,8 +168,10 @@ public class Controller {
                             //ловим все служебные сообщения, чтобы не выводить их в TextArea
                             if (str.startsWith("/")) {
 
-                                //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации
+                                //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации.Добавил
                                 if (str.equals("/serverclosed")) {
+                                    //устанавливаем флаг, что сервер отключен, чтобы не перейти в блок отправки сообщений
+                                    serverClosed = true;
                                     break;
                                 }
 
@@ -201,8 +209,17 @@ public class Controller {
                         }
 
                         // блок для разбора сообщений
-                        while (true) {
+                        //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации.Удалил
+                        //while (true) {
+                        //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации.Добавил
+                        //проверяем флаг, что сервер отключен, чтобы не начать отслеживать сообщения после отключения сервера
+                        while (!serverClosed) {
+
                             String str = in.readUTF();
+
+                            //TODO Временно
+                            System.out.println("блок для разбора сообщений. while str: " + str);
+
                             if (str.equals("/serverclosed")) {
                                 break;
                             }

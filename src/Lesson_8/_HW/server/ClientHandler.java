@@ -29,15 +29,20 @@ public class ClientHandler {
                 @Override
                 public void run() {
                     try {
+                        //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации.Добавил
+                        boolean clientWindowClosed = false;
+
                         // цикл для авторизации и регистрации. Крутится бесконечно, пока не авторизуется
                         while (true) {
                             String str = in.readUTF();
 
                             //TODO Временно
-                            System.out.println("while (true). str: " + str);
+                            System.out.println("цикл для авторизации и регистрации. while str: " + str);
 
-                            //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации
+                            //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации.Добавил
                             if (str.equals("/end")) {
+                                //устанавливаем флаг, что сервер отключен, чтобы не перейти в блок отправки сообщений
+                                clientWindowClosed = true;
                                 //закрываем клиента после удаления его из списка
                                 out.writeUTF("/serverclosed");
                                 break;
@@ -95,9 +100,6 @@ public class ClientHandler {
 
                                             //выводим сообщение в консоль сервера об успешной регистрации клиента
                                             System.out.println("Пользователь " + nickname + " успешно зарегистрирован.");
-
-                                            //TODO Удалить.
-                                            //break;
                                         } else {
                                             //нет, если этот логин уже занят
                                             sendMsg("Неудачная попытка регистрации!\nПопробуйте еще раз.");
@@ -212,8 +214,17 @@ public class ClientHandler {
                         }//while
 
                         // блок для отправки сообщений
-                        while (true) {
+                        //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации.Удалил
+                        //while (true) {
+                        //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации.Добавил
+                        //проверяем флаг, что сервер отключен, чтобы не начать отслеживать сообщения после закрытия окна клиента
+                        while (!clientWindowClosed) {
+
                             String str = in.readUTF();
+
+                            //TODO Временно
+                            System.out.println("цикл для отправки сообщений. while str: " + str);
+
                             //отлавливаем все служебные сообщения
                             if (str.startsWith("/")){
                                 //запрос на отключение
