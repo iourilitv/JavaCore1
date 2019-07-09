@@ -58,7 +58,6 @@ public class AuthService {
         return null;
     }
 
-    //TODO L8hwTask2.AddUserToDB.Добавил
     //Метод проверки введенных логина или ника в БД на уникальность
     public static boolean checkLoginAndNicknameInDB(String[] tokens) {
         String login = tokens[2];
@@ -82,7 +81,6 @@ public class AuthService {
         return false;
     }
 
-    //TODO L8hwTask2.AddUserToDB.Добавил
     //Метод добавления данных пользователя в БД
     public static boolean addUserIntoDB(String[] tokens){
         String login = tokens[2];

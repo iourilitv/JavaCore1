@@ -94,11 +94,6 @@ public class MainServer {
      */
     public void broadcastMsg(ClientHandler sender, String msg) {
         for (ClientHandler o : clients) {
-
-            //TODO L8hwTask1.Удалил
-            //проверяем не находится ли отправитель черном списке получателя
-            //if (!o.checkBlackList(sender.getNick())) {
-            //TODO L8hwTask1.Добавил
             //проверяем не отправляет ли он сам себе,
             //а также не находится ли отправитель в черном списке получателя и наоборот,
             if (!o.equals(sender) && !o.checkBlackList(sender.getNick()) &&
@@ -110,52 +105,6 @@ public class MainServer {
         }
     }
 
-    //TODO L8hwTask4.Удалил
-    /**
-     * Метод сортировки и отправки персональных сообщений
-     * //@param str
-     */
-    /*public void sendMsgToNick(ClientHandler sender, String str){
-        //TODO когда добавится адресная книга, этот блок не понадобится
-        String nickOfRecipient;//ник адресата
-        String msg;//текст сообщения адресату
-        //разделяем по пробелу на splitLimit ячеек массива,
-        //чтобы избежать ошибки при неполном вводе сервисного сообщения
-        //limit = splitLimit - количество возвращаемых строк.
-        int splitLimit = 3;
-        String[] temp = str.split(" ", splitLimit);
-
-        //проверка корректности синтаксиса сервисного сообщения
-        if(temp.length >= splitLimit){
-            //выделяем ник адресата
-            nickOfRecipient = temp[1];
-            //выделяем собственно текст сообщения
-            msg = temp[2];
-
-            //проверка не отправляется ли сообщение самому себе
-            if(!sender.getNick().equals(nickOfRecipient)){
-                for (ClientHandler c: clients) {
-                    //в списке авторизованных ищем адресата по нику
-                    if(c.getNick().equals(nickOfRecipient)){
-                        c.sendMsg("from " + sender.getNick() + ": " + msg);
-                        //отправляем сообщение отправителю
-                        sender.sendMsg("to " + nickOfRecipient + ": " + msg);
-                    }
-                }
-                //если в списке не нашлось клиента с таким ником (цикл не прервался по return)
-                sender.sendMsg("Адресат с ником " + nickOfRecipient + " не найден в чате!");
-            }
-            else{
-                //отправка предупреждения отправителю
-                sender.sendMsg("Нельзя отправлять самому себе!");
-            }
-        }
-        else{
-            //отправка предупреждения отправителю
-            sender.sendMsg("Неверный синтаксис сервисного сообщения!");
-        }
-    }*/
-    //TODO L8hwTask4.Добавил
     /**
      * Метод отправки персональных сообщений с проверкой черного списка получателя
      * @param sender - объект отправителя
@@ -168,7 +117,6 @@ public class MainServer {
             //проверяем есть ли соотвествие
             if(r.getNick().equals(nickOfRecipient)){
 
-                //TODO L8hwTask4.Добавил
                 //проверяем не находится ли отправитель черном списке получателя
                 if(!r.checkBlackList(sender.getNick())){
 
@@ -211,21 +159,6 @@ public class MainServer {
     boolean isThisNickAuthorized(String nick){
         for (ClientHandler c: clients) {
             if(c.getNick().equals(nick)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //TODO L8hwTask2.Registration logic.Добавил.Лишнее!Удалить
-    /**
-     * Метод проверки не зарегистрировался ли кто-то уже под этим логином(есть ли в БД)
-     * @param login - проверяемый логин(уникальный)
-     * @return true, если такой клиент с таким ником уже авторизован
-     */
-    boolean isThisNickRegistred(String login){
-        for (ClientHandler c: clients) {
-            if(c.getNick().equals(login)){
                 return true;
             }
         }

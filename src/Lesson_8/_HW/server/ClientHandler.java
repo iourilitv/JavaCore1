@@ -29,7 +29,6 @@ public class ClientHandler {
                 @Override
                 public void run() {
                     try {
-                        //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации.Добавил
                         boolean clientWindowClosed = false;
 
                         // цикл для авторизации и регистрации. Крутится бесконечно, пока не авторизуется
@@ -39,7 +38,6 @@ public class ClientHandler {
                             //TODO Временно
                             System.out.println("цикл для авторизации и регистрации. while str: " + str);
 
-                            //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации.Добавил
                             if (str.equals("/end")) {
                                 //устанавливаем флаг, что сервер отключен, чтобы не перейти в блок отправки сообщений
                                 clientWindowClosed = true;
@@ -48,29 +46,6 @@ public class ClientHandler {
                                 break;
                             }
 
-                            //TODO L8hwTask2.AddUserToDB.Удалил
-                            /*//TODO L8hwTask2.Registration logic.Добавил
-                            //если получено сообщение связанное с регистрацией
-                            if(str.startsWith("/reg")) {
-                                int splitLimit = 4;
-                                String[] tokens = str.split(" ", splitLimit);
-                                //Вытаскиваем данные из БД //здесь: tokens[2] - логин, tokens[3] - пароль
-                                String newLogin = AuthService.checkLoginInDB(tokens[2]);
-                                //делаем запрос в БП, есть ли такой логин и пароль(ник не уникальный)
-                                if (newLogin == null) {//нет такого в базе
-                                    //отправляем сообщение c логином и паролем для прохождения авторизации без повторного ввода
-                                    sendMsg("/regok " + tokens[2] + tokens[3]);
-                                    nick = newLogin;//TODO Заменить nick на login, т.к. nick не уникален?
-                                    //выводим сообщение в консоль сервера об успешном подключении клиента
-                                    System.out.println("Пользователь с логином " + nick + " зарегистрирован.");
-                                    break;
-                                } else {
-                                    //нет, если этот логин уже занят
-                                    sendMsg("Пользователь с логином " + nick + " уже зарегистрирован!\n Введите другой логин.");
-                                }
-                            }*/
-                            //TODO L8hwTask2.AddUserToDB.Добавил
-                            //TODO L8hwTask2.Registration logic.Добавил
                             //если получено сообщение связанное с регистрацией
                             if(str.startsWith("/reg")) {
                                 int splitLimit = 4;
@@ -114,44 +89,6 @@ public class ClientHandler {
                                 }
                             }
 
-                            //TODO L8hwTask2.AddUserToDB.Удалил
-                            /*// если сообщение начинается с /auth
-                            if(str.startsWith("/auth")) {
-
-                                //чтобы избежать ошибки при пустом вводе в поля login или пароль
-                                int splitLimit = 3;
-                                String[] tokens = str.split(" ", splitLimit);
-
-                                // Вытаскиваем данные из БД //здесь: tokens[1] - логин, tokens[2] - пароль
-                                String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
-                                if (newNick != null) {
-
-                                    //проверяем не авторизовался ли кто-то уже под этим ником
-                                    if(!server.isThisNickAuthorized(newNick)){
-                                        //отправляем сообщение об успешной авторизации
-                                        sendMsg("/authok");
-
-                                        //TODO Исправить. Идентифицировать нужно по логину или ID
-                                        nick = newNick;
-
-                                        //подписываем клиента при успешной авторизации и выходим из цикла
-                                        server.subscribe(ClientHandler.this);
-                                        //выводим сообщение в консоль сервера об успешном подключении клиента
-                                        System.out.println("Клиент с ником " + nick + " подключился.");
-                                        break;
-                                    }
-                                    else{
-                                        sendMsg("Пользователь " + newNick + " уже авторизован!");
-                                    }
-                                } else {
-
-                                    //TODO L8hwTask2.Registration logic.Удалил
-                                    //sendMsg("Неверный логин/пароль!");
-                                    //TODO L8hwTask2.Registration logic.Добавил
-                                    sendMsg("Вы ввели неверный логин/пароль или не зарегистрированы!\nДля регистрации нажмите \"Регистрация\"");
-                                }
-                            }*/
-                            //TODO L8hwTask2.AddUserToDB.Добавил
                             //если сообщение начинается с /auth
                             if(str.startsWith("/auth")) {
 
@@ -160,7 +97,6 @@ public class ClientHandler {
 
                                 //чтобы избежать ошибки при пустом вводе в поля login или пароль
                                 int splitLimit = 3;
-                                //String[] tokens = str.split(" ", splitLimit);//TODO ERR.Пустые поля
                                 String[] tokens = str.split(" ");
 
                                 //TODO Временно
@@ -183,10 +119,7 @@ public class ClientHandler {
                                         if(!server.isThisNickAuthorized(newNick)){
                                             //отправляем сообщение об успешной авторизации
                                             sendMsg("/authok");
-
-                                            //TODO Исправить. Идентифицировать нужно по логину или ID
                                             nick = newNick;
-
                                             //подписываем клиента при успешной авторизации и выходим из цикла
                                             server.subscribe(ClientHandler.this);
                                             //выводим сообщение в консоль сервера об успешном подключении клиента
@@ -201,9 +134,6 @@ public class ClientHandler {
                                         //TODO временно
                                         System.out.println("1. else newNick != null.");
 
-                                        //TODO L8hwTask2.Registration logic.Удалил
-                                        //sendMsg("Неверный логин/пароль!");
-                                        //TODO L8hwTask2.Registration logic.Добавил
                                         sendMsg("Вы ввели неверный логин/пароль или не зарегистрированы!\nДля регистрации нажмите \"Регистрация\"");
                                     }
                                 } else {
@@ -214,9 +144,6 @@ public class ClientHandler {
                         }//while
 
                         // блок для отправки сообщений
-                        //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации.Удалил
-                        //while (true) {
-                        //TODO L8hwTask2.Registration logic.ERR.ServerSocketException при закрытии окна на этапе регистрации.Добавил
                         //проверяем флаг, что сервер отключен, чтобы не начать отслеживать сообщения после закрытия окна клиента
                         while (!clientWindowClosed) {
 
@@ -264,10 +191,6 @@ public class ClientHandler {
                                     //ClientHandler.this вместо nick, чтобы отправить предупреждение отправителю,
                                     //что нельзя отправлять самому себе
 
-                                    //TODO L8hwTask4.Удалил
-                                    //TODO hw7Update.Можно по другому, если проверку реализовать здесь перед sendMsgToNick
-                                    //server.sendMsgToNick(ClientHandler.this, str);
-                                    //TODO L8hwTask4.Добавил
                                     //TODO когда добавится адресная книга, этот блок не понадобится
                                     String nickOfRecipient;//ник адресата
                                     String msg;//текст сообщения адресату
