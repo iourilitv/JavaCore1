@@ -194,7 +194,7 @@ public class Controller {
                             String str = in.readUTF();
 
                             //TODO Временно
-                            System.out.println("блок для разбора сообщений. while str: " + str);
+                            //System.out.println("блок для разбора сообщений. while str: " + str);
 
                             if (str.equals("/serverclosed")) {
                                 break;
@@ -366,7 +366,7 @@ public class Controller {
             out.writeUTF("/auth " + regFormLoginField.getText() + " " + regFormPasswordField.getText());
 
             //TODO Временно
-            System.out.println("tryToAuth() str:" + "/auth " + regFormLoginField.getText() + " " + regFormPasswordField.getText());
+            //System.out.println("tryToAuth() str:" + "/auth " + regFormLoginField.getText() + " " + regFormPasswordField.getText());
 
             regFormLoginField.clear();//очищаем поле логина
             regFormPasswordField.clear();//очищаем поле пароля

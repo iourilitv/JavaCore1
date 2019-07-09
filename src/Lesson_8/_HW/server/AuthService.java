@@ -109,14 +109,11 @@ public class AuthService {
     //Метод проверки есть ли уже таблица черного списка у пользователя в БД
     //если есть строка возвращаем результат, если нет, то вернеться null
     public static String getUserBlacklistNameByNicknameInDB(String nickOfOwner) {
-
         // формирование запроса. '%s' - для последовательного подставления значений в соотвествующее место
         String sql = String.format("SELECT name_blacklists FROM main where nickname = '%s'", nickOfOwner);
-
         try {
             // оправка запроса и получение ответа из БД
             ResultSet rs = stmt.executeQuery(sql);
-
             // если есть строка возвращаем результат, если нет, то вернеться null
             if(rs.next()) {
                 return rs.getString(1);
@@ -137,7 +134,7 @@ public class AuthService {
         // формирование запроса. '%s' - для последовательного подставления значений в соотвествующее место
         String sql1 = String.format("CREATE TABLE %s ( nickname REFERENCES main (nickname) );", nameOfBlacklist);
         //добавляем имя таблицы черного списка в строку пользователя
-        String sql2 = String.format("UPDATE main SET name_blacklists = '%s' WHERE nickname = 'nick1'", nameOfBlacklist);
+        String sql2 = String.format("UPDATE main SET name_blacklists = '%s' WHERE nickname = '%s'", nameOfBlacklist, nickOfOwner);
 
         try {
             // оправка запроса и получение ответа из БД
@@ -197,9 +194,8 @@ public class AuthService {
             ResultSet rs = stmt.executeQuery(sql);
 
             // если есть строка возвращаем результат, если нет, то вернеться null
-            if(rs.equals(nickname)) {
-                //такой ника в таблице есть
-                return true;
+            if(rs.next()) {
+                return (rs.getString(1)).equals(nickname);
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -39,10 +39,6 @@ public class ClientHandler {
                         // цикл для авторизации и регистрации. Крутится бесконечно, пока не авторизуется
                         while (true) {
                             String str = in.readUTF();
-
-                            //TODO Временно
-                            System.out.println("цикл для авторизации и регистрации. while str: " + str);
-
                             if (str.equals("/end")) {
                                 //устанавливаем флаг, что сервер отключен, чтобы не перейти в блок отправки сообщений
                                 clientWindowClosed = true;
@@ -56,9 +52,6 @@ public class ClientHandler {
                                 int splitLimit = 4;
                                 //String[] tokens = str.split(" ", splitLimit);//TODO ERR.Пустые поля
                                 String[] tokens = str.split(" ");
-
-                                //TODO Временно
-                                System.out.println("if(str.startsWith(/reg/)). str: " + str);
 
                                 //проверяем есть ли в форме пустые поля
                                 if(tokens.length >= splitLimit) {
@@ -97,24 +90,15 @@ public class ClientHandler {
                             //если сообщение начинается с /auth
                             if(str.startsWith("/auth")) {
 
-                                //TODO Временно
-                                System.out.println("if(str.startsWith(\"/auth\" str: " + str);
-
                                 //чтобы избежать ошибки при пустом вводе в поля login или пароль
                                 int splitLimit = 3;
                                 String[] tokens = str.split(" ");
-
-                                //TODO Временно
-                                System.out.println("if(str.startsWith(\"/auth\" tokens: " + Arrays.toString(tokens));
 
                                 //проверяем есть ли в форме пустые поля
                                 if(tokens.length >= splitLimit) {
 
                                     String login = tokens[1];
                                     String password = tokens[2];
-
-                                    //TODO Временно
-                                    System.out.println("if(tokens.length >= splitLimit. login:" + login + " password:" + password);
 
                                     // Вытаскиваем данные из БД //здесь: tokens[1] - логин, tokens[2] - пароль
                                     String newNick = AuthService.getNickByLoginAndPass(login, password);
@@ -135,10 +119,6 @@ public class ClientHandler {
                                             sendMsg("Пользователь " + newNick + " уже авторизован!");
                                         }
                                     } else {
-
-                                        //TODO временно
-                                        System.out.println("1. else newNick != null.");
-
                                         sendMsg("Вы ввели неверный логин/пароль или не зарегистрированы!\nДля регистрации нажмите \"Регистрация\"");
                                     }
                                 } else {
@@ -151,12 +131,7 @@ public class ClientHandler {
                         // блок для отправки сообщений
                         //проверяем флаг, что сервер отключен, чтобы не начать отслеживать сообщения после закрытия окна клиента
                         while (!clientWindowClosed) {
-
                             String str = in.readUTF();
-
-                            //TODO Временно
-                            System.out.println("цикл для отправки сообщений. while str: " + str);
-
                             //отлавливаем все служебные сообщения
                             if (str.startsWith("/")){
                                 //запрос на отключение
@@ -245,25 +220,25 @@ public class ClientHandler {
                                 }*/
                                 //TODO L8hwTask4.AddBlacklistsToDB.Добавил
                                 //отлавливаем сообщения о черном списке
-                                if (str.startsWith("/blacklist ")) {
-                                    String[] tokens = str.split(" ");
+                                if (str.startsWith("/blist")) {
+                                    String[] tokens = str.split(" ", 2);
                                     //получаем имя, кого заносим в черный список
                                     String nickname = tokens[1];
                                     //получаем имя, владельца черного списка
                                     String nickOfOwner = ClientHandler.this.getNick();
 
                                     //отлавливаем сообщение о добавлении в черный список
-                                    if (str.startsWith("/blacklistadd ")) {
+                                    if (str.startsWith("/blistadd")) {
                                         //сначала проверяем нет ли уже такого имени в черном списке (true - есть)
                                         //если нет ни имени в таблице, ни даже таблицы, вернется false
                                         if (!AuthService.checkUserInBlacklistDB(nickOfOwner, nickname)) {
                                             //проверяем создана ли таблица черного списка (null - нет)
                                             if (AuthService.getUserBlacklistNameByNicknameInDB(nickOfOwner) == null) {
                                                 //создаем таблицу черного списка, если таблицы нет
-                                                AuthService.createUserBlacklistInDB(nickOfOwner);
+                                                System.out.println(AuthService.createUserBlacklistInDB(nickOfOwner));
                                             }
                                             //добавляем имя пользователя в таблицу черного списка
-                                            AuthService.addNicknameIntoBlacklistInDB(nickOfOwner, nickname);
+                                            System.out.println(AuthService.addNicknameIntoBlacklistInDB(nickOfOwner, nickname));
                                             //выводим сообщение владельцу
                                             sendMsg("Вы добавили пользователя " + nickname + " в ваш черный список");
                                         } else {
@@ -272,13 +247,13 @@ public class ClientHandler {
                                     }
 
                                     //отлавливаем сообщение об удалении из черного списка
-                                    if (str.startsWith("/blacklistdel ")) {
+                                    if (str.startsWith("/blistdel")) {
                                         //сначала проверяем нет ли уже такого имени в черном списке (true - есть)
                                         //если нет ни имени в таблице, ни даже таблицы, вернется false
                                         if (AuthService.checkUserInBlacklistDB(nickOfOwner, nickname)) {
                                             //если имя есть, то и таблица черного списка тоже есть
                                             //удаляем имя из черного списка
-                                            AuthService.deleteUserFromBlacklistDB(nickOfOwner, nickOfOwner);
+                                            AuthService.deleteUserFromBlacklistDB(nickOfOwner, nickname);
                                             //выводим сообщение владельцу
                                             sendMsg("Вы удалили пользователя " + nickname + " из вашего черного списка");
                                         } else {
