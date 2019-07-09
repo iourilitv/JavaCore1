@@ -96,10 +96,17 @@ public class MainServer {
         for (ClientHandler o : clients) {
             //проверяем не отправляет ли он сам себе,
             //а также не находится ли отправитель в черном списке получателя и наоборот,
-            if (!o.equals(sender) && !o.checkBlackList(sender.getNick()) &&
-                    !sender.checkBlackList(o.getNick())
+
+            //TODO L8hwTask4.AddBlacklistsToDB.Удалил
+            //if (!o.equals(sender) && !o.checkBlackList(sender.getNick()) &&
+                    //!sender.checkBlackList(o.getNick())
+            //) {
+            //TODO L8hwTask4.AddBlacklistsToDB.Добавил
+            if (!o.equals(sender) && !AuthService.checkUserInBlacklistDB(o.getNick(), sender.getNick()) &&
+                    !AuthService.checkUserInBlacklistDB(sender.getNick(), o.getNick())
                 ) {
-                //отправляем сообщение адресату
+
+                //отправляем сообщение адресату(получателю)
                 o.sendMsg(msg);
             }
         }
@@ -118,7 +125,10 @@ public class MainServer {
             if(r.getNick().equals(nickOfRecipient)){
 
                 //проверяем не находится ли отправитель черном списке получателя
-                if(!r.checkBlackList(sender.getNick())){
+                //TODO L8hwTask4.AddBlacklistsToDB.Удалил
+                //if(!r.checkBlackList(sender.getNick())){
+                //TODO L8hwTask4.AddBlacklistsToDB.Добавил
+                if(!AuthService.checkUserInBlacklistDB(nickOfRecipient, sender.getNick())){
 
                     //TODO L8hwTask5.Удалил
                     //r.sendMsg("from " + sender.getNick() + ": " + msg);

@@ -183,7 +183,11 @@ public class AuthService {
     public static boolean checkUserInBlacklistDB(String nickOfOwner, String nickname){
         //находим имя таблицы черного списка по имени его владельца
         String nameOfBlacklistTable = getUserBlacklistNameByNicknameInDB(nickOfOwner);
-
+        //проверяем есть вообще черный список
+        if(nameOfBlacklistTable == null){
+            //возвращаем false, если нет таблицы
+            return false;
+        }
         //ищем имя пользователя в таблице черного списка
         // формирование запроса. '%s' - для последовательного подставления значений в соотвествующее место
         String sql = String.format("SELECT nickname FROM %s WHERE nickname = '%s'", nameOfBlacklistTable, nickname);

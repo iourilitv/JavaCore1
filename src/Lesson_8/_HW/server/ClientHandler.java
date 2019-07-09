@@ -14,11 +14,16 @@ public class ClientHandler {
     private DataOutputStream out;
     private MainServer server;
     private String nick;
-    List<String> blackList;
+
+    //TODO L8hwTask4.AddBlacklistsToDB.Удалил
+    //List<String> blackList;
 
     public ClientHandler(Socket socket, MainServer server) {
         try {
-            this.blackList = new ArrayList<>();
+
+            //TODO L8hwTask4.AddBlacklistsToDB.Удалил
+            //this.blackList = new ArrayList<>();
+
             this.socket = socket;
             this.server = server;
             this.in = new DataInputStream(socket.getInputStream());
@@ -208,7 +213,12 @@ public class ClientHandler {
                                         //проверка не отправляется ли сообщение самому себе
                                         if(!ClientHandler.this.getNick().equals(nickOfRecipient)){
                                             //проверяем не находится ли получатель черном списке отправителя
-                                            if(!ClientHandler.this.checkBlackList(nickOfRecipient)){
+
+                                            //TODO L8hwTask4.AddBlacklistsToDB.Удалил
+                                            //if(!ClientHandler.this.checkBlackList(nickOfRecipient)){
+                                            //TODO L8hwTask4.AddBlacklistsToDB.Добавил
+                                            if(!AuthService.checkUserInBlacklistDB(ClientHandler.this.getNick(), nickOfRecipient)){
+
                                                 //отправляем сообщение адресату
                                                 server.sendMsgToNick(ClientHandler.this, nickOfRecipient, msg);
                                             } else{
@@ -226,10 +236,55 @@ public class ClientHandler {
                                     }
                                 }
                                 //добавляем пользователя в черный список
-                                if (str.startsWith("/blacklist ")) {
+
+                                //TODO L8hwTask4.AddBlacklistsToDB.Удалил
+                                /*if (str.startsWith("/blacklist ")) {
                                     String[] tokens = str.split(" ");
                                     blackList.add(tokens[1]);
                                     sendMsg("Вы добавили пользователя " + tokens[1] + " в черный список");
+                                }*/
+                                //TODO L8hwTask4.AddBlacklistsToDB.Добавил
+                                //отлавливаем сообщения о черном списке
+                                if (str.startsWith("/blacklist ")) {
+                                    String[] tokens = str.split(" ");
+                                    //получаем имя, кого заносим в черный список
+                                    String nickname = tokens[1];
+                                    //получаем имя, владельца черного списка
+                                    String nickOfOwner = ClientHandler.this.getNick();
+
+                                    //отлавливаем сообщение о добавлении в черный список
+                                    if (str.startsWith("/blacklistadd ")) {
+                                        //сначала проверяем нет ли уже такого имени в черном списке (true - есть)
+                                        //если нет ни имени в таблице, ни даже таблицы, вернется false
+                                        if (!AuthService.checkUserInBlacklistDB(nickOfOwner, nickname)) {
+                                            //проверяем создана ли таблица черного списка (null - нет)
+                                            if (AuthService.getUserBlacklistNameByNicknameInDB(nickOfOwner) == null) {
+                                                //создаем таблицу черного списка, если таблицы нет
+                                                AuthService.createUserBlacklistInDB(nickOfOwner);
+                                            }
+                                            //добавляем имя пользователя в таблицу черного списка
+                                            AuthService.addNicknameIntoBlacklistInDB(nickOfOwner, nickname);
+                                            //выводим сообщение владельцу
+                                            sendMsg("Вы добавили пользователя " + nickname + " в ваш черный список");
+                                        } else {
+                                            sendMsg("Пользователь с таким именем уже есть в вашем черном списке!");
+                                        }
+                                    }
+
+                                    //отлавливаем сообщение об удалении из черного списка
+                                    if (str.startsWith("/blacklistdel ")) {
+                                        //сначала проверяем нет ли уже такого имени в черном списке (true - есть)
+                                        //если нет ни имени в таблице, ни даже таблицы, вернется false
+                                        if (AuthService.checkUserInBlacklistDB(nickOfOwner, nickname)) {
+                                            //если имя есть, то и таблица черного списка тоже есть
+                                            //удаляем имя из черного списка
+                                            AuthService.deleteUserFromBlacklistDB(nickOfOwner, nickOfOwner);
+                                            //выводим сообщение владельцу
+                                            sendMsg("Вы удалили пользователя " + nickname + " из вашего черного списка");
+                                        } else {
+                                            sendMsg("Пользователя с таким именем нет в вашем черном списке!");
+                                        }
+                                    }
                                 }
                             }//if "/"
                             else{
@@ -270,10 +325,11 @@ public class ClientHandler {
         return nick;
     }
 
-    //Метод проверки есть ли пользователь в черном списке
+    //TODO L8hwTask4.AddBlacklistsToDB.Удалил
+    /*//Метод проверки есть ли пользователь в черном списке
     public boolean checkBlackList(String nick) {
         return blackList.contains(nick);
-    }
+    }*/
 
     public void sendMsg(String msg) {
         try {
