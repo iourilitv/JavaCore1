@@ -108,48 +108,62 @@ public class AuthService {
     }
 
     //TODO L8hwTask4.AddBlacklistsToDB.Добавил
-    //Метод добавления данных пользователя в БД
-    public static boolean createBlacklistInDB(String[] tokens){
+    //Метод проверки есть ли уже таблица черного списка у пользователя в БД
+    //если есть строка возвращаем результат, если нет, то вернеться null
+    public static String getUserBlacklistNameByNicknameInDB(String nickOfOwner) {
+
+        // формирование запроса. '%s' - для последовательного подставления значений в соотвествующее место
+        String sql = String.format("SELECT name_blacklists FROM main where nickname = '%s'", nickOfOwner);
+
+        try {
+            // оправка запроса и получение ответа из БД
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // если есть строка возвращаем результат, если нет, то вернеться null
+            if(rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //TODO L8hwTask4.AddBlacklistsToDB.Добавил
+    //Метод создания в БД таблицы с черным списком пользователя
+    //если таблица создана успешно, возвращает true
+    public static boolean createUserBlacklistInDB(String nickOfOwner){
+        //формируем имя таблицы с черным списком пользователя
+        String nameOfBlacklist = nickOfOwner + "blacklist";
         //создаем новую таблицу для черного списка пользователя
-        //CREATE TABLE nick1blacklist ( nickname REFERENCES main (nickname) );
-
-        String login = tokens[2];
-        String password = tokens[3];
-        String nickname = tokens[1];
-
         // формирование запроса. '%s' - для последовательного подставления значений в соотвествующее место
-        //записываем данные нового юзера в БД
-        String sql = String.format("INSERT INTO main (login, password, nickname) VALUES ('%s', '%s', '%s')", login, password, nickname);
-
-        try {
-            // оправка запроса и получение ответа из БД
-            int rs = stmt.executeUpdate(sql);
-
-            // если строка добавлена, то возвращается 1, если нет, то вернеться 0?
-            if(rs != 0) {
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    //TODO L8hwTask4.AddBlacklistsToDB.Добавил
-    //Метод добавления данных пользователя в БД
-    public static boolean addUserIntoBlacklistDB(String[] tokens){
-        //добавляем в таблицу черного списка имя пользователя
-        //INSERT INTO nick1blacklist (nickname) VALUES ('nick3');
+        String sql1 = String.format("CREATE TABLE %s ( nickname REFERENCES main (nickname) );", nameOfBlacklist);
         //добавляем имя таблицы черного списка в строку пользователя
-        //UPDATE main SET name_blacklists = 'nick1blacklist' WHERE nickname = 'nick1';
+        String sql2 = String.format("UPDATE main SET name_blacklists = '%s' WHERE nickname = 'nick1'", nameOfBlacklist);
 
-        String login = tokens[2];
-        String password = tokens[3];
-        String nickname = tokens[1];
+        try {
+            // оправка запроса и получение ответа из БД
+            int rs = stmt.executeUpdate(sql1 + sql2);
 
+            // если таблица создана, то возвращается 1, если нет, то вернеться 0?
+            if(rs != 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //TODO L8hwTask4.AddBlacklistsToDB.Добавил
+    //Метод добавления имени в таблицу черного списка пользователя в БД
+    //если строка добавлена, то возвращается true
+    public static boolean addNicknameIntoBlacklistInDB(String nickOfOwner, String nickname){
+        //находим имя таблицы черного списка по имени его владельца
+        String nameOfBlacklistTable = getUserBlacklistNameByNicknameInDB(nickOfOwner);
+        //добавляем в таблицу черного списка имя пользователя
         // формирование запроса. '%s' - для последовательного подставления значений в соотвествующее место
-        //записываем данные нового юзера в БД
-        String sql = String.format("INSERT INTO main (login, password, nickname) VALUES ('%s', '%s', '%s')", login, password, nickname);
+        String sql = String.format("INSERT INTO %s (nickname) VALUES ('%s')", nameOfBlacklistTable, nickname);
 
         try {
             // оправка запроса и получение ответа из БД
@@ -166,34 +180,23 @@ public class AuthService {
     }
 
     //TODO L8hwTask4.AddBlacklistsToDB.Добавил
-    //Метод добавления данных пользователя в БД
-    public static boolean checkUserInBlacklistDB(String[] tokens){
+    //Метод проверки имени в таблице черного списка пользователя в БД
+    //если такое имя есть, то возвращается true
+    public static boolean checkUserInBlacklistDB(String nickOfOwner, String nickname){
+        //находим имя таблицы черного списка по имени его владельца
+        String nameOfBlacklistTable = getUserBlacklistNameByNicknameInDB(nickOfOwner);
 
         //ищем имя пользователя в таблице черного списка
-        //SELECT nickname FROM nick1blacklist WHERE nickname = 'nick3';
-        //ищем имя таблицы черного списка по имени владельца
-        //SELECT name_blacklists FROM main WHERE nickname = 'nick1';
-
-
-        //добавляем в таблицу черного списка имя пользователя
-        //INSERT INTO nick1blacklist (nickname) VALUES ('nick3');
-        //добавляем имя таблицы черного списка в строку пользователя
-        //UPDATE main SET name_blacklists = 'nick1blacklist' WHERE nickname = 'nick1';
-
-        String login = tokens[2];
-        String password = tokens[3];
-        String nickname = tokens[1];
-
         // формирование запроса. '%s' - для последовательного подставления значений в соотвествующее место
-        //записываем данные нового юзера в БД
-        String sql = String.format("INSERT INTO main (login, password, nickname) VALUES ('%s', '%s', '%s')", login, password, nickname);
+        String sql = String.format("SELECT nickname FROM %s WHERE nickname = '%s'", nameOfBlacklistTable, nickname);
 
         try {
             // оправка запроса и получение ответа из БД
-            int rs = stmt.executeUpdate(sql);
+            ResultSet rs = stmt.executeQuery(sql);
 
-            // если строка добавлена, то возвращается 1, если нет, то вернеться 0?
-            if(rs != 0) {
+            // если есть строка возвращаем результат, если нет, то вернеться null
+            if(rs.equals(nickname)) {
+                //такой ника в таблице есть
                 return true;
             }
         } catch (SQLException e) {
@@ -203,35 +206,20 @@ public class AuthService {
     }
 
     //TODO L8hwTask4.AddBlacklistsToDB.Добавил
-    //Метод добавления данных пользователя в БД
-    public static boolean deleteUserFromBlacklistDB(String[] tokens){
-
-        //удаляем имя пользователя из таблицы черного списка
-        //DELETE FROM nick1blacklist WHERE nickname = 'nick3';
-        //выводим список всех имен в таблице черного списка, у которых есть не нулевое значение
-        //SELECT nickname FROM nick1blacklist WHERE nickname != 'NULL';
-        //выводим список всех имен в таблице черного списка
-        //SELECT nickname FROM nick1blacklist;
-
-
-        //добавляем в таблицу черного списка имя пользователя
-        //INSERT INTO nick1blacklist (nickname) VALUES ('nick3');
-        //добавляем имя таблицы черного списка в строку пользователя
-        //UPDATE main SET name_blacklists = 'nick1blacklist' WHERE nickname = 'nick1';
-
-        String login = tokens[2];
-        String password = tokens[3];
-        String nickname = tokens[1];
+    //Метод удаления имени из таблицы черного списка пользователя в БД
+    //если строка удалена, то возвращается true
+    public static boolean deleteUserFromBlacklistDB(String nickOfOwner, String nickname){
+        //находим имя таблицы черного списка по имени его владельца
+        String nameOfBlacklistTable = getUserBlacklistNameByNicknameInDB(nickOfOwner);
 
         // формирование запроса. '%s' - для последовательного подставления значений в соотвествующее место
-        //записываем данные нового юзера в БД
-        String sql = String.format("INSERT INTO main (login, password, nickname) VALUES ('%s', '%s', '%s')", login, password, nickname);
-
+        //удаляем имя пользователя из таблицы черного списка
+        String sql = String.format("DELETE FROM %s WHERE nickname = '%s'", nameOfBlacklistTable, nickname);
         try {
             // оправка запроса и получение ответа из БД
             int rs = stmt.executeUpdate(sql);
 
-            // если строка добавлена, то возвращается 1, если нет, то вернеться 0?
+            // если строка удалена, то возвращается 1, если нет, то вернеться 0?
             if(rs != 0) {
                 return true;
             }
