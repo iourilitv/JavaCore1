@@ -452,7 +452,7 @@ public class Controller {
                 //отправляем партнеру приглашение початиться
                 try {
                     // отправляем сообщение приглашение партнеру начать приватный чат
-                    out.writeUTF("/invto " + clientList.getSelectionModel().getSelectedItem());
+                    out.writeUTF("/invto " + clientList.getSelectionModel().getSelectedItem());//TODO L8hwTask5 Упростить (+...) до chatCompanionNick?
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -685,7 +685,7 @@ public class Controller {
             System.out.println(".prTextField.getText(): " + prTextField.getText());
 
             //TODO L8hwTask5.Добавил
-            out.writeUTF("/w " + chatCompanionNick + prTextField.getText());
+            out.writeUTF("/w " + chatCompanionNick + " " + prTextField.getText());
             prTextField.clear();
             prTextField.requestFocus();
 
