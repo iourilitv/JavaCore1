@@ -98,12 +98,14 @@ public class Controller {
     final String IP_ADRESS = "localhost";
     final int PORT = 8189;
 
-    //метод для показа нижней панели или верхней
+    //метод отображения элементов GUI в режиме Авторизован/Неавторизован
     public void setAuthorized(boolean isAuthorized) {
         this.isAuthorized = isAuthorized;
 
+        //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Удалил
         //закрываем поля для регистрации
-        setRegistered(false);
+        //setRegistered(false);
+
         //очищаем поле от сообщений
         regFormTextArea.clear();
 
@@ -118,6 +120,45 @@ public class Controller {
             registrationForm.setManaged(false);//выделяется место под HBox, если окно видимо (по умолчанию в sample managed="false")
             mainChatPanel.setVisible(true);
             mainChatPanel.setManaged(true);
+        }
+    }
+
+    //метод отображения элементов GUI в режиме Зарегистрирован/Незарегистрирован
+    public void setRegistered(boolean isRegistered){
+
+        //на всякий случай скрываем панель основного чата
+        mainChatPanel.setVisible(false);
+        mainChatPanel.setManaged(false);
+
+        if(!isRegistered){
+            //если не зарегистрирован, то
+            //открываем блок верхних меток, пояснений для регистрации
+            regFormTopLabelsBox.setVisible(true);
+            regFormTopLabelsBox.setManaged(true);
+            //открываем блок Имени
+            regFormNicknameBox.setVisible(true);
+            regFormNicknameBox.setManaged(true);
+            //открываем блок кнопок для регистрации
+            regFormRegBtnsBox.setVisible(true);
+            regFormRegBtnsBox.setManaged(true);
+            //скрываем блок кнопок авторизации
+            regFormAuthBtnsBox.setVisible(false);
+            regFormAuthBtnsBox.setManaged(false);
+
+        } else{
+            //если зарегистрирован, то наоборот
+            //скрываем блок верхних меток, пояснений для регистрации
+            regFormTopLabelsBox.setVisible(false);
+            regFormTopLabelsBox.setManaged(false);
+            //скрываем блок Имени
+            regFormNicknameBox.setVisible(false);
+            regFormNicknameBox.setManaged(false);
+            //скрываем блок кнопок для регистрации
+            regFormRegBtnsBox.setVisible(false);
+            regFormRegBtnsBox.setManaged(false);
+            //открываем блок кнопок авторизации
+            regFormAuthBtnsBox.setVisible(true);
+            regFormAuthBtnsBox.setManaged(true);
         }
     }
 
@@ -143,8 +184,9 @@ public class Controller {
                             //TODO Временно
                             System.out.println("блок для авторизации и регистрации. while str: " + str);
 
+                            //TODO L8hwTask3.Connection checking.Удалил???
                             //в начале всегда очищать поле
-                            regFormTextArea.clear();
+                            //regFormTextArea.clear();
 
                             //ловим все служебные сообщения, чтобы не выводить их в TextArea
                             if (str.startsWith("/")) {
@@ -158,17 +200,34 @@ public class Controller {
 
                                 //если пришло подтверждение авторизации, переходим в форму чата и прерываем процесс
                                 if (str.startsWith("/authok")) {
+
+                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Удалил
                                     //скрываем поля регистрации
-                                    setRegistered(false);
+                                    //setRegistered(false);
+                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Добавил
+                                    //скрываем элементы GUI для регистрации
+                                    setRegistered(true);
+
+                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Удалил коммент
                                     //устанавливаем признак успешной авторизации
+                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Добавил коммент
+                                    //скрываем элементы GUI для авторизации
                                     setAuthorized(true);
                                     break;
                                 }
 
                                 //если пришло подтверждение регистрации, отправляем запрос на авторизацию, не прерывая процесс
                                 if (str.startsWith("/regok")) {
+                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Удалил коммент
                                     //устанавливаем признак успешной регистрации
+                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Добавил коммент
+                                    //скрываем элементы GUI для регистрации
                                     setRegistered(true);
+
+                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Добавил
+                                    //открываем элементы GUI для авторизации
+                                    setAuthorized(false);
+
                                     //разделяем сообщение на три части
                                     //TODO Не работает авторизация после регистрации.Удалил.Не достаточно
                                     //int splitLimit = 3;
@@ -179,8 +238,8 @@ public class Controller {
                             } else {
 
                                 //TODO Временно
-                                System.out.println("else(str.startsWith(\"/\").");
-                                System.out.println(".str: " + str);
+                                //System.out.println("else(str.startsWith(\"/\").");
+                                //System.out.println(".str: " + str);
 
                                 //выводим сообщения в панель регистрационной формы
                                 regFormTextArea.appendText(str + "\n");
@@ -254,20 +313,43 @@ public class Controller {
                             }
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+
+                        //TODO L8hwTask3.Connection checking.Удалил
+                        //e.printStackTrace();
+
+                        //TODO временно.
+                        System.out.println("Server connection is lost: " + e);
+
                     } finally {
                         try {
                             socket.close();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        setAuthorized(false);//устанавливаем признак отмены авторизации
+
+                        //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Удалил
+                        //setAuthorized(false);//устанавливаем признак отмены авторизации
+                        //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Добавил
+                        //скрываем элементы GUI для регистрации
+                        setRegistered(true);
+                        //открываем элементы GUI для авторизации
+                        setAuthorized(false);
+                        //выводим сообщение пользователю
+                        regFormTextArea.appendText("Waiting for server connection...Please log in.\n");//TODO OK
+
+                        //TODO временно.
+                        System.out.println("2a.connect.finally");
                     }
                 }
             }).start();
 
         } catch (IOException e) {
-            e.printStackTrace();
+
+            //TODO L8hwTask3.Connection checking.Удалил
+            //e.printStackTrace();
+
+            //TODO L8hwTask3.Connection checking.Добавил
+            System.out.println("Waiting for server connection...: " + e);
         }
     }
 
@@ -278,50 +360,18 @@ public class Controller {
         regFormTextArea.clear();
     }
 
-    //метод начала процесса регистрации
-    public void setRegistered(boolean isRegistered){
-
-        //на всякий случай скрываем панель основного чата
-        mainChatPanel.setVisible(false);
-        mainChatPanel.setManaged(false);
-
-        if(!isRegistered){
-            //если не зарегистрирован, то
-            //открываем блок верхних меток, пояснений для регистрации
-            regFormTopLabelsBox.setVisible(true);
-            regFormTopLabelsBox.setManaged(true);
-            //открываем блок Имени
-            regFormNicknameBox.setVisible(true);
-            regFormNicknameBox.setManaged(true);
-            //открываем блок кнопок для регистрации
-            regFormRegBtnsBox.setVisible(true);
-            regFormRegBtnsBox.setManaged(true);
-            //скрываем блок кнопок авторизации
-            regFormAuthBtnsBox.setVisible(false);
-            regFormAuthBtnsBox.setManaged(false);
-
-        } else{
-            //если зарегистрирован, то наоборот
-            //скрываем блок верхних меток, пояснений для регистрации
-            regFormTopLabelsBox.setVisible(false);
-            regFormTopLabelsBox.setManaged(false);
-            //скрываем блок Имени
-            regFormNicknameBox.setVisible(false);
-            regFormNicknameBox.setManaged(false);
-            //скрываем блок кнопок для регистрации
-            regFormRegBtnsBox.setVisible(false);
-            regFormRegBtnsBox.setManaged(false);
-            //открываем блок кнопок авторизации
-            regFormAuthBtnsBox.setVisible(true);
-            regFormAuthBtnsBox.setManaged(true);
-        }
-    }
-
     //метод запроса на регистрацию(сохранение) данных из регистрационной формы по событию кнопки Отправить
     public void getRegistration(){
         if (socket == null || socket.isClosed()) {
             // сначала подключаемся к серверу, если не подключен(сокет не создан или закрыт)
-            connect();
+
+            //TODO L8hwTask3.Connection checking.Удалил
+            //connect();
+            //TODO L8hwTask3.Connection checking.Добавил
+            //если сервер еще не запущен, выводим сообщение и пытаемся подключиться в бесконечном цикле
+            while(socket == null || socket.isClosed()){
+                connect();
+            }
         }
         try {
             //очищаем поле от старых сообщений
@@ -332,7 +382,7 @@ public class Controller {
             //TODO Временно
             System.out.println("getRegistration() str:" + "/reg " + regFormNickField.getText() + " " + regFormLoginField.getText() + " " + regFormPasswordField.getText());
 
-            //Не нужно очищать поле, если не зарегистрировался, чтобы не вбивать еще раз.
+            //Не нужно очищать поле, если не зарегистрировался, чтобы не вбивать еще раз.//TODO Проверить надо ли?
             regFormNickField.clear();//очищаем поле имени в чате
             regFormLoginField.clear();//очищаем поле логина
             regFormPasswordField.clear();//очищаем поле пароля
@@ -343,7 +393,7 @@ public class Controller {
 
     //Метод по нажатию кнопки в форме регистрации
     public void cancelRegistration(){
-        //возвращаем регистрационную форму
+        //возвращаемся из регистрационной формы в авторизационную
         setRegistered(true);
         regFormLoginField.clear();
         regFormPasswordField.clear();
@@ -354,7 +404,14 @@ public class Controller {
     public void tryToAuth() {
         if (socket == null || socket.isClosed()) {
             // сначала подключаемся к серверу, если не подключен(сокет не создан или закрыт)
-            connect();
+
+            //TODO L8hwTask3.Connection checking.Удалил
+            //connect();
+            //TODO L8hwTask3.Connection checking.Добавил
+            //если сервер еще не запущен, выводим сообщение и пытаемся подключиться в бесконечном цикле
+            while(socket == null || socket.isClosed()){
+                connect();
+            }
         }
 
         try {
