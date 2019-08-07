@@ -105,7 +105,6 @@ public class AuthService {
         return false;
     }
 
-    //TODO L8hwTask4.AddBlacklistsToDB.Добавил
     //Метод проверки есть ли уже таблица черного списка у пользователя в БД
     //если есть строка возвращаем результат, если нет, то вернеться null
     public static String getUserBlacklistNameByNicknameInDB(String nickOfOwner) {
@@ -124,7 +123,6 @@ public class AuthService {
         return null;
     }
 
-    //TODO L8hwTask4.AddBlacklistsToDB.Добавил
     //Метод создания в БД таблицы с черным списком пользователя
     //если таблица создана успешно, возвращает true
     public static boolean createUserBlacklistInDB(String nickOfOwner){
@@ -150,7 +148,6 @@ public class AuthService {
         return false;
     }
 
-    //TODO L8hwTask4.AddBlacklistsToDB.Добавил
     //Метод добавления имени в таблицу черного списка пользователя в БД
     //если строка добавлена, то возвращается true
     public static boolean addNicknameIntoBlacklistInDB(String nickOfOwner, String nickname){
@@ -174,7 +171,6 @@ public class AuthService {
         return false;
     }
 
-    //TODO L8hwTask4.AddBlacklistsToDB.Добавил
     //Метод проверки имени в таблице черного списка пользователя в БД
     //если такое имя есть, то возвращается true
     public static boolean checkUserInBlacklistDB(String nickOfOwner, String nickname){
@@ -203,7 +199,6 @@ public class AuthService {
         return false;
     }
 
-    //TODO L8hwTask4.AddBlacklistsToDB.Добавил
     //Метод удаления имени из таблицы черного списка пользователя в БД
     //если строка удалена, то возвращается true
     public static boolean deleteUserFromBlacklistDB(String nickOfOwner, String nickname){

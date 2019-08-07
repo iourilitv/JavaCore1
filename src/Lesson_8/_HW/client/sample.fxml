@@ -6,14 +6,6 @@
 <VBox alignment="center" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121"
       fx:controller="Lesson_8._HW.client.Controller">
 
-    <!--//TODO L8hwTask2.Registration form.Удалил-->
-    <!--верхняя панель для авторизации-->
-    <!--<HBox fx:id="upperPanel">
-        <TextField HBox.hgrow="ALWAYS" promptText="Логин" fx:id="loginFiled"></TextField>
-        <PasswordField promptText="Пароль" fx:id="passwordField" onAction="#tryToAuth"/>
-        <Button text="Авторизоваться" onAction="#tryToAuth"/>
-    </HBox>-->
-    <!--//TODO L8hwTask2.Registration form.Добавил-->
     <!--верхняя панель для авторизации-->
     <VBox fx:id="registrationForm" managed="true" visible="true">
         <VBox fx:id="regFormTopLabelsBox" managed="false" visible="false">
@@ -59,34 +51,17 @@
         </HBox>
     </VBox>
 
-    <!--//TODO L8hwTask1.Добавил.ERR Не приходят от других сообщения.Удалил-->
-    <!--<TextArea fx:id="textArea" editable="false" managed="true" visible="true" />-->
-
     <!--разделенная на два панель основного чата-->
-    <!--//TODO L8hwTask2.Registration form.Удалил-->
-    <!--<HBox VBox.vgrow="ALWAYS">-->
-    <!--//TODO L8hwTask2.Registration form.Добавил-->
     <HBox fx:id="mainChatPanel" managed="false" visible="false" VBox.vgrow="ALWAYS">
         <!--левая панель для отправки и отображения сообщений в чате-->
         <VBox HBox.hgrow="ALWAYS">
-
-            <!--//TODO L8hwTask1.Удалил-->
-            <!--верхняя панель для отображения сообщений в чате-->
-            <!--<TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS" /> -->
-            <!--//TODO L8hwTask1.Добавил-->
             <!--для каждой метки каждого сообщения отдельные боксы-->
-            <!--//TODO L8hwTask2.Registration form.Удалил-->
-            <!--<VBox fx:id="vBoxChat" managed="true" visible="true" HBox.hgrow="ALWAYS">-->
-            <!--//TODO L8hwTask2.Registration form.Добавил-->
             <VBox fx:id="vBoxChat" managed="true" visible="true" HBox.hgrow="ALWAYS">
                 <!--для каждого сообщения отдельная метка-->
             </VBox>
 
             <!--нижняя панель для отправки сообщений-->
             <!--в момент старта место в ?памяти? под окно не выделяется, пока оно невидимо-->
-            <!--//TODO L8hwTask2.Registration form.Удалил-->
-            <!--<HBox fx:id="bottomPanel" managed="false" visible="false">-->
-            <!--//TODO L8hwTask2.Registration form.Добавил-->
             <HBox fx:id="bottomPanel" managed="true" visible="true">
                 <TextField fx:id="textField" onAction="#sendMsg" promptText="Введите текст" HBox.hgrow="ALWAYS" />
                 <Button fx:id="btn1" onAction="#sendMsg" text="Send" />
@@ -94,9 +69,6 @@
         </VBox>
         <!--кликабельный список пользователей(правая панель)-->
         <!--//TODO L8hwTask5.+Добавил onMouseClicked="#tryToInviteIntoPrivateChat"-->
-        <!--//TODO L8hwTask2.Registration form.Удалил-->
-        <!--<ListView fx:id="clientList" managed="false" visible="false" onMouseClicked="#tryToInviteIntoPrivateChat" ></ListView>-->
-        <!--//TODO L8hwTask2.Registration form.Добавил-->
         <ListView fx:id="clientList" managed="true" visible="true" onMouseClicked="#tryToInviteIntoPrivateChat" ></ListView>
     </HBox>
 

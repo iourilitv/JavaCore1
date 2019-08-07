@@ -15,15 +15,8 @@ public class ClientHandler {
     private MainServer server;
     private String nick;
 
-    //TODO L8hwTask4.AddBlacklistsToDB.Удалил
-    //List<String> blackList;
-
     public ClientHandler(Socket socket, MainServer server) {
         try {
-
-            //TODO L8hwTask4.AddBlacklistsToDB.Удалил
-            //this.blackList = new ArrayList<>();
-
             this.socket = socket;
             this.server = server;
             this.in = new DataInputStream(socket.getInputStream());
@@ -142,7 +135,8 @@ public class ClientHandler {
                                 }
 
                                 //TODO L8hwTask5.Добавил.
-                                //сервер принимает от клиента служебное сообщение и переправляет его на сервер партнеру
+                                //сервер принимает от клиента служебные сообщения приглашения в персональный чат
+                                // и переправляет его на сервер партнеру
                                 if (str.startsWith("/inv")) {
 
                                     //TODO Временно.OK
@@ -153,9 +147,8 @@ public class ClientHandler {
                                     //кому отправлять
                                     String chatCompanionNick = temp[1];
                                     //TODO проверяем не отправляем ли самому себе.Лишнее?
-                                    if(!ClientHandler.this.getNick().equals(temp[1])){
+                                    if(!ClientHandler.this.getNick().equals(chatCompanionNick)){
                                         //переписываем изначальное сообщение от клиента - заменяем на отправителя
-
                                         String msg = temp[0] + " " + ClientHandler.this.getNick();
 
                                         //TODO Временно.OK
@@ -188,12 +181,7 @@ public class ClientHandler {
                                         //проверка не отправляется ли сообщение самому себе
                                         if(!ClientHandler.this.getNick().equals(nickOfRecipient)){
                                             //проверяем не находится ли получатель черном списке отправителя
-
-                                            //TODO L8hwTask4.AddBlacklistsToDB.Удалил
-                                            //if(!ClientHandler.this.checkBlackList(nickOfRecipient)){
-                                            //TODO L8hwTask4.AddBlacklistsToDB.Добавил
                                             if(!AuthService.checkUserInBlacklistDB(ClientHandler.this.getNick(), nickOfRecipient)){
-
                                                 //отправляем сообщение адресату
                                                 server.sendMsgToNick(ClientHandler.this, nickOfRecipient, msg);
                                             } else{
@@ -210,15 +198,6 @@ public class ClientHandler {
                                         ClientHandler.this.sendMsg("Неверный синтаксис сервисного сообщения!");
                                     }
                                 }
-                                //добавляем пользователя в черный список
-
-                                //TODO L8hwTask4.AddBlacklistsToDB.Удалил
-                                /*if (str.startsWith("/blacklist ")) {
-                                    String[] tokens = str.split(" ");
-                                    blackList.add(tokens[1]);
-                                    sendMsg("Вы добавили пользователя " + tokens[1] + " в черный список");
-                                }*/
-                                //TODO L8hwTask4.AddBlacklistsToDB.Добавил
                                 //отлавливаем сообщения о черном списке
                                 if (str.startsWith("/blist")) {
                                     String[] tokens = str.split(" ", 2);
@@ -300,12 +279,7 @@ public class ClientHandler {
         return nick;
     }
 
-    //TODO L8hwTask4.AddBlacklistsToDB.Удалил
-    /*//Метод проверки есть ли пользователь в черном списке
-    public boolean checkBlackList(String nick) {
-        return blackList.contains(nick);
-    }*/
-
+    //метод отправки сообщения своему пользователю(в Controller)
     public void sendMsg(String msg) {
         try {
             out.writeUTF(msg);

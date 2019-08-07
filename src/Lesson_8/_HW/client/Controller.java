@@ -102,10 +102,6 @@ public class Controller {
     public void setAuthorized(boolean isAuthorized) {
         this.isAuthorized = isAuthorized;
 
-        //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Удалил
-        //закрываем поля для регистрации
-        //setRegistered(false);
-
         //очищаем поле от сообщений
         regFormTextArea.clear();
 
@@ -184,10 +180,6 @@ public class Controller {
                             //TODO Временно
                             System.out.println("блок для авторизации и регистрации. while str: " + str);
 
-                            //TODO L8hwTask3.Connection checking.Удалил???
-                            //в начале всегда очищать поле
-                            //regFormTextArea.clear();
-
                             //ловим все служебные сообщения, чтобы не выводить их в TextArea
                             if (str.startsWith("/")) {
 
@@ -200,17 +192,8 @@ public class Controller {
 
                                 //если пришло подтверждение авторизации, переходим в форму чата и прерываем процесс
                                 if (str.startsWith("/authok")) {
-
-                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Удалил
-                                    //скрываем поля регистрации
-                                    //setRegistered(false);
-                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Добавил
                                     //скрываем элементы GUI для регистрации
                                     setRegistered(true);
-
-                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Удалил коммент
-                                    //устанавливаем признак успешной авторизации
-                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Добавил коммент
                                     //скрываем элементы GUI для авторизации
                                     setAuthorized(true);
                                     break;
@@ -218,13 +201,8 @@ public class Controller {
 
                                 //если пришло подтверждение регистрации, отправляем запрос на авторизацию, не прерывая процесс
                                 if (str.startsWith("/regok")) {
-                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Удалил коммент
-                                    //устанавливаем признак успешной регистрации
-                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Добавил коммент
                                     //скрываем элементы GUI для регистрации
                                     setRegistered(true);
-
-                                    //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Добавил
                                     //открываем элементы GUI для авторизации
                                     setAuthorized(false);
 
@@ -236,25 +214,15 @@ public class Controller {
                                     //out.writeUTF("/auth " + tokens[1] + tokens[2]);
                                 }
                             } else {
-
-                                //TODO Временно
-                                //System.out.println("else(str.startsWith(\"/\").");
-                                //System.out.println(".str: " + str);
-
                                 //выводим сообщения в панель регистрационной формы
                                 regFormTextArea.appendText(str + "\n");
                             }
                         }
 
-                        // блок для разбора сообщений
+                        //***Блок для разбора сообщений***
                         //проверяем флаг, что сервер отключен, чтобы не начать отслеживать сообщения после отключения сервера
                         while (!serverClosed) {
-
                             String str = in.readUTF();
-
-                            //TODO Временно
-                            //System.out.println("блок для разбора сообщений. while str: " + str);
-
                             if (str.equals("/serverclosed")) {
                                 break;
                             }
@@ -313,42 +281,24 @@ public class Controller {
                             }
                         }
                     } catch (IOException e) {
-
-                        //TODO L8hwTask3.Connection checking.Удалил
-                        //e.printStackTrace();
-
-                        //TODO временно.
                         System.out.println("Server connection is lost: " + e);
-
                     } finally {
                         try {
                             socket.close();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
-                        //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Удалил
-                        //setAuthorized(false);//устанавливаем признак отмены авторизации
-                        //TODO L8hwTask2.Registration logic.Добавил.ERR GUI logic.Добавил
                         //скрываем элементы GUI для регистрации
                         setRegistered(true);
                         //открываем элементы GUI для авторизации
                         setAuthorized(false);
                         //выводим сообщение пользователю
-                        regFormTextArea.appendText("Waiting for server connection...Please log in.\n");//TODO OK
-
-                        //TODO временно.
-                        System.out.println("2a.connect.finally");
+                        regFormTextArea.appendText("Waiting for server connection...Please log in.\n");
                     }
                 }
             }).start();
 
         } catch (IOException e) {
-
-            //TODO L8hwTask3.Connection checking.Удалил
-            //e.printStackTrace();
-
-            //TODO L8hwTask3.Connection checking.Добавил
             System.out.println("Waiting for server connection...: " + e);
         }
     }
@@ -362,18 +312,15 @@ public class Controller {
 
     //метод запроса на регистрацию(сохранение) данных из регистрационной формы по событию кнопки Отправить
     public void getRegistration(){
-        if (socket == null || socket.isClosed()) {
+        if (socket == null || socket.isClosed()) {//TODO лишнее, если есть while?
             // сначала подключаемся к серверу, если не подключен(сокет не создан или закрыт)
-
-            //TODO L8hwTask3.Connection checking.Удалил
-            //connect();
-            //TODO L8hwTask3.Connection checking.Добавил
             //если сервер еще не запущен, выводим сообщение и пытаемся подключиться в бесконечном цикле
             while(socket == null || socket.isClosed()){
                 connect();
             }
         }
         try {
+            //TODO удалить? Лучше очищать перед выводом текста.
             //очищаем поле от старых сообщений
             regFormTextArea.clear();
             // отправка на сервер запроса на регистрацию данных введенных в форме регистрации
@@ -402,29 +349,19 @@ public class Controller {
 
     //Метод для авторизации. Запускается кнопкой Авторизоваться в форме регистрации(upperPanel)
     public void tryToAuth() {
-        if (socket == null || socket.isClosed()) {
+        if (socket == null || socket.isClosed()) {//TODO лишнее, если есть while?
             // сначала подключаемся к серверу, если не подключен(сокет не создан или закрыт)
-
-            //TODO L8hwTask3.Connection checking.Удалил
-            //connect();
-            //TODO L8hwTask3.Connection checking.Добавил
             //если сервер еще не запущен, выводим сообщение и пытаемся подключиться в бесконечном цикле
             while(socket == null || socket.isClosed()){
                 connect();
             }
         }
-
         try {
-            //TODO добавил, чтобы очищать поле
+            //TODO удалить? Лучше очищать перед выводом текста.
             //очищаем поле от старых сообщений
             regFormTextArea.clear();
-
             // отправка сообщений на сервер для авторизации
             out.writeUTF("/auth " + regFormLoginField.getText() + " " + regFormPasswordField.getText());
-
-            //TODO Временно
-            //System.out.println("tryToAuth() str:" + "/auth " + regFormLoginField.getText() + " " + regFormPasswordField.getText());
-
             regFormLoginField.clear();//очищаем поле логина
             regFormPasswordField.clear();//очищаем поле пароля
         } catch (IOException e) {
