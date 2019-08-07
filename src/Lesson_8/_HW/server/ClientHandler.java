@@ -29,7 +29,8 @@ public class ClientHandler {
                     try {
                         boolean clientWindowClosed = false;
 
-                        // цикл для авторизации и регистрации. Крутится бесконечно, пока не авторизуется
+                        //***Цикл для авторизации и регистрации***
+                        // Крутится бесконечно, пока пользователь не авторизуется
                         while (true) {
                             String str = in.readUTF();
                             if (str.equals("/end")) {
@@ -99,9 +100,17 @@ public class ClientHandler {
 
                                         //проверяем не авторизовался ли кто-то уже под этим ником
                                         if(!server.isThisNickAuthorized(newNick)){
+
+                                            //TODO L8hwTask5.Удалил
                                             //отправляем сообщение об успешной авторизации
-                                            sendMsg("/authok");
+                                            //sendMsg("/authok");
+
                                             nick = newNick;
+
+                                            //TODO L8hwTask5.Добавил
+                                            //отправляем сообщение(в Controller) об успешной авторизации с собственным ником пользователя
+                                            sendMsg("/authok " + nick);
+
                                             //подписываем клиента при успешной авторизации и выходим из цикла
                                             server.subscribe(ClientHandler.this);
                                             //выводим сообщение в консоль сервера об успешном подключении клиента
@@ -121,7 +130,7 @@ public class ClientHandler {
                             }
                         }//while
 
-                        // блок для отправки сообщений
+                        //***Блок для отправки сообщений***
                         //проверяем флаг, что сервер отключен, чтобы не начать отслеживать сообщения после закрытия окна клиента
                         while (!clientWindowClosed) {
                             String str = in.readUTF();
@@ -163,6 +172,9 @@ public class ClientHandler {
                                 if(str.startsWith("/w")) {
                                     //ClientHandler.this вместо nick, чтобы отправить предупреждение отправителю,
                                     //что нельзя отправлять самому себе
+
+                                    //TODO временно
+                                    System.out.println("if(str.startsWith(\"/w\")) {. str: " + str);
 
                                     //TODO когда добавится адресная книга, этот блок не понадобится
                                     String nickOfRecipient;//ник адресата

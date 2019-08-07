@@ -4,6 +4,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 //TODO L8hwTask5.Добавил
@@ -17,19 +20,26 @@ import java.io.IOException;
  */
 public class PrivateChatStage extends Stage {
 
-    String chatCompanionNick;
+    String chatCompanionNick;//кому
+    DataOutputStream out;
+    DataInputStream in;
 
-    public PrivateChatStage(String chatCompanionNick) throws IOException {
-        this.chatCompanionNick = chatCompanionNick;
+    public PrivateChatStage(Controller controller) throws IOException {
+        this.chatCompanionNick = controller.getChatCompanionNick();
+        this.in = controller.getIn();
+        this.out = controller.getOut();
 
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResourceAsStream("privateChat.fxml"));
 
-        Stage privateStage = new Stage();
+        /*Stage privateStage = new Stage();
         privateStage.setTitle("Private chat with " + chatCompanionNick);
         Scene scene = new Scene(root, 348, 348);
         privateStage.setScene(scene);
-        privateStage.show();
+        privateStage.show();*/
+        setTitle("Private chat with " + chatCompanionNick);
+        Scene scene = new Scene(root, 300, 400);
+        setScene(scene);
 
         //TODO временно.
         System.out.println("PrivateChatStage.chatCompanionNick: " + chatCompanionNick);

@@ -1,5 +1,6 @@
 package Lesson_8._HW.client;
 
+import Lesson_8._HW.server.ClientHandler;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -93,7 +94,10 @@ public class Controller {
     private boolean isAuthorized;
 
     //TODO L8hwTask5.initChatPreviously.Добавил
-    private String chatCompanionNick = "";
+    private static String chatCompanionNick;// = "";//TODO Удалить?//TODO ERR.chatCompanionNick = null?!Добавил static
+
+    //TODO L8hwTask5.initChatPreviously.Добавил
+    private String nick;
 
     final String IP_ADRESS = "localhost";
     final int PORT = 8189;
@@ -173,7 +177,7 @@ public class Controller {
                     try {
                         boolean serverClosed = false;
 
-                        // блок для авторизации и регистрации
+                        //***Блок для авторизации и регистрации***
                         while (true) {
                             String str = in.readUTF();
 
@@ -196,6 +200,13 @@ public class Controller {
                                     setRegistered(true);
                                     //скрываем элементы GUI для авторизации
                                     setAuthorized(true);
+
+                                    //TODO L8hwTask5.Добавил
+                                    //выделяем полученный с сервера собственный ник пользователя
+                                    int splitLimit = 2;
+                                    String[] tokens = str.split(" ", splitLimit);
+                                    nick = tokens[1];
+
                                     break;
                                 }
 
@@ -219,6 +230,9 @@ public class Controller {
                             }
                         }
 
+                        //TODO L8hwTask5.initChatPreviously.Добавил
+                        //Устанавливаем пустой ник партнера для приватного чата пользователя
+                        chatCompanionNick = null;//TODO L8hwTask5 было ""
                         //***Блок для разбора сообщений***
                         //проверяем флаг, что сервер отключен, чтобы не начать отслеживать сообщения после отключения сервера
                         while (!serverClosed) {
@@ -228,8 +242,10 @@ public class Controller {
                             }
 
                             //TODO L8hwTask5.Добавил.ERR.chat_communication
+                            //***Обработка запросов на инициализацию персонального чата***
                             if (str.startsWith("/inv")) {//всегда в строке ник партнера
-                                //передаем первое сообщение на проверку в метод инициализации прив.чата
+                                //TODO Удалить!
+                                /*//передаем первое сообщение на проверку в метод инициализации прив.чата
                                 initPrivateChat(str);
                                 //запускаем цикл инициализации прив.чата
                                 while (true){
@@ -241,7 +257,22 @@ public class Controller {
                                     //после выхода их прив.чата освобождаем прив.чат
                                     chatCompanionNick = "";
                                     break;
-                                }
+                                }*/
+                                /*//передаем сообщение на проверку в метод инициализации прив.чата
+                                if(initPrivateChat(str)){
+                                    //если инициализация прошла успешно начинаем прив.чат
+                                    startPrivateChat();
+                                }*/
+                                //передаем сообщения на проверку в метод инициализации прив.чата
+                                initPrivateChat(str);
+                            }
+                            //***Обработка запроса на закрытие персонального чата***
+                            if (str.startsWith("/chatend")) {
+                                //prStage.show();
+
+                                //Обнуляем ник партнера по чату
+                                chatCompanionNick = null;
+
                             }
 
                             //обрабатываем запрос от сервера на добавление клиента в список
@@ -378,9 +409,24 @@ public class Controller {
             //TODO Временно
             System.out.println("Двойной клик");
 
-            //проверяем не начат ли приватный чат
+            //запрещаем кликать на свой ник в списке
+            if (clientList.getSelectionModel().getSelectedItem().equals(nick)){
+
+                //TODO L8hwTask5. Вывести предупреждение пользователю
+                //?????  "Нельзя выбрать самого себя!"
+
+                //Обнуляем ник партнера по чату
+                chatCompanionNick = null;
+
+                //TODO временно
+                System.out.println("Нельзя выбрать самого себя!");
+
+                return;
+            }
+
+            //проверяем не начат ли уже с кем-то приватный чат
             //другой не сможет пригласить, если пользователь уже чатится с кем-то приватно
-            if (chatCompanionNick.equals("")) {
+            if (chatCompanionNick == null) {//TODO L8hwTask5 было ("") ERR chatCompanionNick.equals(null)
 
                 //TODO L8hwTask5.ERR.Пустое имя партнера по чату.Добавил
                 //резервируем прив.чат для партнера
@@ -389,13 +435,18 @@ public class Controller {
                 //отправляем партнеру приглашение початиться
                 try {
                     // отправляем сообщение приглашение партнеру начать приватный чат
-                    out.writeUTF("/invto " + clientList.getSelectionModel().getSelectedItem());//TODO L8hwTask5 Упростить (+...) до chatCompanionNick?
+                    out.writeUTF("/invto " + chatCompanionNick);//TODO L8hwTask5 было clientList.getSelectionModel().getSelectedItem()
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else{
+                //TODO L8hwTask5. Вывести предупреждение пользователю
+                //????? "Ваш приватный чат занят!"
+
+                //TODO временно
                 System.out.println("Ваш приватный чат занят!");
+
             }
         }
     }
@@ -405,7 +456,7 @@ public class Controller {
         try {
 
             //TODO Временно.
-            System.out.println("0.Controller.initPrivateChat. str:" + str);
+            System.out.println("0.Controller.initPrivateChat. str: " + str);
 
             //выделяем ник партнера по чату из служебного сообщения
             String[] temp = str.split(" ", 2);
@@ -417,7 +468,7 @@ public class Controller {
                 System.out.println(".1. /invto str:" + str);
 
                 //проверяем свободен ли мой приватный чат
-                if (chatCompanionNick.equals("")) {
+                if (chatCompanionNick == null) {//TODO L8hwTask5 было ("") ERR chatCompanionNick.equals(null)
                     //если мой чат тоже свободен, резервируем его для ника партнера
                     chatCompanionNick = temp[1];
 
@@ -430,7 +481,19 @@ public class Controller {
                         public void run() {
                             try {
                                 //открываем отдельное окно для приватного чата
-                                new PrivateChatStage(chatCompanionNick);
+                                PrivateChatStage prStage = new PrivateChatStage(Controller.this);
+                                prStage.show();
+                                //обработчик закрытия окна персонального чата
+                                prStage.setOnCloseRequest(event -> {
+                                    //Обнуляем ник партнера по чату
+                                    chatCompanionNick = null;
+                                    //отправляем запрос партнеру по чату о закрытии окна чата
+                                    try {
+                                        out.writeUTF("/chatend");
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -467,9 +530,9 @@ public class Controller {
             if (str.startsWith("/invok")) {
 
                 //TODO Временно.OK
-                System.out.println(".2.1. /invok str:" + str);
+                //System.out.println(".2.1. /invok str:" + str);
                 //TODO Временно.OK
-                System.out.println(".2.2. /invok chatCompanionNick:" + chatCompanionNick);
+                //System.out.println(".2.2. /invok chatCompanionNick:" + chatCompanionNick);
 
                 try {
                     //если приватный чат инициализирован, открыть новое окно
@@ -479,7 +542,19 @@ public class Controller {
                         public void run() {
                             try {
                                 //открываем отдельное окно для приватного чата
-                                new PrivateChatStage(chatCompanionNick);
+                                PrivateChatStage prStage = new PrivateChatStage(Controller.this);
+                                prStage.show();
+                                //обработчик закрытия окна персонального чата
+                                prStage.setOnCloseRequest(event -> {
+                                    //Обнуляем ник партнера по чату
+                                    chatCompanionNick = null;
+                                    //отправляем запрос партнеру по чату о закрытии окна чата
+                                    try {
+                                        out.writeUTF("/chatend");
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -497,8 +572,8 @@ public class Controller {
         return false;
     }
 
-    //TODO L8hwTask5.Добавил
-    public void startPrivateChat() throws IOException {
+    //TODO L8hwTask5.Добавил.ERR Удалить
+    /*public void startPrivateChat() throws IOException {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -518,6 +593,7 @@ public class Controller {
                         if (str.equals("/chatclosed")) {
                             break;
                         }
+
                         //отображаем поступающие сообщения в окне своего приватного чата
                         Platform.runLater(new Runnable() {
                             @Override
@@ -543,7 +619,7 @@ public class Controller {
                 }
             }
         }).start();
-    }
+    }*/
 
     //Метод отправки запроса об отключении на сервер
     public void dispose() {
@@ -571,7 +647,7 @@ public class Controller {
                 //и сравниваем с теми же источниками контроллера отправителя
                 if (actionEvent.getSource().equals(this.btn1) ||
                         actionEvent.getSource().equals(this.textField)
-                    ) {//if (если мое - сообщение справа)
+                    ) {//if (если мое - сообщение справа)//TODO Удалить this?
                     vBox.setAlignment(Pos.TOP_RIGHT);
                 } else {
                     vBox.setAlignment(Pos.TOP_LEFT);
@@ -617,17 +693,55 @@ public class Controller {
             }
 
             //TODO временно.
-            System.out.println("Controller.sendMsgInPrivateChat.");
-            System.out.println(".actionEvent.getTarget().toString(): " + actionEvent.getTarget().toString());
-            System.out.println(".prTextField.getText(): " + prTextField.getText());
+            //System.out.println("Controller.sendMsgInPrivateChat.");
+            //System.out.println(".actionEvent.getTarget().toString(): " + actionEvent.getTarget().toString());
+            //System.out.println(".prTextField.getText(): " + prTextField.getText());
 
             //TODO L8hwTask5.Добавил
-            out.writeUTF("/w " + chatCompanionNick + " " + prTextField.getText());
+            DataOutputStream out = ((PrivateChatStage)prBtnSend.getScene().getWindow()).out;
+            out.writeUTF("/w " + chatCompanionNick + " " + prTextField.getText());//TODO ERR.chatCompanionNick = null?! Удалил
+
+            //TODO временно.//TODO ERR.chatCompanionNick = null?!
+            System.out.println("Controller.sendMsgInPrivateChat. after out.writeUTF. out(str): " + "/w " + chatCompanionNick + " " + prTextField.getText());
+
             prTextField.clear();
             prTextField.requestFocus();
+
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public VBox getPrVBoxChat() {
+        return prVBoxChat;
+    }
+
+    public TextField getPrTextField() {
+        return prTextField;
+    }
+
+    public Button getPrBtnSend() {
+        return prBtnSend;
+    }
+
+    public HBox getPrBottomPanel() {
+        return prBottomPanel;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public DataInputStream getIn() {
+        return in;
+    }
+
+    public DataOutputStream getOut() {
+        return out;
+    }
+
+    public String getChatCompanionNick() {
+        return chatCompanionNick;
     }
 }
