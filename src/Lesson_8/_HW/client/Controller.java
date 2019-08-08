@@ -98,6 +98,8 @@ public class Controller {
 
     //TODO L8hwTask5.initChatPreviously.Добавил
     private String nick;
+    private PrivateChatStage prStage;//чтобы закрыть окно приватного чата в методе connect
+    private static boolean onPrivateChat;//для взаимодействия потоков в главного и приватного чата
 
     final String IP_ADRESS = "localhost";
     final int PORT = 8189;
@@ -267,12 +269,12 @@ public class Controller {
                                 initPrivateChat(str);
                             }
                             //***Обработка запроса на закрытие персонального чата***
-                            if (str.startsWith("/chatend")) {
-                                //prStage.show();
-
+                            if (str.startsWith("/invend")) {
+                                //закрываем свое окно приватного чата, если партнер его закрыл
+                                onPrivateChat = false;//TODO ERR Exception in thread "Thread-4" java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-4.Добавил
+                                //prStage.close();//TODO ERR Exception in thread "Thread-4" java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-4.Удалил
                                 //Обнуляем ник партнера по чату
                                 chatCompanionNick = null;
-
                             }
 
                             //обрабатываем запрос от сервера на добавление клиента в список
@@ -452,7 +454,7 @@ public class Controller {
     }
 
     //TODO L8hwTask5.Добавил
-    public boolean initPrivateChat(String str) {
+    public boolean initPrivateChat(String str) {//TODO boolean лишнее?
         try {
 
             //TODO Временно.
@@ -465,41 +467,53 @@ public class Controller {
             if (str.startsWith("/invto")) {
 
                 //TODO Временно.OK
-                System.out.println(".1. /invto str:" + str);
+                //System.out.println(".1. /invto str:" + str);
 
                 //проверяем свободен ли мой приватный чат
                 if (chatCompanionNick == null) {//TODO L8hwTask5 было ("") ERR chatCompanionNick.equals(null)
                     //если мой чат тоже свободен, резервируем его для ника партнера
                     chatCompanionNick = temp[1];
 
+                    //TODO ERR Exception: Not on FX application thread.Добавил
+                    //устанавливаем метку разрешения на приватный чат(для взаимодействия между потоками основного и приватного чата)
+                    onPrivateChat = true;
+
                     //TODO Временно.OK
-                    System.out.println(".2. before out:/invok + chatCompanionNick:" + chatCompanionNick);
+                    //System.out.println(".2. before out:/invok + chatCompanionNick:" + chatCompanionNick);
 
-                    //инициализируем приватный чат
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                //открываем отдельное окно для приватного чата
-                                PrivateChatStage prStage = new PrivateChatStage(Controller.this);
-                                prStage.show();
-                                //обработчик закрытия окна персонального чата
-                                prStage.setOnCloseRequest(event -> {
-                                    //Обнуляем ник партнера по чату
-                                    chatCompanionNick = null;
-                                    //отправляем запрос партнеру по чату о закрытии окна чата
-                                    try {
-                                        out.writeUTF("/chatend");
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                });
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                    //TODO ERR Exception: Not on FX application thread.Добавил while
+                    //крутим цикл пока есть разрешение на приватный чат(для взаимодействия между потоками основного и приватного чата)
+                    while (onPrivateChat) {
+                        //инициализируем приватный чат
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    //открываем отдельное окно для приватного чата
+                                    /*PrivateChatStage *///TODO удалить
+                                    prStage = new PrivateChatStage(Controller.this);
+                                    prStage.show();
+
+                                    //обработчик закрытия окна персонального чата
+                                    //prStage.setOnCloseRequest(event -> {//TODO ERR stage.close
+                                    prStage.setOnHiding(event -> {
+                                        //отправляем запрос партнеру по чату о закрытии окна чата
+                                        try {
+                                            out.writeUTF("/invend " + chatCompanionNick);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        //Обнуляем ник партнера по чату
+                                        chatCompanionNick = null;
+                                        //сбрасываем метку разрешения на приватный чат(для взаимодействия между потоками основного и приватного чата)
+                                        onPrivateChat = false;
+                                    });
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                    });
-
+                        });
+                    }
                     //отправляем на мой сервер подтверждение
                     out.writeUTF("/invok " + chatCompanionNick);
                     return true;
@@ -507,7 +521,7 @@ public class Controller {
                 } else {
 
                     //TODO Временно.OK
-                    System.out.println(".3. before out:/invnot + chatCompanionNick:" + chatCompanionNick);
+                    //System.out.println(".3. before out:/invnot + chatCompanionNick:" + chatCompanionNick);
 
                     //отправляем на мой сервер отказ чатиться
                     out.writeUTF("/invnot " + chatCompanionNick);
@@ -521,7 +535,10 @@ public class Controller {
                 //TODO Временно.OK
                 System.out.println(".1. /invnot str:" + str);
 
-                //TODO Временно.//TODO. Вывести сообщение в GUI.
+                //TODO. Вывести сообщение в GUI.
+                //..."Адресат занят другим приватным чатом!"
+
+                //TODO Временно.
                 System.out.println("Адресат занят другим приватным чатом!");
 
                 return false;
@@ -534,36 +551,48 @@ public class Controller {
                 //TODO Временно.OK
                 //System.out.println(".2.2. /invok chatCompanionNick:" + chatCompanionNick);
 
-                try {
-                    //если приватный чат инициализирован, открыть новое окно
-                    //и подтверждаем готовность инициализации приватного чата
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                //открываем отдельное окно для приватного чата
-                                PrivateChatStage prStage = new PrivateChatStage(Controller.this);
-                                prStage.show();
-                                //обработчик закрытия окна персонального чата
-                                prStage.setOnCloseRequest(event -> {
-                                    //Обнуляем ник партнера по чату
-                                    chatCompanionNick = null;
-                                    //отправляем запрос партнеру по чату о закрытии окна чата
-                                    try {
-                                        out.writeUTF("/chatend");
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                });
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    return true;
+                //TODO ERR Exception: Not on FX application thread.Добавил
+                //устанавливаем метку разрешения на приватный чат(для взаимодействия между потоками основного и приватного чата)
+                onPrivateChat = true;
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                //TODO ERR Exception: Not on FX application thread.Добавил while
+                //крутим цикл пока есть разрешение на приватный чат(для взаимодействия между потоками основного и приватного чата)
+                while (onPrivateChat) {
+                    try {
+                        //если приватный чат инициализирован, открыть новое окно
+                        //и подтверждаем готовность инициализации приватного чата
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    //открываем отдельное окно для приватного чата
+                                    /*PrivateChatStage *///TODO удалить
+                                    prStage = new PrivateChatStage(Controller.this);
+                                    prStage.show();
+
+                                    //обработчик закрытия окна персонального чата
+                                    //prStage.setOnCloseRequest(event -> {//TODO ERR stage.close
+                                    prStage.setOnHiding(event -> {
+                                        //отправляем запрос партнеру по чату о закрытии окна чата
+                                        try {
+                                            out.writeUTF("/invend " + chatCompanionNick);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        //Обнуляем ник партнера по чату
+                                        chatCompanionNick = null;
+                                        //сбрасываем метку разрешения на приватный чат(для взаимодействия между потоками основного и приватного чата)
+                                        onPrivateChat = false;
+                                    });
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        return true;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         } catch (IOException e) {
@@ -699,9 +728,9 @@ public class Controller {
 
             //TODO L8hwTask5.Добавил
             DataOutputStream out = ((PrivateChatStage)prBtnSend.getScene().getWindow()).out;
-            out.writeUTF("/w " + chatCompanionNick + " " + prTextField.getText());//TODO ERR.chatCompanionNick = null?! Удалил
+            out.writeUTF("/w " + chatCompanionNick + " " + prTextField.getText());
 
-            //TODO временно.//TODO ERR.chatCompanionNick = null?!
+            //TODO временно.
             System.out.println("Controller.sendMsgInPrivateChat. after out.writeUTF. out(str): " + "/w " + chatCompanionNick + " " + prTextField.getText());
 
             prTextField.clear();

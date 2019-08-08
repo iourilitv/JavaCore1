@@ -161,7 +161,7 @@ public class ClientHandler {
                                         String msg = temp[0] + " " + ClientHandler.this.getNick();
 
                                         //TODO Временно.OK
-                                        //System.out.println("2.ClientHandler. nick:" + ClientHandler.this.getNick() + " sent. msg" + msg);
+                                        System.out.println("2.ClientHandler. nick: " + ClientHandler.this.getNick() + " sent msg: " + msg);
 
                                         //сервер отправляет измененное сообщение на сервер партнеру
                                         server.sendMsgToNick(ClientHandler.this, chatCompanionNick, msg);
