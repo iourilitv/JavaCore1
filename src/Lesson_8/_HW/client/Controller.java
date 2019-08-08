@@ -1,6 +1,5 @@
 package Lesson_8._HW.client;
 
-import Lesson_8._HW.server.ClientHandler;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -94,18 +93,15 @@ public class Controller {
 
     private boolean isAuthorized;
 
-    //TODO L8hwTask5.initChatPreviously.Добавил
+    //TODO L8hwTask5.Добавил
     //static - чтобы использовать в потоке FX application
     private static String chatCompanionNick;
 
-    //TODO L8hwTask5.initChatPreviously.Добавил
+    //TODO L8hwTask5.Добавил
     private String nick;
     //TODO L8hwTask5.Closing window if partner has left.Добавил.ERR NullPointerException.Добавил static
     //чтобы закрыть окно приватного чата в методе connect(не работает) или sendMsgInPrivateChat
     private static PrivateChatStage prStage;
-
-    //TODO не помогло.Удалить
-    //private static boolean onPrivateChat;//для взаимодействия потоков в главного и приватного чата
 
     final String IP_ADRESS = "localhost";
     final int PORT = 8189;
@@ -184,7 +180,7 @@ public class Controller {
                 public void run() {
 
                     //TODO временно
-                    System.out.println("connect.new Thread.currentThread(): " + Thread.currentThread().getId());
+                    //System.out.println("connect.new Thread.currentThread(): " + Thread.currentThread().getId());
 
                     try {
                         boolean serverClosed = false;
@@ -254,21 +250,16 @@ public class Controller {
                             }
 
                             //TODO L8hwTask5.Добавил
-                            //***Обработка запросов на инициализацию персонального чата***
+                            //***Обработка запросов на инициализацию и закрытие персонального чата***
                             if (str.startsWith("/inv")) {//всегда в строке ник партнера
+                                //***Обработка запроса на закрытие персонального чата***
+                                if (str.startsWith("/invend")) {
+                                    //закрываем свое окно приватного чата, если партнер его закрыл
+                                    //Обнуляем ник партнера по чату
+                                    chatCompanionNick = null;
+                                }
                                 //передаем сообщения на проверку в метод инициализации прив.чата
                                 initPrivateChat(str);
-                            }
-                            //***Обработка запроса на закрытие персонального чата***
-                            if (str.startsWith("/invend")) {
-                                //закрываем свое окно приватного чата, если партнер его закрыл
-
-                                //TODO не помогло.Удалить
-                                //onPrivateChat = false;//TODO ERR Exception in thread "Thread-4" java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-4.Добавил
-                                //prStage.close();//TODO ERR Exception in thread "Thread-4" java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-4.Удалил
-
-                                //Обнуляем ник партнера по чату
-                                chatCompanionNick = null;
                             }
 
                             //обрабатываем запрос от сервера на добавление клиента в список
@@ -422,11 +413,8 @@ public class Controller {
             //проверяем не начат ли уже с кем-то приватный чат
             //другой не сможет пригласить, если пользователь уже чатится с кем-то приватно
             if (chatCompanionNick == null) {
-
-                //TODO L8hwTask5.Добавил
                 //резервируем прив.чат для партнера
                 chatCompanionNick = clientList.getSelectionModel().getSelectedItem();
-
                 //отправляем партнеру приглашение початиться
                 try {
                     // отправляем сообщение приглашение партнеру начать приватный чат
@@ -446,11 +434,11 @@ public class Controller {
     }
 
     //TODO L8hwTask5.Добавил
-    public boolean initPrivateChat(String str) {//TODO boolean лишнее?
+    private void /*public boolean */initPrivateChat(String str) {//TODO boolean лишнее?
         try {
 
             //TODO Временно.
-            System.out.println("0.Controller.initPrivateChat. str: " + str);
+            //System.out.println("0.Controller.initPrivateChat. str: " + str);
 
             //выделяем ник партнера по чату из служебного сообщения
             String[] temp = str.split(" ", 2);
@@ -465,13 +453,15 @@ public class Controller {
                     startPrivateChat();
                     //отправляем на мой сервер подтверждение
                     out.writeUTF("/invok " + chatCompanionNick);
-                    return true;
+                    /*return true;*///TODO boolean лишнее?
                 } else {
                     //отправляем на мой сервер отказ чатиться
                     out.writeUTF("/invnot " + chatCompanionNick);
-                    return false;
+                    /*return false;*///TODO boolean лишнее?
                 }
+                return;//TODO boolean лишнее?.Добавил
             }
+
             //если от партнера пришел отказ, его чат занят
             if (str.startsWith("/invnot")) {
 
@@ -481,8 +471,9 @@ public class Controller {
                 //TODO Временно.
                 System.out.println("Адресат занят другим приватным чатом!");
 
-                return false;
+                return/* false*/;//TODO boolean лишнее?
             }
+
             //если от партнера пришло подтверждение, что все готово начать чат
             if (str.startsWith("/invok")) {
                 //инициализируем приватный чат
@@ -491,25 +482,19 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        /*return false;*///TODO boolean лишнее?
     }
 
-    //TODO L8hwTask5.Adding in into private chat.Добавил
+    //TODO L8hwTask5.Добавил
     //если приватный чат инициализирован, открыть новое окно
     //и подтверждаем готовность инициализации приватного чата
     private void startPrivateChat(){
-
-        //TODO не помогло.Удалить
-        /*//TODO ERR Exception: Not on FX application thread.Добавил.Не нужно?
-        //устанавливаем метку разрешения на приватный чат(для взаимодействия между потоками основного и приватного чата)
-        onPrivateChat = true;*/
-
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
 
                 //TODO временно
-                System.out.println("initPrivateChat.Platform.runLater.currentThread(): " + Thread.currentThread().getId());
+                //System.out.println("initPrivateChat.Platform.runLater.currentThread(): " + Thread.currentThread().getId());
 
                 try {
                     //открываем отдельное окно для приватного чата
@@ -517,8 +502,8 @@ public class Controller {
                     prStage.show();
 
                     //обработчик закрытия окна персонального чата
-                    //prStage.setOnCloseRequest(event -> {//TODO ERR stage.close
-                    prStage.setOnHiding(event -> {
+                    prStage.setOnCloseRequest(event -> {//TODO ERR stage.close
+                    //prStage.setOnHiding(event -> {//TODO ERR stage.close.Не помогло?
                         //отправляем запрос партнеру по чату о закрытии окна чата
                         //если окно закрывается после сообщения от партнера о выходе из приватного чата,
                         // а не по крестику закрыть окно
@@ -530,11 +515,6 @@ public class Controller {
                             }
                             //Обнуляем ник партнера по чату
                             chatCompanionNick = null;
-
-                            //TODO не помогло.Удалить
-                            /*//сбрасываем метку разрешения на приватный чат(для взаимодействия между потоками основного и приватного чата)
-                            onPrivateChat = false;*/
-
                         }
                     });
                 } catch (IOException e) {
@@ -557,7 +537,7 @@ public class Controller {
         }
     }
 
-    //метод для отправки сообщений в общем чате //TODO L8hwTask5.Добавил - в общем чате
+    //метод для отправки сообщений в общем чате
     public void sendMsg(ActionEvent actionEvent) {
         try {
             //не показываем служебные сообщения у себя
@@ -593,7 +573,6 @@ public class Controller {
     //TODO L8hwTask5.Добавил
     //метод для отправки сообщений в приватном чате
     public void sendMsgInPrivateChat (ActionEvent actionEvent) {
-        //TODO L8hwTask5.Closing window if partner has left.Добавил
         //закрываем свое окно приватного чата, если партнер вышел
         if (chatCompanionNick == null){
 
@@ -603,6 +582,7 @@ public class Controller {
             Platform.runLater(new Runnable() {//TODO Лишнее? Не помогло
                 @Override
                 public void run() {
+                    //TODO Лишнее? Не помогло.Не выводится пользователю!
                     //выводим сообщение пользователю в окно приватного чата
                     Label label = new Label("Your partner has left. Closing the window...");
                     VBox vBox = new VBox();
@@ -615,10 +595,11 @@ public class Controller {
             });
 
             //TODO временно
-            System.out.println("sendMsgInPrivateChat.Platform.runLater.currentThread(): " + Thread.currentThread().getId());
+            //System.out.println("sendMsgInPrivateChat.Platform.runLater.currentThread(): " + Thread.currentThread().getId());
 
             //TODO L8hwTask5.Closing window if partner has left.ERR Не выводится сообщ.пользователю.Добавил
-            // хотя бы выводим сообщение в основной чат.Работает НЕВЕРНО - приходит не самому, а партнеру
+            // хотя бы выводим сообщение в основной чат.
+            // Работает НЕВЕРНО - приходит не самому, а партнеру
             try {
                 DataOutputStream out = ((PrivateChatStage)prBtnSend.getScene().getWindow()).out;
                 out.writeUTF("Your partner has left. The private chat window has been closed.");
@@ -632,7 +613,7 @@ public class Controller {
         }
 
         //TODO временно
-        System.out.println("sendMsgInPrivateChat.Platform.runLater.currentThread(): " + Thread.currentThread().getId());
+        //System.out.println("sendMsgInPrivateChat.Platform.runLater.currentThread(): " + Thread.currentThread().getId());
 
         try {
             //не показываем служебные сообщения у себя
@@ -640,7 +621,8 @@ public class Controller {
                 Label label = new Label(prTextField.getText());
                 VBox vBox = new VBox();
 
-                //условие (от кого?) для определения расположения
+                //TODO Удалил
+                /*//условие (от кого?) для определения расположения
                 //вытаскиваем из события источник (кнопка или текстовое поле)
                 //и сравниваем с теми же источниками контроллера отправителя
                 if (actionEvent.getSource().equals(prBtnSend) ||
@@ -649,24 +631,22 @@ public class Controller {
                     vBox.setAlignment(Pos.TOP_RIGHT);
                 } else {
                     vBox.setAlignment(Pos.TOP_LEFT);
-                }
+                }*/
+                //TODO Добавил
+                vBox.setAlignment(Pos.TOP_RIGHT);
+
                 //добавляем метку в бокс
                 vBox.getChildren().add(label);
                 //добавляем vBox в общий бокс чата
                 prVBoxChat.getChildren().add(vBox);
             }
 
-            //TODO временно.
-            //System.out.println("Controller.sendMsgInPrivateChat.");
-            //System.out.println(".actionEvent.getTarget().toString(): " + actionEvent.getTarget().toString());
-            //System.out.println(".prTextField.getText(): " + prTextField.getText());
-
             //TODO L8hwTask5.Добавил
             DataOutputStream out = ((PrivateChatStage)prBtnSend.getScene().getWindow()).out;
             out.writeUTF("/w " + chatCompanionNick + " " + prTextField.getText());
 
             //TODO временно.
-            System.out.println("Controller.sendMsgInPrivateChat. after out.writeUTF. out(str): " + "/w " + chatCompanionNick + " " + prTextField.getText());
+            //System.out.println("Controller.sendMsgInPrivateChat. after out.writeUTF. out(str): " + "/w " + chatCompanionNick + " " + prTextField.getText());
 
             prTextField.clear();
             prTextField.requestFocus();
