@@ -76,6 +76,7 @@ public class Controller {
 
     //переменные с pr в начале имени - для privateChat.fxml
     @FXML
+    //TODO L8hwTask5.ERR NullPointerException in connect .."/w".Добавил static.ERR при выводе сообщюс свой приватный чат.Удалил
     VBox prVBoxChat;
 
     @FXML
@@ -100,7 +101,7 @@ public class Controller {
     //TODO L8hwTask5.Добавил
     private String nick;
     //TODO L8hwTask5.Closing window if partner has left.Добавил.ERR NullPointerException.Добавил static
-    //чтобы закрыть окно приватного чата в методе connect(не работает) или sendMsgInPrivateChat
+    //чтобы закрыть окно приватного чата в методе connect(работает) или sendMsgInPrivateChat(TODO удалить)
     private static PrivateChatStage prStage;
 
     final String IP_ADRESS = "localhost";//IP 127.0.0.1.
@@ -242,46 +243,102 @@ public class Controller {
                         //проверяем флаг, что сервер отключен, чтобы не начать отслеживать сообщения после отключения сервера
                         while (!serverClosed) {
                             String str = in.readUTF();
-                            if (str.equals("/serverclosed")) {
-                                break;
-                            }
 
                             //TODO L8hwTask5.Добавил
-                            //***Обработка запросов на инициализацию и закрытие персонального чата***
-                            if (str.startsWith("/inv")) {//всегда в строке ник партнера
-                                //***Обработка запроса на закрытие персонального чата***
-                                if (str.startsWith("/invend")) {
-                                    //закрываем свое окно приватного чата, если партнер его закрыл
-                                    //Обнуляем ник партнера по чату
-                                    chatCompanionNick = null;
+                            //ловим все служебные сообщения, чтобы не выводить их в TextArea
+                            if (str.startsWith("/")) {
+                                if (str.equals("/serverclosed")) {
+                                    break;
                                 }
-                                //передаем сообщения на проверку в метод инициализации прив.чата
-                                initPrivateChat(str);
-                            }
 
-                            //обрабатываем запрос от сервера на добавление клиента в список
-                            if (str.startsWith("/clientlist")) {
-                                String[] tokens = str.split(" ");
-                                //всегда, когда меняем графическую часть интерфейса, нужно
-                                //всю работу осуществлять в отдельном потоке для работы с интеграцией с GUI.
-                                // Это особенность JavaFX, возможно это уже реализовано в TreeView? Но лучше вставлять всегда
-                                Platform.runLater(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //обновляем список пользователей
-                                        clientList.getItems().clear();
-                                        for (int i = 1; i < tokens.length; i++) {
-                                            clientList.getItems().add(tokens[i]);
+                                //обрабатываем запрос от сервера на добавление клиента в список
+                                if (str.startsWith("/clientlist")) {
+                                    String[] tokens = str.split(" ");
+                                    //всегда, когда меняем графическую часть интерфейса, нужно
+                                    //всю работу осуществлять в отдельном потоке для работы с интеграцией с GUI.
+                                    // Это особенность JavaFX, возможно это уже реализовано в TreeView? Но лучше вставлять всегда
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            //обновляем список пользователей
+                                            clientList.getItems().clear();
+                                            for (int i = 1; i < tokens.length; i++) {
+                                                clientList.getItems().add(tokens[i]);
+                                            }
                                         }
-                                    }
-                                });
-                            } else {
-                                //TODO L8hwTask5.Изменил
-                                //отсеиваем служебные сообщения, чтобы не показывать в окне чата
-                                if (!str.startsWith("/")) {
-                                    //выводим сообщение в свое окно чата
-                                    showMessage(vBoxChat, Pos.TOP_LEFT, str);
+                                    });
                                 }
+
+                                //TODO L8hwTask5.Добавил
+                                //***Обработка запросов на инициализацию и закрытие персонального чата***
+                                if (str.startsWith("/inv")) {//всегда в строке ник партнера
+                                    //***Обработка запроса на закрытие персонального чата***
+                                    if (str.startsWith("/invend")) {
+                                        //выводим пользователю сервисное сообщение в окно основного чата.
+                                        showMessage(vBoxChat, Pos.TOP_LEFT, "service: Your partner " + chatCompanionNick + " has left. Your private chat window has been closed.");
+                                        //Обнуляем ник партнера по чату
+                                        chatCompanionNick = null;
+                                        //закрываем свое окно приватного чата, если партнер его закрыл
+                                        Platform.runLater(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                prStage.close();
+                                            }
+                                        });
+                                    }
+                                    //передаем сообщения на проверку в метод инициализации прив.чата
+                                    initPrivateChat(str);
+                                }
+
+                                //TODO L8hwTask5.Добавил
+                                //обрабатываем полученные сообщения из приватного чата
+                                if (str.startsWith("/w")) {
+
+                                    //TODO временно
+                                    System.out.println("if (str.startsWith(\"/w\")).str: " + str);
+                                    //System.out.println("if (str.startsWith(\"/w\")).prVBoxChat: " + prVBoxChat);
+                                    //System.out.println("if (str.startsWith(\"/w\")).prStage.prVBoxChat: " + prStage.prVBoxChat);
+
+                                    int splitLimit = 3;
+                                    String[] temp = str.split(" ", splitLimit);
+                                    //выделяем собственно текст сообщения
+                                    String msg = temp[2];
+                                    //выводим сообщение в свое окно чата
+
+                                    //TODO ERR.Test.Удалил
+                                    /*VBox vB = ((PrivateChatStage)prBtnSend.getScene().getWindow()).prVBoxChat;
+
+                                    //TODO временно
+                                    System.out.println("if (str.startsWith(\"/w\")).vB: " + vB);//TODO ERR NullPointerException.Не помогло.Удалить
+                                    showMessage(vB, Pos.TOP_LEFT, msg);*/
+
+                                    //TODO ERR.Test.Добавил.Не помогло
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Label label = new Label(msg + "\n");
+                                            VBox vBox = new VBox();
+                                            vBox.setAlignment(Pos.TOP_LEFT);
+                                            //добавляем метку в бокс
+                                            vBox.getChildren().add(label);
+                                            //добавляем vBox в общий бокс чата
+                                            prVBoxChat.getChildren().add(vBox);
+                                        }
+                                    });
+                                }
+
+                                //TODO L8hwTask5.Удалил
+                                /*else {
+                                    //отсеиваем служебные сообщения, чтобы не показывать в окне чата
+                                    if (!str.startsWith("/")) {
+                                        //выводим сообщение в свое окно чата
+                                        showMessage(vBoxChat, Pos.TOP_LEFT, str);
+                                    }
+                                }*/
+                            //TODO L8hwTask5.Добавил
+                            } else{
+                                //выводим сообщение в свое окно чата
+                                showMessage(vBoxChat, Pos.TOP_LEFT, str);
                             }
                         }
                     } catch (IOException e) {
@@ -532,7 +589,9 @@ public class Controller {
     //TODO L8hwTask5.Добавил
     //метод для отправки сообщений в приватном чате
     public void sendMsgInPrivateChat (ActionEvent actionEvent) {
-        //закрываем свое окно приватного чата, если партнер вышел
+
+        //TODO Уже не нужно.Удалить
+        /*//закрываем свое окно приватного чата, если партнер вышел
         if (chatCompanionNick == null){
 
             //TODO временно
@@ -550,7 +609,7 @@ public class Controller {
             prStage.close();//TODO L8hwTask5.Closing window if partner has left.Добавил.ERR NullPointerException.Добавил static
 
             return;
-        }
+        }*/
 
         try {
             //принимаем строку из текстового поля

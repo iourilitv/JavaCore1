@@ -3,6 +3,7 @@ package Lesson_8._HW.client;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.DataInputStream;
@@ -23,20 +24,16 @@ public class PrivateChatStage extends Stage {
     String chatCompanionNick;//кому
     DataOutputStream out;
     DataInputStream in;
+    VBox prVBoxChat;//TODO Не помогло.Удалить
 
     public PrivateChatStage(Controller controller) throws IOException {
         this.chatCompanionNick = controller.getChatCompanionNick();
         this.in = controller.getIn();
         this.out = controller.getOut();
+        this.prVBoxChat = controller.getPrVBoxChat();//TODO Не помогло.Удалить
 
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResourceAsStream("privateChat.fxml"));
-
-        /*Stage privateStage = new Stage();
-        privateStage.setTitle("Private chat with " + chatCompanionNick);
-        Scene scene = new Scene(root, 348, 348);
-        privateStage.setScene(scene);
-        privateStage.show();*/
         setTitle("Private chat with " + chatCompanionNick);
         Scene scene = new Scene(root, 300, 400);
         setScene(scene);

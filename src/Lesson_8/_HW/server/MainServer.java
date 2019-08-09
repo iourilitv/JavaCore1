@@ -126,21 +126,19 @@ public class MainServer {
                     //отправляем сообщение отправителю
                     //sender.sendMsg("to " + nickOfRecipient + ": " + msg);
                     //TODO L8hwTask5.Добавил
-                    if(msg.startsWith("/inv")){
-
-                        //TODO Временно.OK
-                        //System.out.println("MainServer.sendMsgToNick. nick:" + sender.getNick() + " sent msg:" + msg);
-
-                        //отправляем сообщение адресату //отправляем приглашение партнеру початиться приватно
+                    //отделяем приглашение партнеру початиться приватно или сообщения приватного чата
+                    if(msg.startsWith("/inv") || msg.startsWith("/w")){
+                        //отправляем сообщение адресату
                         r.sendMsg(msg);
                         return;
                     }
-
-                    //отправляем сообщение адресату
+                    //TODO L8hwTask5.Удалить блок?
+                    /*//отправляем сообщение адресату
                     r.sendMsg("from " + sender.getNick() + ": " + msg);
                     //отправляем сообщение отправителю
                     sender.sendMsg("to " + nickOfRecipient + ": " + msg);
-                    return;
+                    return;*/
+
                 } else{
                     //если отправитель черном списке получателя (цикл не прервался по return)
                     sender.sendMsg("Вы в черном списке адресата с ником " + nickOfRecipient + " !");

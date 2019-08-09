@@ -147,10 +147,6 @@ public class ClientHandler {
                                 //сервер принимает от клиента служебные сообщения приглашения в персональный чат
                                 // и переправляет его на сервер партнеру
                                 if (str.startsWith("/inv")) {
-
-                                    //TODO Временно.OK
-                                    //System.out.println("1.ClientHandler. nick:" + ClientHandler.this.getNick() + " received. str" + str);
-
                                     //выделяем ник партнера по чату из служебного сообщения
                                     String[] temp = str.split(" ", 2);
                                     //кому отправлять
@@ -195,7 +191,12 @@ public class ClientHandler {
                                             //проверяем не находится ли получатель черном списке отправителя
                                             if(!AuthService.checkUserInBlacklistDB(ClientHandler.this.getNick(), nickOfRecipient)){
                                                 //отправляем сообщение адресату
-                                                server.sendMsgToNick(ClientHandler.this, nickOfRecipient, msg);
+
+                                                //TODO L8hwTask5.Удалил
+                                                //server.sendMsgToNick(ClientHandler.this, nickOfRecipient, msg);
+                                                //TODO L8hwTask5.Добавил
+                                                server.sendMsgToNick(ClientHandler.this, nickOfRecipient, str);
+
                                             } else{
                                                 //если получатель находится в черном списке адресата (цикл не прервался по return)
                                                 //отправляем сообщение отправителю(себе)
@@ -210,6 +211,7 @@ public class ClientHandler {
                                         ClientHandler.this.sendMsg("Неверный синтаксис сервисного сообщения!");
                                     }
                                 }
+
                                 //отлавливаем сообщения о черном списке
                                 if (str.startsWith("/blist")) {
                                     String[] tokens = str.split(" ", 2);
