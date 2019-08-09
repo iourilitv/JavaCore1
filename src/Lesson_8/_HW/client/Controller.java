@@ -74,9 +74,9 @@ public class Controller {
     @FXML
     Button regFormRegisterBtn;
 
-    //TODO ???переменные с pr в начале - для privateChat.fxml???
+    //переменные с pr в начале имени - для privateChat.fxml
     @FXML
-    VBox prVBoxChat;//TODO проверить ввод сообщения при выходе.Добавил static.ERR NullPointerException.Удалил
+    VBox prVBoxChat;
 
     @FXML
     TextField prTextField;
@@ -103,7 +103,7 @@ public class Controller {
     //чтобы закрыть окно приватного чата в методе connect(не работает) или sendMsgInPrivateChat
     private static PrivateChatStage prStage;
 
-    final String IP_ADRESS = "localhost";
+    final String IP_ADRESS = "localhost";//IP 127.0.0.1.
     final int PORT = 8189;
 
     //метод отображения элементов GUI в режиме Авторизован/Неавторизован
@@ -178,10 +178,6 @@ public class Controller {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-
-                    //TODO временно
-                    //System.out.println("connect.new Thread.currentThread(): " + Thread.currentThread().getId());
-
                     try {
                         boolean serverClosed = false;
 
@@ -241,6 +237,7 @@ public class Controller {
                         //TODO L8hwTask5.Добавил
                         //Устанавливаем пустой ник партнера для приватного чата пользователя
                         chatCompanionNick = null;
+
                         //***Блок для разбора сообщений***
                         //проверяем флаг, что сервер отключен, чтобы не начать отслеживать сообщения после отключения сервера
                         while (!serverClosed) {
@@ -283,20 +280,6 @@ public class Controller {
                                 //отсеиваем служебные сообщения, чтобы не показывать в окне чата
                                 if (!str.startsWith("/")) {
                                     //выводим сообщение в свое окно чата
-                                    //TODO L8hwTask5.Add msg to prChat.Удалил
-                                    /*Platform.runLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Label label = new Label(str + "\n");
-                                            VBox vBox = new VBox();
-                                            vBox.setAlignment(Pos.TOP_LEFT);
-                                            //добавляем метку в бокс
-                                            vBox.getChildren().add(label);
-                                            //добавляем vBox в общий бокс чата
-                                            vBoxChat.getChildren().add(vBox);
-                                        }
-                                    });*/
-                                    //TODO L8hwTask5.Add msg to prChat.Добавил
                                     showMessage(vBoxChat, Pos.TOP_LEFT, str);
                                 }
                             }
@@ -369,7 +352,7 @@ public class Controller {
 
     //Метод для авторизации. Запускается кнопкой Авторизоваться в форме регистрации(upperPanel)
     public void tryToAuth() {
-        if (socket == null || socket.isClosed()) {//TODO лишнее, если есть while?
+        if (socket == null || socket.isClosed()) {
             // сначала подключаемся к серверу, если не подключен(сокет не создан или закрыт)
             //если сервер еще не запущен, выводим сообщение и пытаемся подключиться в бесконечном цикле
             while(socket == null || socket.isClosed()){
@@ -400,10 +383,8 @@ public class Controller {
 
             //запрещаем кликать на свой ник в списке
             if (clientList.getSelectionModel().getSelectedItem().equals(nick)){
-
-                //TODO L8hwTask5. Вывести предупреждение пользователю
+                //Выводим предупреждение пользователю в GUI
                 showMessage(vBoxChat, Pos.TOP_LEFT, "service: Нельзя выбрать самого себя!");
-
                 //Обнуляем ник партнера по чату
                 chatCompanionNick = null;
 
@@ -426,7 +407,7 @@ public class Controller {
                     e.printStackTrace();
                 }
             } else{
-                //TODO L8hwTask5. Вывести предупреждение пользователю
+                //Выводим предупреждение пользователю в GUI
                 showMessage(vBoxChat, Pos.TOP_LEFT, "service: Ваш приватный чат занят!");
 
                 //TODO временно
@@ -439,10 +420,6 @@ public class Controller {
     //TODO L8hwTask5.Добавил
     private void initPrivateChat(String str) {
         try {
-
-            //TODO Временно.
-            //System.out.println("0.Controller.initPrivateChat. str: " + str);
-
             //выделяем ник партнера по чату из служебного сообщения
             String[] temp = str.split(" ", 2);
 
@@ -463,10 +440,9 @@ public class Controller {
                 return;
             }
 
-            //если от партнера пришел отказ, его чат занят
+            //если от партнера пришел отказ(его чат занят)
             if (str.startsWith("/invnot")) {
-
-                //TODO. Вывести сообщение в GUI.
+                //Выводим служебное сообщение пользователю в GUI
                 showMessage(vBoxChat, Pos.TOP_LEFT, "service: Адресат занят другим приватным чатом!");
 
                 //TODO Временно.
@@ -492,10 +468,6 @@ public class Controller {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-
-                //TODO временно
-                //System.out.println("initPrivateChat.Platform.runLater.currentThread(): " + Thread.currentThread().getId());
-
                 try {
                     //открываем отдельное окно для приватного чата
                     prStage = new PrivateChatStage(Controller.this);
@@ -539,30 +511,7 @@ public class Controller {
     //метод для отправки сообщений в общем чате с выводом пользователю
     public void sendMsg(ActionEvent actionEvent) {
         try {
-
-            //TODO L8hwTask5.Add msg to prChat.Удалил
-            /*//не показываем служебные сообщения у себя
-            if(!textField.getText().startsWith("/")) {
-                Label label = new Label(textField.getText());
-                VBox vBox = new VBox();
-
-                //условие (от кого?) для определения расположения
-                //вытаскиваем из события источник (кнопка или текстовое поле)
-                //и сравниваем с теми же источниками контроллера отправителя
-                if (actionEvent.getSource().equals(this.btn1) ||
-                        actionEvent.getSource().equals(this.textField)
-                    ) {//if (если мое - сообщение справа)//TODO Удалить this?
-                    vBox.setAlignment(Pos.TOP_RIGHT);
-                } else {
-                    vBox.setAlignment(Pos.TOP_LEFT);
-                }
-                //добавляем метку в бокс
-                vBox.getChildren().add(label);
-                //добавляем vBox в общий бокс чата
-                vBoxChat.getChildren().add(vBox);
-            }
-            out.writeUTF(textField.getText());*/
-            //TODO L8hwTask5.Add msg to prChat.Добавил
+            //принимаем строку из текстового поля
             String str = textField.getText();
             //не показываем служебные сообщения у себя
             if(!str.startsWith("/")) {
@@ -589,40 +538,10 @@ public class Controller {
             //TODO временно
             System.out.println("Your partner has left. Closing the window...");
 
-            //TODO L8hwTask5.Add msg to prChat.Удалил
-            /*Platform.runLater(new Runnable() {//TODO Лишнее? Не помогло
-                @Override
-                public void run() {
-                    //TODO Лишнее? Не помогло.Не выводится пользователю!
-                    //выводим сообщение пользователю в окно приватного чата
-                    Label label = new Label("Your partner has left. Closing the window...");
-                    VBox vBox = new VBox();
-                    vBox.setAlignment(Pos.TOP_LEFT);
-                    //добавляем метку в бокс
-                    vBox.getChildren().add(label);
-                    //добавляем vBox в общий бокс чата
-                    prVBoxChat.getChildren().add(vBox);
-                }
-            });*/
-            //TODO L8hwTask5.Add msg to prChat.Добавил
             // TODO Лишнее? Не помогло.Не выводится пользователю!
             //выводим пользователю сервисное сообщение в окно приватного чата
             showMessage(prVBoxChat, Pos.TOP_LEFT, "service: Your partner has left. Closing the window...");
 
-            //TODO временно
-            //System.out.println("sendMsgInPrivateChat.Platform.runLater.currentThread(): " + Thread.currentThread().getId());
-
-            //TODO L8hwTask5.Add msg to prChat.Удалил
-            /*//TODO L8hwTask5.Closing window if partner has left.ERR Не выводится сообщ.пользователю.Добавил
-            // хотя бы выводим сообщение в основной чат.
-            // Работает НЕВЕРНО - приходит не самому, а партнеру
-            try {
-                DataOutputStream out = ((PrivateChatStage)prBtnSend.getScene().getWindow()).out;
-                out.writeUTF("Your partner has left. The private chat window has been closed.");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
-            //TODO L8hwTask5.Add msg to prChat.Добавил
             //TODO Не помогло.Не выводится пользователю!
             //выводим пользователю сервисное сообщение в окно основного чата.
             showMessage(vBoxChat, Pos.TOP_LEFT, "service: Your partner has left. The window of your private chat has been closed.");
@@ -633,41 +552,17 @@ public class Controller {
             return;
         }
 
-        //TODO временно
-        //System.out.println("sendMsgInPrivateChat.Platform.runLater.currentThread(): " + Thread.currentThread().getId());
-
         try {
-
-            //TODO L8hwTask5.Add msg to prChat.Удалил
-            /*//не показываем служебные сообщения у себя
-            if (!prTextField.getText().startsWith("/")) {//TODO Удалить?
-                Label label = new Label(prTextField.getText());
-                VBox vBox = new VBox();
-                vBox.setAlignment(Pos.TOP_RIGHT);
-                //добавляем метку в бокс
-                vBox.getChildren().add(label);
-                //добавляем vBox в общий бокс чата
-                prVBoxChat.getChildren().add(vBox);
-            }*/
-            //TODO L8hwTask5.Add msg to prChat.Добавил
+            //принимаем строку из текстового поля
             String str = prTextField.getText();
             //не показываем служебные сообщения у себя
             if(!str.startsWith("/")) {
                 //выводим пользователю собственное сообщение в окно приватного чата.
                 showMessage(prVBoxChat, Pos.TOP_RIGHT, prTextField.getText());
             }
-
             //отправляем сообщение на сервер(ClientHandler)
             DataOutputStream out = ((PrivateChatStage)prBtnSend.getScene().getWindow()).out;
-
-            //TODO L8hwTask5.Add msg to prChat.Удалил
-            //out.writeUTF("/w " + chatCompanionNick + " " + prTextField.getText());
-            //TODO L8hwTask5.Add msg to prChat.Добавил
             out.writeUTF("/w " + chatCompanionNick + " " + str);
-
-            //TODO временно.
-            //System.out.println("Controller.sendMsgInPrivateChat. after out.writeUTF. out(str): " + "/w " + chatCompanionNick + " " + prTextField.getText());
-
             //очищаем текстовое поле и возвращаем ему курсор
             prTextField.clear();
             prTextField.requestFocus();
@@ -676,7 +571,7 @@ public class Controller {
         }
     }
 
-    //TODO L8hwTask5.Add msg to prChat.Добавил
+    //TODO L8hwTask5.Добавил
     //Метод вывода полученных и сервисных сообщений в чаты пользователя
     private void showMessage(VBox vBoxCh, Pos position, String msg){
         Platform.runLater(new Runnable() {
