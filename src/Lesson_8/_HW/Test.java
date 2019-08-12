@@ -1,8 +1,11 @@
 package Lesson_8._HW;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -10,6 +13,59 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class Test /*extends Application*/ {
+
+    public static void main(String[] args) {
+
+    }
+
+    /*public void setMsg(String str) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Label message = new Label(str);
+                VBox messageBox = new VBox(message);
+                    if(nick != "") {
+                    String[] mass = str.split(":");
+                        if(nick.equalsIgnoreCase(mass[0])) {
+                            messageBox.setAlignment(Pos.CENTER_RIGHT);
+                        }
+                    }
+                messagesView.getItems().add(messageBox);
+            }
+        });
+    }
+    вот такой вариант используйте*/
+    /*Ответ.
+    Артем добрый день.
+    Сомневаюсь, что это поможет.
+    Если предположить, что аналогом переменной messagesView из вашего примера является переменная prVBoxChat из моего, то это работать не будет по той же причине.
+    Проблема не в выводе информации, а в том, что я не могу вызвать переменную prVBoxChat, которая инициализирована при инициализации объекта класса PrivateChatStage и должна быть привязана к приватному окну.
+    Но при попытке обращения к этой переменной из метода коннект, она оказывается null, то есть я обращаюсь не к ней.
+    Переменная prVBoxChat точно уже инициализирована к тому моменту и я могу к ней обратиться. Ведь собственное сообщение в приватном чате появляется, т.е. метод sendMsgInPrivateChat в классе Controller работает корректно.
+    Но это и понятно, т.к. метод вызывается нажатием кнопки send непосредственно из окна приватного чата и выполняется в потоке приложения javafx (Platform).
+    А в моем случае, нужно запустить этот метод из метода connect, т.е. из главного потока, если я правильно понимаю.
+    Я уже перепробовал несколько вариантов и точно не работают такие(в методе connect):
+    1. showMessage(prVBoxChat, Pos.TOP_LEFT, msg);
+    2. VBox vB = ((PrivateChatStage)prBtnSend.getScene().getWindow()).prVBoxChat
+       showMessage(vB, Pos.TOP_LEFT, msg);
+    3. Platform.runLater(new Runnable() {
+         @Override
+         public void run() {
+           Label label = new Label(msg + "\n");
+           VBox vBox = new VBox();
+           vBox.setAlignment(Pos.TOP_LEFT);
+           vBox.getChildren().add(label);
+           prVBoxChat.getChildren().add(vBox);
+         }
+       });
+       Во всех трех случаях исключение NullPointerException возникает на строке, где есть prVBoxChat.
+       В тоже время, при работе с окном главного чата тот же метод showMessage(vBoxChat, Pos.TOP_RIGHT, str) работает в обоих случаях.
+       То есть, переменная vBoxChat вызывается из метода connect корректно.
+       Не пойму в чем разница.
+       Прошу предложить другие варианты.
+     */
+
+
 
     /*
     Артем, добрый день.

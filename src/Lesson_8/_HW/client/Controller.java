@@ -617,7 +617,7 @@ public class Controller {
             //не показываем служебные сообщения у себя
             if(!str.startsWith("/")) {
                 //выводим пользователю собственное сообщение в окно приватного чата.
-                showMessage(prVBoxChat, Pos.TOP_RIGHT, prTextField.getText());
+                showMessage(prVBoxChat, Pos.TOP_RIGHT, str);//TODO было prTextField.getText()
             }
             //отправляем сообщение на сервер(ClientHandler)
             DataOutputStream out = ((PrivateChatStage)prBtnSend.getScene().getWindow()).out;
