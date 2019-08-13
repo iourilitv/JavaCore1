@@ -3,6 +3,7 @@ package Lesson_8._HW.client;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -646,6 +647,16 @@ public class Controller {
                 //создаем метку сообщения
                 Label label = new Label(msg + "\n");
 
+                //TODO GUI improving.Добавил.???
+                //устанавливаем это сообщение собственное или получено
+                if(position.equals(Pos.TOP_RIGHT)){
+                    //устанавливаем id для управлением стилем в css для своих сообщений
+                    label.setId("ownMsgLabel");
+                } else {
+                    //устанавливаем id для управлением стилем в css для полученных сообщений
+                    label.setId("receivedMsgLabel");
+                }
+
                 //TODO GUI improving.Добавил.OK
                 //перенос слов в метке
                 //вычисляем в пикселях длину первой линии текста (количество символов * на 7 пикселей)
@@ -668,10 +679,27 @@ public class Controller {
                 label.setWrapText(true);
                 //создаем бокс с меткой сообщения
                 VBox vBox = new VBox();
+                vBox.setId("msgVBox");
+
+                //TODO проверить!
+                //TODO GUI improving.Добавил
+                //Устанавливаем для меток отступ в пискелях от краев бокса
+                //vBox.setPadding(new Insets(5));
+                //вместо этого можно применить отступ, привязанный к элементу
+                //vBox.setMargin(label, new Insets(5));
+
                 //устанавливаем позицию метки в боксе
                 vBox.setAlignment(position);
                 //добавляем метку в бокс
                 vBox.getChildren().add(label);
+
+                //TODO проверить!
+                //TODO GUI improving.Добавил
+                //Устанавливаем для меток отступ в пискелях от краев бокса (top 20, right 10, bottom 20, left 10)
+                //vBoxCh.setPadding(new Insets(20, 10, 20, 10));//new Insets(10) - одинаково для всех
+                //устанавливаем расстоянием 10 пикс.между боксами с метками сообщений
+                //vBoxCh.setSpacing(10);
+
                 //добавляем vBox в общий бокс чата
                 vBoxCh.getChildren().add(vBox);
             }
