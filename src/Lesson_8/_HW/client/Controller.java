@@ -13,8 +13,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 public class Controller {
     @FXML
@@ -76,7 +74,7 @@ public class Controller {
 
     //переменные с pr в начале имени - для privateChat.fxml
     @FXML
-    //TODO L8hwTask5.ERR NullPointerException in connect .."/w".Добавил static.ERR при выводе сообщюс свой приватный чат.Удалил
+    //TODO L8hwTask5.ERR NullPointerException in connect .."/w".Добавил static.ERR при выводе сообщ. в свой приватный чат.Удалил
     VBox prVBoxChat;
 
     @FXML
@@ -176,7 +174,10 @@ public class Controller {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
-            new Thread(new Runnable() {
+            //TODO Test.Удалил
+            //new Thread(new Runnable() {
+            //TODO Test.Добавил
+            Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -215,7 +216,7 @@ public class Controller {
                                     break;
                                 }
 
-                                //если пришло подтверждение регистрации, отправляем запрос на авторизацию, не прерывая процесс
+                                //если пришло подтверждение регистрации, отправляем запрос на авторизацию, не прерывая процесс//TODO Не работает
                                 if (str.startsWith("/regok")) {
                                     //скрываем элементы GUI для регистрации
                                     setRegistered(true);
@@ -296,8 +297,6 @@ public class Controller {
 
                                     //TODO временно
                                     System.out.println("if (str.startsWith(\"/w\")).str: " + str);
-                                    //System.out.println("if (str.startsWith(\"/w\")).prVBoxChat: " + prVBoxChat);
-                                    //System.out.println("if (str.startsWith(\"/w\")).prStage.prVBoxChat: " + prStage.prVBoxChat);
 
                                     int splitLimit = 3;
                                     String[] temp = str.split(" ", splitLimit);
@@ -305,15 +304,15 @@ public class Controller {
                                     String msg = temp[2];
                                     //выводим сообщение в свое окно чата
 
-                                    //TODO ERR.Test.Удалил
-                                    /*VBox vB = ((PrivateChatStage)prBtnSend.getScene().getWindow()).prVBoxChat;
+                                    //TODO ERR NullPointerException.Не помогло.Удалить
+                                    //VBox vB = ((PrivateChatStage)prBtnSend.getScene().getWindow()).prVBoxChat;
+                                    //showMessage(vB, Pos.TOP_LEFT, msg);
 
-                                    //TODO временно
-                                    System.out.println("if (str.startsWith(\"/w\")).vB: " + vB);//TODO ERR NullPointerException.Не помогло.Удалить
-                                    showMessage(vB, Pos.TOP_LEFT, msg);*/
+                                    //TODO ERR NullPointerException.Не помогло.Удалить
+                                    //showMessage(((PrivateChatStage)prBtnSend.getScene().getWindow()).prVBoxChat, Pos.TOP_LEFT, msg);
 
-                                    //TODO ERR.Test.Добавил.Не помогло
-                                    Platform.runLater(new Runnable() {
+                                    //TODO ERR.Test.Добавил.Не помогло.Удалить
+                                    /*Platform.runLater(new Runnable() {
                                         @Override
                                         public void run() {
                                             Label label = new Label(msg + "\n");
@@ -324,7 +323,9 @@ public class Controller {
                                             //добавляем vBox в общий бокс чата
                                             prVBoxChat.getChildren().add(vBox);
                                         }
-                                    });
+                                    });*/
+                                    //TODO ERR NullPointerException.Не работает
+                                    showMessage(prVBoxChat, Pos.TOP_LEFT, msg);
                                 }
 
                                 //TODO L8hwTask5.Удалил
@@ -357,7 +358,13 @@ public class Controller {
                         regFormTextArea.appendText("Waiting for server connection...Please log in.\n");
                     }
                 }
-            }).start();
+
+            //TODO Test.Удалил
+            //}).start();
+            //TODO Test.Добавил.Не помогло
+            });
+            thread.setDaemon(true);
+            thread.start();
         } catch (IOException e) {
             System.out.println("Waiting for server connection...: " + e);
         }
@@ -372,7 +379,7 @@ public class Controller {
 
     //метод запроса на регистрацию(сохранение) данных из регистрационной формы по событию кнопки Отправить
     public void getRegistration(){
-        if (socket == null || socket.isClosed()) {//TODO лишнее, если есть while?
+        if (socket == null || socket.isClosed()) {
             // сначала подключаемся к серверу, если не подключен(сокет не создан или закрыт)
             //если сервер еще не запущен, выводим сообщение и пытаемся подключиться в бесконечном цикле
             while(socket == null || socket.isClosed()){
@@ -527,7 +534,7 @@ public class Controller {
             public void run() {
                 try {
                     //открываем отдельное окно для приватного чата
-                    prStage = new PrivateChatStage(Controller.this);
+                    prStage = new PrivateChatStage(Controller.this, prVBoxChat);
                     prStage.show();
 
                     //обработчик закрытия окна персонального чата
@@ -617,7 +624,7 @@ public class Controller {
             //не показываем служебные сообщения у себя
             if(!str.startsWith("/")) {
                 //выводим пользователю собственное сообщение в окно приватного чата.
-                showMessage(prVBoxChat, Pos.TOP_RIGHT, str);//TODO было prTextField.getText()
+                showMessage(prVBoxChat, Pos.TOP_RIGHT, str);
             }
             //отправляем сообщение на сервер(ClientHandler)
             DataOutputStream out = ((PrivateChatStage)prBtnSend.getScene().getWindow()).out;
@@ -636,8 +643,32 @@ public class Controller {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                //создаем метку сообщения
                 Label label = new Label(msg + "\n");
+
+                //TODO GUI improving.Добавил.OK
+                //перенос слов в метке
+                //вычисляем в пикселях длину первой линии текста (количество символов * на 7 пикселей)
+                int textLineLength = (label.getText().length() - 1) * 7;
+                //вычисляем в пикселях ширину главного бокса боксов меток и вычитаем 10%, чтобы метка была немного меньше
+                double vBoxChLength = vBoxCh.getWidth() * 0.9;
+                //если длина первой линии меньше длины от бокса, то устанавливаем ширину метки по длине линии текста
+                if(textLineLength < vBoxChLength){
+                    label.setMaxWidth(textLineLength);
+                } else{//если нет - по боксу
+                    label.setMaxWidth(vBoxChLength);
+                }
+
+                //TODO временно
+                System.out.println("label.getText().length(): " + label.getText().length());
+                System.out.println("textLineLength: " + textLineLength);
+                System.out.println("label.getWidth(): " + label.getWidth());
+
+                //устанавливаем перенос слов в метке сообщения
+                label.setWrapText(true);
+                //создаем бокс с меткой сообщения
                 VBox vBox = new VBox();
+                //устанавливаем позицию метки в боксе
                 vBox.setAlignment(position);
                 //добавляем метку в бокс
                 vBox.getChildren().add(label);

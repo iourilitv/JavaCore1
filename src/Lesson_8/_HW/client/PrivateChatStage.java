@@ -26,11 +26,12 @@ public class PrivateChatStage extends Stage {
     DataInputStream in;
     VBox prVBoxChat;//TODO Не помогло.Удалить
 
-    public PrivateChatStage(Controller controller) throws IOException {
+    public PrivateChatStage(Controller controller, VBox prVBoxChat) throws IOException {
         this.chatCompanionNick = controller.getChatCompanionNick();
         this.in = controller.getIn();
         this.out = controller.getOut();
-        this.prVBoxChat = controller.getPrVBoxChat();//TODO Не помогло.Удалить
+        //this.prVBoxChat = controller.getPrVBoxChat();//TODO Не помогло.Удалить
+        this.prVBoxChat = prVBoxChat;//TODO Не помогло.Удалить
 
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResourceAsStream("privateChat.fxml"));
