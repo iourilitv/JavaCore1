@@ -18,6 +18,37 @@ public class Test /*extends Application*/ {
 
     }
     /*
+    http://tutorials.jenkov.com/javafx/fxml.html#property-name-matching
+    Попробовать использовать.
+    1. Creating Objects via valueOf() Method:
+    в fxml-файле.
+    <MyClass value="The Value"/>
+
+    в классе.
+    public MyClass {
+        public static MyClass valueOf(String value) {
+            return new MyClass(value);
+        }
+
+        private String value = null;
+
+        public MyClass(String value) {
+            this.value = value;
+        }
+    }
+    2. Creating Objects Via Factory Methods:
+    в fxml-файле.
+    <MyClass fx:factory="instance"/>
+
+    в классе.
+    public MyClass {
+        public static MyClass instance() {
+            return new MyClass();
+        }
+    }
+     */
+
+    /*
     Артем, добрый день. Спасибо, что не бросаете попытки мне помоч.
 Ссылка на проект https://drive.google.com/open?id=18TIipnukKGI0gRMJzyUZxUaX8MoDvF8Q .
 Если я не использую статик для prStage, то у меня возникает проблема с закрытием окна по полученному сообщению /invend в методе connect.

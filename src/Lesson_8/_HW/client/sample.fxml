@@ -13,10 +13,12 @@
     <VBox fx:id="registrationForm" managed="true" visible="true">
         <VBox fx:id="regFormTopLabelsBox" managed="false" visible="false">
             <Label fx:id="regFormTitleLabel" text="Регистрационная форма"/>
-            <Label text="Придумайте и введите свои данные."/>
-            <Label text="Nickname - имя в чате, состоящее только из латинских букв и цифр"/>
-            <Label text="Уникальный логин, состоящий только из латинских букв и цифр"/>
-            <Label text="Пароль, не менее 8-ми символов, состоящий из:\n- латинских букв в верхнем и нижнем регистре;\n- цифр и спецсимволов на клавиатуре." />
+            <Label text="Придумайте и введите свои данные." wrapText="true"/>
+            <Label text="Уникальный Nickname(имя в чате) и логин," wrapText="true"/>
+            <Label text="состоящие только из латинских букв и цифр" wrapText="true"/>
+            <Label text="Пароль, не менее 8-ми символов, состоящий из:" wrapText="true"/>
+            <Label text="- латинских букв в верхнем и нижнем регистре;" wrapText="true"/>
+            <Label text="- цифр и спецсимволов на клавиатуре." wrapText="true"/>
         </VBox>
 
         <HBox fx:id="regFormNicknameBox" managed="false" visible="false">
@@ -57,16 +59,29 @@
     <!--разделенная на два панель основного чата-->
     <HBox fx:id="mainChatPanel" managed="false" visible="false" VBox.vgrow="ALWAYS">
         <!--левая панель для отправки и отображения сообщений в чате-->
-        <VBox fx:id="mainChatVBox" HBox.hgrow="ALWAYS">
+        <VBox fx:id="mainChatVBox" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+
+            <!--TODO Scroll.Удалил-->
             <!--для каждой метки каждого сообщения отдельные боксы-->
-            <VBox fx:id="vBoxChat" managed="true" visible="true" HBox.hgrow="ALWAYS">
+            <!--<VBox fx:id="vBoxChat" managed="true" visible="true" HBox.hgrow="ALWAYS">-->
                 <!--для каждого сообщения отдельная метка-->
-            </VBox>
+            <!--</VBox>-->
+            <!--TODO Scroll.Добавил-->
+            <ScrollPane fx:id="scrollPaneChat" managed="true" visible="true" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                <VBox fx:id="vBoxChat" managed="true" visible="true" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                    <!--TODO Временно-->
+                    <style>
+                        -fx-background-color: blue;
+                        -fx-border-color: yellow;
+                    </style>
+                    <!--для каждого сообщения отдельная метка-->
+                </VBox>
+            </ScrollPane>
 
             <!--нижняя панель для отправки сообщений-->
             <!--в момент старта место в ?памяти? под окно не выделяется, пока оно невидимо-->
             <HBox fx:id="bottomPanel" managed="true" visible="true">
-                <TextField fx:id="textField" onAction="#sendMsg" promptText="Введите текст" HBox.hgrow="ALWAYS" />
+                <TextField fx:id="textField" onAction="#sendMsg" promptText="Введите текст" HBox.hgrow="ALWAYS"/>
                 <Button fx:id="btn1" onAction="#sendMsg" text="Send" />
             </HBox>
         </VBox>

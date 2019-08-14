@@ -23,12 +23,12 @@ public class PrivateChatStage extends Stage {
 
     String chatCompanionNick;//кому
     DataOutputStream out;
-    DataInputStream in;
+    DataInputStream in;//TODO лишнее.Удалить
     VBox prVBoxChat;//TODO Не помогло.Удалить
 
     public PrivateChatStage(Controller controller, VBox prVBoxChat) throws IOException {
         this.chatCompanionNick = controller.getChatCompanionNick();
-        this.in = controller.getIn();
+        this.in = controller.getIn();//TODO лишнее.Удалить
         this.out = controller.getOut();
         //this.prVBoxChat = controller.getPrVBoxChat();//TODO Не помогло.Удалить
         this.prVBoxChat = prVBoxChat;//TODO Не помогло.Удалить

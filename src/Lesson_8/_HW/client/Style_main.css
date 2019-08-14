@@ -9,7 +9,10 @@ HBox {
 }
 
 #regFormTopLabelsBox {
-    -fx-spacing:5;
+    -fx-min-height: 150;
+    -fx-pref-height: 150;
+    /*-fx-max-width: 65;*/
+    -fx-spacing:3;
 }
 
 #regFormTitleLabel {
@@ -29,7 +32,9 @@ HBox {
 }
 
 #regFormTextArea {
-
+    -fx-min-height: 30;
+    -fx-pref-height: 30;
+    -fx-max-height: 30;
 }
 
 #regFormRegBtnsBox {
@@ -67,11 +72,22 @@ HBox {
 }
 
 #mainChatVBox {
+    -fx-spacing:10;
+}
 
+#scrollPaneChat {
+    -fx-mix-height: 300;
+    -fx-pref-height: 300;
+    /*-fx-max-height: 300;//TODO Лишнее.Удалить*/
+    -fx-mix-width: 300;
+    -fx-pref-width: 300;
+    /*-fx-max-width: 500;//TODO Лишнее.Удалить*/
 }
 
 #vBoxChat {
-    -fx-max-height: 300;
+    -fx-mix-width: 235;
+    -fx-pref-width: 235;
+    /*-fx-max-width: 1000;  //TODO Не работает.Удалить*/
 }
 
 #bottomPanel {
@@ -87,27 +103,25 @@ HBox {
 
 }
 
-#clientList {
-    -fx-max-width: 70;
-}
-
-#receivedMsgLabel {
-    /*-fx-background-color: aqua;*/
-    /*-fx-background-color: slategray;*/
-    -fx-background-color: bisque;
-    -fx-text-fill: black;
-    -fx-padding: 5;/*отступ текста от края метки*/
-}
-
-#ownMsgLabel {
-    /*-fx-background-color: darkblue;*/
+/*#ownMsgLabel {
     -fx-background-color: darkslateblue;
     -fx-text-fill: white;
     -fx-padding: 5;
-}
+}*/
 
+/*#receivedMsgLabel {
+    -fx-background-color: bisque;
+    -fx-text-fill: black;
+    -fx-padding: 5;/*отступ текста от края метки/
+}*/
 
-#msgVBox {
+/*#msgVBox {
     -fx-padding:5;
     -fx-spacing:5;
+}*/
+
+#clientList {
+    -fx-min-width: 70;
+    -fx-pref-width: 70;
+    -fx-max-width: 70;
 }

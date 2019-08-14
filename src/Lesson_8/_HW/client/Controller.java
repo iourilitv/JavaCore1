@@ -8,12 +8,17 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+
+import static java.awt.Color.white;
 
 public class Controller {
     @FXML
@@ -372,6 +377,7 @@ public class Controller {
     }
 
     //метод запроса на регистрацию по нажатию элемента регистрация в форме авторизации(upperPanel)
+    @FXML
     public void tryToRegister(){
         //открываем окно регистрационной формы
         setRegistered(false);
@@ -379,6 +385,7 @@ public class Controller {
     }
 
     //метод запроса на регистрацию(сохранение) данных из регистрационной формы по событию кнопки Отправить
+    @FXML
     public void getRegistration(){
         if (socket == null || socket.isClosed()) {
             // сначала подключаемся к серверу, если не подключен(сокет не создан или закрыт)
@@ -407,6 +414,7 @@ public class Controller {
     }
 
     //Метод по нажатию кнопки в форме регистрации
+    @FXML
     public void cancelRegistration(){
         //возвращаемся из регистрационной формы в авторизационную
         setRegistered(true);
@@ -416,6 +424,7 @@ public class Controller {
     }
 
     //Метод для авторизации. Запускается кнопкой Авторизоваться в форме регистрации(upperPanel)
+    @FXML
     public void tryToAuth() {
         if (socket == null || socket.isClosed()) {
             // сначала подключаемся к серверу, если не подключен(сокет не создан или закрыт)
@@ -439,6 +448,7 @@ public class Controller {
 
     //TODO L8hwTask5.Добавил
     //метод для приглашения в приватный чат выбранного в списке ник
+    @FXML
     public void tryToInviteIntoPrivateChat(MouseEvent mouseEvent) throws IOException {
         //проверяем сколько было кликов мышью
         if (mouseEvent.getClickCount() == 2) {
@@ -574,6 +584,7 @@ public class Controller {
     }
 
     //метод для отправки сообщений в общем чате с выводом пользователю
+    @FXML
     public void sendMsg(ActionEvent actionEvent) {
         try {
             //принимаем строку из текстового поля
@@ -596,6 +607,7 @@ public class Controller {
 
     //TODO L8hwTask5.Добавил
     //метод для отправки сообщений в приватном чате
+    @FXML
     public void sendMsgInPrivateChat (ActionEvent actionEvent) {
 
         //TODO Уже не нужно.Удалить
@@ -647,46 +659,77 @@ public class Controller {
                 //создаем метку сообщения
                 Label label = new Label(msg + "\n");
 
-                //TODO GUI improving.Добавил.???
+                //TODO GUI improving.Добавил
                 //устанавливаем это сообщение собственное или получено
-                if(position.equals(Pos.TOP_RIGHT)){
+                if(position.equals(Pos.TOP_RIGHT)){//для своих сообщений
+
+                    //TODO лишнее.Удалить
                     //устанавливаем id для управлением стилем в css для своих сообщений
-                    label.setId("ownMsgLabel");
-                } else {
+                    //label.setId("ownMsgLabel");
+
+                    //устанавливаем цвета фона и текста в метке и скругление метки
+                    label.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white; -fx-background-radius: 5");
+                } else {//для полученных сообщений
+
+                    //TODO лишнее.Удалить
                     //устанавливаем id для управлением стилем в css для полученных сообщений
-                    label.setId("receivedMsgLabel");
+                    //label.setId("receivedMsgLabel");
+
+                    //устанавливаем цвета фона и текста в метке и скругление метки
+                    label.setStyle("-fx-background-color: bisque; -fx-text-fill: black; -fx-background-radius: 5");
                 }
 
                 //TODO GUI improving.Добавил.OK
                 //перенос слов в метке
                 //вычисляем в пикселях длину первой линии текста (количество символов * на 7 пикселей)
-                int textLineLength = (label.getText().length() - 1) * 7;
+                int textLineLength = (label.getText().length() + 1) * 7;
                 //вычисляем в пикселях ширину главного бокса боксов меток и вычитаем 10%, чтобы метка была немного меньше
                 double vBoxChLength = vBoxCh.getWidth() * 0.9;
-                //если длина первой линии меньше длины от бокса, то устанавливаем ширину метки по длине линии текста
-                if(textLineLength < vBoxChLength){
-                    label.setMaxWidth(textLineLength);
-                } else{//если нет - по боксу
-                    label.setMaxWidth(vBoxChLength);
-                }
 
                 //TODO временно
                 System.out.println("label.getText().length(): " + label.getText().length());
-                System.out.println("textLineLength: " + textLineLength);
-                System.out.println("label.getWidth(): " + label.getWidth());
+                System.out.println("vBoxCh.getWidth(): " + vBoxCh.getWidth());
+
+                //если длина первой линии меньше длины от бокса, то устанавливаем ширину метки по длине линии текста
+                if(textLineLength < vBoxChLength){
+                    label.setMinWidth(textLineLength);
+                    label.setPrefWidth(textLineLength);
+                    label.setMaxWidth(textLineLength);
+
+                    //TODO временно
+                    System.out.println("textLineLength: " + textLineLength);
+                    System.out.println("label.getMaxWidth(): " + label.getMaxWidth());
+
+                } else{//если нет - по боксу
+                    label.setMinWidth(vBoxChLength);
+                    label.setPrefWidth(vBoxChLength);
+                    label.setMaxWidth(vBoxChLength);
+
+                    //TODO временно
+                    System.out.println("vBoxChLength: " + vBoxChLength);
+                    System.out.println("label.getMaxWidth(): " + label.getMaxWidth());
+                }
 
                 //устанавливаем перенос слов в метке сообщения
                 label.setWrapText(true);
+                //устанавливаем отступ текста от края метки
+                label.setPadding(new Insets(5));//-fx-padding: 5;
                 //создаем бокс с меткой сообщения
                 VBox vBox = new VBox();
-                vBox.setId("msgVBox");
+
+                //TODO Удалить.ERR.Как растянуть в ширину адаптивно?
+                //vBox.fillWidthProperty(HBox.setHgrow(vBox, Priority.ALWAYS));
+                //vBox.setFillWidth(true);
+
+                //TODO лишнее.Удалить
+                //vBox.setId("msgVBox");
 
                 //TODO проверить!
                 //TODO GUI improving.Добавил
                 //Устанавливаем для меток отступ в пискелях от краев бокса
                 //vBox.setPadding(new Insets(5));
                 //вместо этого можно применить отступ, привязанный к элементу
-                //vBox.setMargin(label, new Insets(5));
+                vBox.setMargin(label, new Insets(5));//-fx-padding:5; -fx-spacing:5;
 
                 //устанавливаем позицию метки в боксе
                 vBox.setAlignment(position);
