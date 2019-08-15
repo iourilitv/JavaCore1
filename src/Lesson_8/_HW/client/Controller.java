@@ -331,7 +331,10 @@ public class Controller {
                                         }
                                     });*/
                                     //TODO ERR NullPointerException.Не работает
-                                    showMessage(prVBoxChat, Pos.TOP_LEFT, msg);
+                                    //showMessage(prVBoxChat, Pos.TOP_LEFT, msg);
+
+                                    //TODO Test in.read in PrivateChatStage.Добавил.Не работает
+                                    //showMessage(vBoxChat, Pos.TOP_LEFT, msg);
                                 }
 
                                 //TODO L8hwTask5.Удалил
@@ -652,7 +655,7 @@ public class Controller {
 
     //TODO L8hwTask5.Добавил
     //Метод вывода полученных и сервисных сообщений в чаты пользователя
-    private void showMessage(VBox vBoxCh, Pos position, String msg){
+    /*private */void showMessage(VBox vBoxCh, Pos position, String msg){
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
