@@ -596,6 +596,15 @@ public class Controller {
         try {
             //принимаем строку из текстового поля
             String str = textField.getText();
+
+            //TODO Don't allow sending of empty string or with only break spaces.Добавил
+            //не отправляем пустую строку, в том числе из одних пробелов
+            if(str.equals("") || str.split(" ").length < 1) {//TODO Важно! если str = "", то str.split(" ").length = 1!!!
+                textField.clear();
+                textField.requestFocus();
+                return;
+            }
+
             //не показываем служебные сообщения у себя
             if(!str.startsWith("/")) {
                 //выводим пользователю собственное сообщение в окно основного чата.
@@ -641,6 +650,15 @@ public class Controller {
         try {
             //принимаем строку из текстового поля
             String str = prTextField.getText();
+
+            //TODO Don't allow sending of empty string or with only break spaces.Добавил
+            //не отправляем пустую строку, в том числе из одних пробелов
+            if(str.equals("") || str.split(" ").length < 1) {//TODO Важно! если str = "", то str.split(" ").length = 1!!!
+                prTextField.clear();
+                prTextField.requestFocus();
+                return;
+            }
+
             //не показываем служебные сообщения у себя
             if(!str.startsWith("/")) {
                 //выводим пользователю собственное сообщение в окно приватного чата.
@@ -659,135 +677,71 @@ public class Controller {
 
     //TODO L8hwTask5.Добавил
     //Метод вывода полученных и сервисных сообщений в чаты пользователя
-    /*private */void showMessage(VBox vBoxCh, Pos position, String msg){
+    private void showMessage(VBox vBoxCh, Pos position, String msg){
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 //создаем метку сообщения
                 Label label = new Label(msg + "\n");
-
-                //TODO GUI improving.Добавил
                 //устанавливаем это сообщение собственное или получено
                 if(position.equals(Pos.TOP_RIGHT)){//для своих сообщений
-
-                    //TODO лишнее.Удалить
-                    //устанавливаем id для управлением стилем в css для своих сообщений
-                    //label.setId("ownMsgLabel");
-
                     //устанавливаем цвета фона и текста в метке и скругление метки
                     label.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white; -fx-background-radius: 5");
                 } else {//для полученных сообщений
-
-                    //TODO лишнее.Удалить
-                    //устанавливаем id для управлением стилем в css для полученных сообщений
-                    //label.setId("receivedMsgLabel");
-
                     //устанавливаем цвета фона и текста в метке и скругление метки
                     label.setStyle("-fx-background-color: bisque; -fx-text-fill: black; -fx-background-radius: 5");
                 }
 
-                //TODO GUI improving.Добавил.OK
                 //перенос слов в метке
                 //вычисляем в пикселях длину первой линии текста (количество символов * на 7 пикселей)
                 double textLineLength = (label.getText().length() + 1) * CHARACTER_IN_PIXELS;
-                //вычисляем в пикселях ширину главного бокса боксов меток и вычитаем 10%, чтобы метка была немного меньше
-
-                //TODO vBoxCh resizing.Удалил
-                //double vBoxChLength = vBoxCh.getWidth() * 0.9;
-                //TODO vBoxCh resizing.Добавил
+                //вычисляем в пикселях ширину главного бокса боксов меток и вычитаем 20%, чтобы метка была немного меньше
                 double scrollBarWidthShift = 2;
-                //определяем показывается ли панель прокрутки//TODO Не нашел признак отображения
+                //определяем показывается ли панель прокрутки
+                // TODO Не нашел стандартный признак отображения панели прокрутки
+                //TODO ERR in privateChat: scrollPaneChat - Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
                 if(scrollPaneChat.getVvalue() >= scrollPaneChat.getHeight() - SCROLLPANE_HEIGHT_SHIFT){
                     //если да, устанавливаем размер сдвига на ширину панели прокрутки
                     scrollBarWidthShift += SCROLLBAR_WIDTH;
                 }
                 double vBoxChLength = scrollPaneChat.getWidth() - scrollBarWidthShift;
-                //рассчитываем ширину vBoxCh
+                //устанавливаем ширину vBoxCh для адаптивной подгонки при расширении окна чата
                 vBoxCh.setMinWidth(vBoxChLength);
                 vBoxCh.setPrefWidth(vBoxChLength);
                 vBoxCh.setMaxWidth(vBoxChLength);
 
-                //TODO Как растянуть в ширину адаптивно? Проверить.Не работает
-                //vBoxCh.setFillWidth(true);
-
-                //TODO временно
-                //System.out.println("label.getText().length(): " + label.getText().length());
-                //System.out.println("vBoxCh.getWidth(): " + vBoxCh.getWidth());
-
-                //если длина первой линии меньше длины от бокса, то устанавливаем ширину метки по длине линии текста
+                //если длина первой линии меньше длины от панели прокрутки, то устанавливаем ширину метки по длине линии текста
                 if(textLineLength < vBoxChLength){
                     label.setMinWidth(textLineLength);
                     label.setPrefWidth(textLineLength);
                     label.setMaxWidth(textLineLength);
-
-                    //TODO временно
-                    //System.out.println("textLineLength: " + textLineLength);
-                    //System.out.println("label.getMaxWidth(): " + label.getMaxWidth());
-
-                } else{//если нет - по боксу с уменьшающим коэффициентом
+                } else{//если нет - по панели прокрутки с уменьшающим коэффициентом
                     label.setMinWidth(vBoxChLength * LABEL_PROPORTION);
                     label.setPrefWidth(vBoxChLength * LABEL_PROPORTION);
                     label.setMaxWidth(vBoxChLength * LABEL_PROPORTION);
-
-                    //TODO временно
-                    //System.out.println("vBoxChLength: " + vBoxChLength);
-                    //System.out.println("label.getMaxWidth(): " + label.getMaxWidth());
                 }
-
                 //устанавливаем перенос слов в метке сообщения
                 label.setWrapText(true);
                 //устанавливаем отступ текста от края метки
                 label.setPadding(new Insets(5));//-fx-padding: 5;
                 //создаем бокс с меткой сообщения
                 VBox vBox = new VBox();
-
-                //TODO Удалить.ERR.Как растянуть в ширину адаптивно?
-                //vBox.fillWidthProperty(HBox.setHgrow(vBox, Priority.ALWAYS));//TODO ERR
-                //vBox.setFillWidth(true);//TODO Не работает
-                //TODO лишнее.Удалить
-                //vBox.setId("msgVBox");
-
-                //TODO проверить!
-                //TODO GUI improving.Добавил
-                //Устанавливаем для меток отступ в пискелях от краев бокса
-                //vBox.setPadding(new Insets(5));
-                //вместо этого можно применить отступ, привязанный к элементу
+                //устанавливаем отступ по всем направлениям, привязанный к элементу
                 vBox.setMargin(label, new Insets(5));//-fx-padding:5; -fx-spacing:5;
-
                 //устанавливаем позицию метки в боксе
                 vBox.setAlignment(position);
                 //добавляем метку в бокс
                 vBox.getChildren().add(label);
-
-                //TODO проверить!
-                //TODO GUI improving.Добавил
-                //Устанавливаем для меток отступ в пискелях от краев бокса (top 20, right 10, bottom 20, left 10)
-                //vBoxCh.setPadding(new Insets(20, 10, 20, 10));//new Insets(10) - одинаково для всех
-                //устанавливаем расстоянием 10 пикс.между боксами с метками сообщений
-                //vBoxCh.setSpacing(10);
-
                 //добавляем vBox в общий бокс чата
                 vBoxCh.getChildren().add(vBox);
-
-                //TODO setting Scroll Pane at the bottom.Добавил.Не работает
-                //устанавливаем скроллинг в самый низ(на последнее добавленное сообщение)
-                //scrollPaneChat.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);//TODO Лишнее
-                //scrollPaneChat.setVvalue(1.0);//TODO Частично помогло.Сдвигает вниз, но на предпоследний элемент
-
-                //TODO setting Scroll Pane at the bottom.Добавил.ОК
-                // You can bind the ScrollPane vvalue property with the heightProperty of the inner container.
-                //For example, if you have a VBox in your ScrollPane:
+                //Устанавливаем положение прокрутки вниз(показываем последний элемент)
+                //привязываем свойство vvalue к свойству высоты внутреннего вертикального бокса чата
                 scrollPaneChat.vvalueProperty().bind(vBoxCh.heightProperty());
 
-                //TODO попробовать
-                scrollPaneChat.autosize();
-                vBoxCh.autosize();
-
-                //TODO временно
-                System.out.println("scrollPaneChat.getVvalue(): " + scrollPaneChat.getVvalue());
-                System.out.println("scrollPaneChat.getHeight(): " + scrollPaneChat.getHeight());
-                System.out.println("scrollPaneChat.getHvalue(): " + scrollPaneChat.getHvalue());
-                System.out.println("scrollPaneChat.getWidth(): " + scrollPaneChat.getWidth());
+                //TODO For future improvings.Перенести прорисовку в отдельный процесс и добавить перерисовку панелей сообщений
+                //перерисовываем панели для адаптивной подгонки при изменении размера окна
+                //scrollPaneChat.autosize();
+                //vBoxCh.autosize();
             }
         });
     }

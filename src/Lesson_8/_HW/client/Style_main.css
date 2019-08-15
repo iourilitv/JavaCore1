@@ -28,7 +28,7 @@ HBox {
     -fx-pref-width-width: 65;
     -fx-max-width: 65;
     -fx-padding: 3.5;
-    /*-fx-text-alignment: right;//TODO здесь не работает. вернул в sample.fxml*/
+    /*-fx-text-alignment: right;//TODO Важно! ERR API. Здесь не работает. вернул в sample.fxml*/
 }
 
 #regFormTextArea {
@@ -78,18 +78,13 @@ HBox {
 #scrollPaneChat {
     -fx-mix-height: 300;
     -fx-pref-height: 300;
-    /*-fx-max-height: 300;//TODO Лишнее.Удалить*/
     -fx-mix-width: 300;
     -fx-pref-width: 300;
-    /*-fx-max-width: 500;//TODO Лишнее.Удалить*/
-    /*-fx-vbar-policy: always;//TODO Лишнее.Удалить*/
-    /*-fx-pannable: bottom;//TODO Лишнее.Удалить*/
 }
 
 #vBoxChat {
     -fx-mix-width: 230;
     -fx-pref-width: 230;
-    /*-fx-max-width: 1000;  //TODO Не работает.Удалить*/
 }
 
 #bottomPanel {
@@ -101,26 +96,9 @@ HBox {
 
 }
 
-#btn1 {/*Send*/
+#btn1 {/*Send button in the main chat*/
 
 }
-
-/*#ownMsgLabel {
-    -fx-background-color: darkslateblue;
-    -fx-text-fill: white;
-    -fx-padding: 5;
-}*/
-
-/*#receivedMsgLabel {
-    -fx-background-color: bisque;
-    -fx-text-fill: black;
-    -fx-padding: 5;/*отступ текста от края метки/
-}*/
-
-/*#msgVBox {
-    -fx-padding:5;
-    -fx-spacing:5;
-}*/
 
 #clientList {
     -fx-min-width: 70;
