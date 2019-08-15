@@ -68,13 +68,23 @@
             <!--</VBox>-->
             <!--TODO Scroll.Добавил-->
             <ScrollPane fx:id="scrollPaneChat" managed="true" visible="true" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                <VBox fx:id="vBoxChat" managed="true" visible="true" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                    <!--TODO Временно-->
-                    <style>
-                        -fx-background-color: blue;
-                        -fx-border-color: yellow;
-                    </style>
-                    <!--для каждого сообщения отдельная метка-->
+
+                <!--TODO Временно-->
+            <!--<style>
+                -fx-background-color: blue;
+                -fx-border-color: yellow;
+            </style>-->
+
+            <VBox fx:id="vBoxChat" managed="true" visible="true" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+
+                <!--TODO Временно-->
+            <!--<style>
+                -fx-background-color: green;
+                -fx-border-color: yellow;
+                -fx-max-width: 1000;
+            </style>-->
+
+            <!--для каждого сообщения отдельная метка-->
                 </VBox>
             </ScrollPane>
 

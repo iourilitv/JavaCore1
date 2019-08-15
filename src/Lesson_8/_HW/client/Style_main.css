@@ -82,11 +82,13 @@ HBox {
     -fx-mix-width: 300;
     -fx-pref-width: 300;
     /*-fx-max-width: 500;//TODO Лишнее.Удалить*/
+    /*-fx-vbar-policy: always;//TODO Лишнее.Удалить*/
+    /*-fx-pannable: bottom;//TODO Лишнее.Удалить*/
 }
 
 #vBoxChat {
-    -fx-mix-width: 235;
-    -fx-pref-width: 235;
+    -fx-mix-width: 230;
+    -fx-pref-width: 230;
     /*-fx-max-width: 1000;  //TODO Не работает.Удалить*/
 }
 

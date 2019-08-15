@@ -8,21 +8,19 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import static java.awt.Color.white;
-
 public class Controller {
+
     @FXML
     HBox mainChatPanel;
+
+    @FXML
+    ScrollPane scrollPaneChat;
 
     @FXML
     VBox vBoxChat;
@@ -91,6 +89,12 @@ public class Controller {
 
     @FXML
     HBox prBottomPanel;
+
+    //константы для подгонки размеров изображения
+    public static final double SCROLLBAR_WIDTH = 20;
+    public static final double SCROLLPANE_HEIGHT_SHIFT = 35;
+    public static final double LABEL_PROPORTION = 0.8;
+    public static final double CHARACTER_IN_PIXELS = 7;
 
     Socket socket;
     DataInputStream in;
@@ -685,13 +689,30 @@ public class Controller {
                 //TODO GUI improving.Добавил.OK
                 //перенос слов в метке
                 //вычисляем в пикселях длину первой линии текста (количество символов * на 7 пикселей)
-                int textLineLength = (label.getText().length() + 1) * 7;
+                double textLineLength = (label.getText().length() + 1) * CHARACTER_IN_PIXELS;
                 //вычисляем в пикселях ширину главного бокса боксов меток и вычитаем 10%, чтобы метка была немного меньше
-                double vBoxChLength = vBoxCh.getWidth() * 0.9;
+
+                //TODO vBoxCh resizing.Удалил
+                //double vBoxChLength = vBoxCh.getWidth() * 0.9;
+                //TODO vBoxCh resizing.Добавил
+                double scrollBarWidthShift = 2;
+                //определяем показывается ли панель прокрутки//TODO Не нашел признак отображения
+                if(scrollPaneChat.getVvalue() >= scrollPaneChat.getHeight() - SCROLLPANE_HEIGHT_SHIFT){
+                    //если да, устанавливаем размер сдвига на ширину панели прокрутки
+                    scrollBarWidthShift += SCROLLBAR_WIDTH;
+                }
+                double vBoxChLength = scrollPaneChat.getWidth() - scrollBarWidthShift;
+                //рассчитываем ширину vBoxCh
+                vBoxCh.setMinWidth(vBoxChLength);
+                vBoxCh.setPrefWidth(vBoxChLength);
+                vBoxCh.setMaxWidth(vBoxChLength);
+
+                //TODO Как растянуть в ширину адаптивно? Проверить.Не работает
+                //vBoxCh.setFillWidth(true);
 
                 //TODO временно
-                System.out.println("label.getText().length(): " + label.getText().length());
-                System.out.println("vBoxCh.getWidth(): " + vBoxCh.getWidth());
+                //System.out.println("label.getText().length(): " + label.getText().length());
+                //System.out.println("vBoxCh.getWidth(): " + vBoxCh.getWidth());
 
                 //если длина первой линии меньше длины от бокса, то устанавливаем ширину метки по длине линии текста
                 if(textLineLength < vBoxChLength){
@@ -700,17 +721,17 @@ public class Controller {
                     label.setMaxWidth(textLineLength);
 
                     //TODO временно
-                    System.out.println("textLineLength: " + textLineLength);
-                    System.out.println("label.getMaxWidth(): " + label.getMaxWidth());
+                    //System.out.println("textLineLength: " + textLineLength);
+                    //System.out.println("label.getMaxWidth(): " + label.getMaxWidth());
 
-                } else{//если нет - по боксу
-                    label.setMinWidth(vBoxChLength);
-                    label.setPrefWidth(vBoxChLength);
-                    label.setMaxWidth(vBoxChLength);
+                } else{//если нет - по боксу с уменьшающим коэффициентом
+                    label.setMinWidth(vBoxChLength * LABEL_PROPORTION);
+                    label.setPrefWidth(vBoxChLength * LABEL_PROPORTION);
+                    label.setMaxWidth(vBoxChLength * LABEL_PROPORTION);
 
                     //TODO временно
-                    System.out.println("vBoxChLength: " + vBoxChLength);
-                    System.out.println("label.getMaxWidth(): " + label.getMaxWidth());
+                    //System.out.println("vBoxChLength: " + vBoxChLength);
+                    //System.out.println("label.getMaxWidth(): " + label.getMaxWidth());
                 }
 
                 //устанавливаем перенос слов в метке сообщения
@@ -721,9 +742,8 @@ public class Controller {
                 VBox vBox = new VBox();
 
                 //TODO Удалить.ERR.Как растянуть в ширину адаптивно?
-                //vBox.fillWidthProperty(HBox.setHgrow(vBox, Priority.ALWAYS));
-                //vBox.setFillWidth(true);
-
+                //vBox.fillWidthProperty(HBox.setHgrow(vBox, Priority.ALWAYS));//TODO ERR
+                //vBox.setFillWidth(true);//TODO Не работает
                 //TODO лишнее.Удалить
                 //vBox.setId("msgVBox");
 
@@ -748,6 +768,26 @@ public class Controller {
 
                 //добавляем vBox в общий бокс чата
                 vBoxCh.getChildren().add(vBox);
+
+                //TODO setting Scroll Pane at the bottom.Добавил.Не работает
+                //устанавливаем скроллинг в самый низ(на последнее добавленное сообщение)
+                //scrollPaneChat.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);//TODO Лишнее
+                //scrollPaneChat.setVvalue(1.0);//TODO Частично помогло.Сдвигает вниз, но на предпоследний элемент
+
+                //TODO setting Scroll Pane at the bottom.Добавил.ОК
+                // You can bind the ScrollPane vvalue property with the heightProperty of the inner container.
+                //For example, if you have a VBox in your ScrollPane:
+                scrollPaneChat.vvalueProperty().bind(vBoxCh.heightProperty());
+
+                //TODO попробовать
+                scrollPaneChat.autosize();
+                vBoxCh.autosize();
+
+                //TODO временно
+                System.out.println("scrollPaneChat.getVvalue(): " + scrollPaneChat.getVvalue());
+                System.out.println("scrollPaneChat.getHeight(): " + scrollPaneChat.getHeight());
+                System.out.println("scrollPaneChat.getHvalue(): " + scrollPaneChat.getHvalue());
+                System.out.println("scrollPaneChat.getWidth(): " + scrollPaneChat.getWidth());
             }
         });
     }
