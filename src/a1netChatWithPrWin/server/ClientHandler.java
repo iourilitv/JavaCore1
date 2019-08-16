@@ -94,20 +94,11 @@ public class ClientHandler {
                                     // Вытаскиваем данные из БД //здесь: tokens[1] - логин, tokens[2] - пароль
                                     String newNick = AuthService.getNickByLoginAndPass(login, password);
                                     if (newNick != null) {
-
                                         //проверяем не авторизовался ли кто-то уже под этим ником
                                         if(!server.isThisNickAuthorized(newNick)){
-
-                                            //TODO L8hwTask5.Удалил
-                                            //отправляем сообщение об успешной авторизации
-                                            //sendMsg("/authok");
-
                                             nick = newNick;
-
-                                            //TODO L8hwTask5.Добавил
                                             //отправляем сообщение(в Controller) об успешной авторизации с собственным ником пользователя
                                             sendMsg("/authok " + nick);
-
                                             //подписываем клиента при успешной авторизации и выходим из цикла
                                             server.subscribe(ClientHandler.this);
                                             //выводим сообщение в консоль сервера об успешном подключении клиента
@@ -140,7 +131,6 @@ public class ClientHandler {
                                     break;
                                 }
 
-                                //TODO L8hwTask5.Добавил.
                                 //сервер принимает от клиента служебные сообщения приглашения в персональный чат
                                 // и переправляет его на сервер партнеру
                                 if (str.startsWith("/inv")) {

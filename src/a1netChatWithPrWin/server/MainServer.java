@@ -7,20 +7,12 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 /**
- * Java Core. Продвинутый уровень.
- * Вебинар 03 июня 2019 MSK (UTC+3).
- * Урок 8. Написание сетевого чата. Часть II.
- * Home work.
+ * Java Core.
+ * Net chat with the a window for receiving and sending only single private message.
+ * Developing started on 16.08.2019.
  * @author Yuriy Litvinenko.
- * DONE 1. Форматирование сообщения, свой-чужой. Свои справа, чужие слева.
- * DONE 2. Регистрация нового пользователя. Через БД.
- * DONE 3. Переподключение клиента при падении сервера.
- * DONE 4. Хранить черный список в БД
- * DONE + проверка л/с(чтобы нельзя было отправлять общее или личное сообщение, если отправитель
- *     в черном списке у отправителя и получателя). Добавить исключение получения сообщения всем на стороне клиента,
- *     у которого отправитель в черном списке.
- * 5. Переработать отправку л/с с учетом он-лайн списка (разработать диалоговое окно).
  */
+
 public class MainServer {
     private Vector<ClientHandler> clients;
 
