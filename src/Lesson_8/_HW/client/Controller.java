@@ -687,7 +687,7 @@ public class Controller {
             @Override
             public void run() {
                 //создаем метку сообщения
-                Label label = new Label(msg/* + "\n"*/);//TODO Удалил  + "\n"
+                Label label = new Label(msg);
 
                 //устанавливаем это сообщение собственное или получено
                 if(position.equals(Pos.TOP_RIGHT)){//для своих сообщений
