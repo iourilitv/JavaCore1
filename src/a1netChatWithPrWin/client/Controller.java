@@ -106,8 +106,10 @@ public class Controller {
 
     //static - чтобы использовать в потоке FX application
     private static String chatCompanionNick;
+
+    //TODO pr.window opening.Deleted
     //чтобы закрыть окно приватного чата в методе connect
-    private static PrivateChatStage prStage;
+    //private static PrivateChatStage prStage;
 
     private String nick;
 
@@ -271,10 +273,10 @@ public class Controller {
                                     });
                                 }
 
-                                //TODO onlyPrivateMsgWindow.Удалить?
+                                //TODO pr.window opening.Deleted
                                 //***Обработка запросов на инициализацию и закрытие персонального чата***
-                                if (str.startsWith("/inv")) {//всегда в строке ник партнера
-                                    //***Обработка запроса на закрытие персонального чата***
+                                /*if (str.startsWith("/inv")) {//всегда в строке ник партнера
+                                    // ***Обработка запроса на закрытие персонального чата***
                                     if (str.startsWith("/invend")) {
                                         //выводим пользователю сервисное сообщение в окно основного чата.
                                         showMessage(vBoxChat, Pos.TOP_LEFT, "service: Your partner " + chatCompanionNick + " has left. Your private chat window has been closed.");
@@ -290,7 +292,7 @@ public class Controller {
                                     }
                                     //передаем сообщения на проверку в метод инициализации прив.чата
                                     initPrivateChat(str);
-                                }
+                                }*/
 
                                 //TODO onlyPrivateMsgWindow.Переписать?
                                 //обрабатываем полученные сообщения из приватного чата
@@ -303,9 +305,11 @@ public class Controller {
                                     String[] temp = str.split(" ", splitLimit);
                                     //выделяем собственно текст сообщения
                                     String msg = temp[2];
+
+                                    //TODO pr.window opening.Added
+                                    //открывает окно дла приема и отправки одного приватного сообщения
+                                    openPrivateMessageWindow("nick?");
                                     //выводим сообщение в свое окно чата
-
-
                                 }
                             } else{
                                 //выводим сообщение в свое окно чата
@@ -406,7 +410,8 @@ public class Controller {
         }
     }
 
-    //метод для приглашения в приватный чат выбранного в списке ник
+    //TODO pr.window opening.Deleted
+    /*//метод для приглашения в приватный чат выбранного в списке ник
     @FXML
     public void tryToInviteIntoPrivateChat(MouseEvent mouseEvent) throws IOException {
         //проверяем сколько было кликов мышью
@@ -449,10 +454,41 @@ public class Controller {
 
             }
         }
+    }*/
+    //TODO pr.window opening.Added
+    //метод открытия окна отправки приватного сообщения
+    @FXML
+    private void tryToOpenPrivateMessageWindow(MouseEvent mouseEvent) throws IOException {
+        String nickTo;//кому отправляем приватное сообщение
+
+        //проверяем сколько было кликов мышью. Нужен двойной клик
+        if (mouseEvent.getClickCount() == 2) {
+
+            //TODO Временно
+            System.out.println("Двойной клик");
+
+            nickTo = clientList.getSelectionModel().getSelectedItem();
+
+            //запрещаем кликать на свой ник(nick) в списке
+            if (nickTo.equals(nick)){
+                //Выводим предупреждение пользователю в GUI
+                showMessage(vBoxChat, Pos.TOP_LEFT, "service: Нельзя выбрать самого себя!");
+                //Обнуляем ник партнера по чату
+                //nickTo = null;
+
+                //TODO временно
+                System.out.println("Нельзя выбрать самого себя!");
+
+            } else {
+                //открываем окно для ввода сообщения
+                openPrivateMessageWindow(nickTo);
+            }
+        }
     }
 
+    //TODO pr.window opening.Deleted
     //метод инициализации окна приватного чата
-    private void initPrivateChat(String str) {
+    /*private void initPrivateChat(String str) {
         try {
             //выделяем ник партнера по чату из служебного сообщения
             String[] temp = str.split(" ", 2);
@@ -493,11 +529,12 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
+    //TODO pr.window opening.Deleted
     //если приватный чат инициализирован, открыть новое окно
     //и подтверждаем готовность инициализации приватного чата
-    private void startPrivateChat(){
+    /*private void startPrivateChat(){
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -520,6 +557,28 @@ public class Controller {
                             //Обнуляем ник партнера по чату
                             chatCompanionNick = null;
                         }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }*/
+    //TODO pr.window opening.Added
+    //Метод открывает окно дла приема и отправки одного приватного сообщения
+    private void openPrivateMessageWindow(String nickTo){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //открываем отдельное окно для приватного чата
+                    PrivateChatStage prMsgWindow = new PrivateChatStage(Controller.this, nickTo);
+                    prMsgWindow.show();
+
+                    //обработчик закрытия окна персонального чата
+                    prMsgWindow.setOnCloseRequest(event -> {
+                        //закрываем по крестику окно приватного сообщения
+                        prMsgWindow.close();
                     });
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -572,8 +631,9 @@ public class Controller {
         }
     }
 
+    //TODO pr.window opening.Deleted
     //метод для отправки сообщений в приватном чате
-    @FXML
+    /*@FXML
     public void sendMsgInPrivateChat (ActionEvent actionEvent) {
         try {
             //принимаем строку из текстового поля
@@ -594,6 +654,33 @@ public class Controller {
             //отправляем сообщение на сервер(ClientHandler)
             DataOutputStream out = ((PrivateChatStage)prBtnSend.getScene().getWindow()).out;
             out.writeUTF("/w " + chatCompanionNick + " " + str);
+            //очищаем текстовое поле и возвращаем ему курсор
+            prTextField.clear();
+            prTextField.requestFocus();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
+    //TODO pr.window opening.Added
+    //метод для отправки сообщений в приватном чате
+    @FXML
+    public void sendPrivateMsg (ActionEvent actionEvent) {
+        try {
+            //принимаем строку из текстового поля
+            String str = prTextField.getText();
+            //получаем ник получателя
+            String nickTo = ((PrivateChatStage)prBtnSend.getScene().getWindow()).nickTo;
+
+            //не отправляем пустую строку, в том числе из одних пробелов
+            if(str.equals("") || str.split(" ").length < 1) {
+                prTextField.clear();
+                prTextField.requestFocus();
+                return;
+            }
+
+            //отправляем сообщение на сервер(ClientHandler)
+            DataOutputStream out = ((PrivateChatStage)prBtnSend.getScene().getWindow()).out;
+            out.writeUTF("/w " + nickTo + " " + str);
             //очищаем текстовое поле и возвращаем ему курсор
             prTextField.clear();
             prTextField.requestFocus();

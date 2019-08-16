@@ -11,11 +11,18 @@ import java.io.IOException;
 
 public class PrivateChatStage extends Stage {
 
-    String chatCompanionNick;//кому
-    DataOutputStream out;
-    VBox prVBoxChat;//TODO Не помогло.Удалить
+    //TODO pr.window opening.Deleted
+    //String chatCompanionNick;//кому
+    //TODO pr.window opening.Added
+    String nickTo;//кому
 
-    public PrivateChatStage(Controller controller, VBox prVBoxChat) throws IOException {
+    DataOutputStream out;
+
+    //TODO pr.window opening.Deleted
+    //VBox prVBoxChat;//TODO Не помогло.Удалить
+
+    //TODO pr.window opening.Deleted
+    /*public PrivateChatStage(Controller controller, VBox prVBoxChat) throws IOException {
         this.chatCompanionNick = controller.getChatCompanionNick();
         this.out = controller.getOut();
         this.prVBoxChat = prVBoxChat;//TODO Не помогло.Удалить
@@ -28,6 +35,21 @@ public class PrivateChatStage extends Stage {
 
         //TODO временно.
         System.out.println("PrivateChatStage.chatCompanionNick: " + chatCompanionNick);
+
+    }*/
+    //TODO pr.window opening.Added
+    public PrivateChatStage(Controller controller, String nickTo) throws IOException {
+        this.nickTo = nickTo;
+        this.out = controller.getOut();
+
+        FXMLLoader loader = new FXMLLoader();
+        Parent root = loader.load(getClass().getResourceAsStream("privateChat.fxml"));
+        setTitle("Private message to " + nickTo);
+        Scene scene = new Scene(root, 300, 100);
+        setScene(scene);
+
+        //TODO временно.
+        System.out.println("PrivateChatStage.chatCompanionNick: " + nickTo);
 
     }
 

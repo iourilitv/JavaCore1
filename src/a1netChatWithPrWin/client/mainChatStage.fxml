@@ -74,7 +74,12 @@
             </HBox>
         </VBox>
         <!--кликабельный список пользователей(правая панель)-->
-        <ListView fx:id="clientList" managed="true" visible="true" onMouseClicked="#tryToInviteIntoPrivateChat" ></ListView>
+
+        <!--TODO pr.window opening.Deleted-->
+        <!--<ListView fx:id="clientList" managed="true" visible="true" onMouseClicked="#tryToInviteIntoPrivateChat" ></ListView>-->
+        <!--TODO pr.window opening.Added-->
+        <ListView fx:id="clientList" managed="true" visible="true" onMouseClicked="#tryToOpenPrivateMessageWindow" ></ListView>
+
     </HBox>
 
 </VBox>
