@@ -110,6 +110,10 @@ public class Controller {
     //TODO pr.window opening.Deleted
     //чтобы закрыть окно приватного чата в методе connect
     //private static PrivateChatStage prStage;
+    //TODO pr.window opening.Added
+    //чтобы закрыть окно приватного чата в методе
+    //static - чтобы использовать в потоке FX application
+    private static PrivateMsgWindow prMsgWindow;
 
     private String nick;
 
@@ -572,7 +576,7 @@ public class Controller {
             public void run() {
                 try {
                     //открываем отдельное окно для приватного чата
-                    PrivateMsgWindow prMsgWindow = new PrivateMsgWindow(Controller.this, nickTo);
+                    prMsgWindow = new PrivateMsgWindow(Controller.this, nickTo);
                     prMsgWindow.show();
 
                     //обработчик закрытия окна персонального чата
@@ -670,29 +674,17 @@ public class Controller {
             String str = prTextField.getText();
             //получаем ник получателя
             String nickTo = ((PrivateMsgWindow)prBtnSend.getScene().getWindow()).nickTo;
-
             //не отправляем пустую строку, в том числе из одних пробелов
             if(str.equals("") || str.split(" ").length < 1) {
                 prTextField.clear();
                 prTextField.requestFocus();
                 return;
             }
-
             //отправляем сообщение на сервер(ClientHandler)
             DataOutputStream out = ((PrivateMsgWindow)prBtnSend.getScene().getWindow()).out;
             out.writeUTF("/w " + nickTo + " " + str);
-
-            //TODO Лишнее.Удалить
-            //очищаем текстовое поле и возвращаем ему курсор
-            prTextField.clear();
-            prTextField.requestFocus();
-
-            //TODO Как вызвать prMsgWindow?
-            //обработчик закрытия окна персонального чата
-            /*prMsgWindow.setOnCloseRequest(event -> {
-                //закрываем по крестику окно приватного сообщения
-                prMsgWindow.close();
-            });*/
+            //закрываем после отправки окно приватного сообщения
+            prMsgWindow.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
