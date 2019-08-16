@@ -9,10 +9,15 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+
+import static javafx.scene.text.TextAlignment.RIGHT;
 
 public class Controller {
 
@@ -682,11 +687,18 @@ public class Controller {
             @Override
             public void run() {
                 //создаем метку сообщения
-                Label label = new Label(msg + "\n");
+                Label label = new Label(msg/* + "\n"*/);//TODO Удалил  + "\n"
+
                 //устанавливаем это сообщение собственное или получено
                 if(position.equals(Pos.TOP_RIGHT)){//для своих сообщений
                     //устанавливаем цвета фона и текста в метке и скругление метки
                     label.setStyle("-fx-background-color: darkslateblue; -fx-text-fill: white; -fx-background-radius: 5");
+
+                    //TODO Важно! Выравнивание текта в метке Не полностью работает!
+                    // работает только для нескольких строк в метке
+                    //выравниваем текст по правому краю метки
+                    label.setTextAlignment(RIGHT);//неработает и (TextAlignment.RIGHT)
+
                 } else {//для полученных сообщений
                     //устанавливаем цвета фона и текста в метке и скругление метки
                     label.setStyle("-fx-background-color: bisque; -fx-text-fill: black; -fx-background-radius: 5");
@@ -694,7 +706,7 @@ public class Controller {
 
                 //перенос слов в метке
                 //вычисляем в пикселях длину первой линии текста (количество символов * на 7 пикселей)
-                double textLineLength = (label.getText().length() + 1) * CHARACTER_IN_PIXELS;
+                double textLineLength = (label.getText().length() + 2) * CHARACTER_IN_PIXELS;
                 //вычисляем в пикселях ширину главного бокса боксов меток и вычитаем 20%, чтобы метка была немного меньше
                 double scrollBarWidthShift = 2;
                 //определяем показывается ли панель прокрутки
@@ -720,6 +732,7 @@ public class Controller {
                     label.setPrefWidth(vBoxChLength * LABEL_PROPORTION);
                     label.setMaxWidth(vBoxChLength * LABEL_PROPORTION);
                 }
+
                 //устанавливаем перенос слов в метке сообщения
                 label.setWrapText(true);
                 //устанавливаем отступ текста от края метки
