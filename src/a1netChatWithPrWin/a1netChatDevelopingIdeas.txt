@@ -21,6 +21,18 @@
 	 а все оформление фона сделать в боксе. А метку сделать прозрачной. Также можно улучшить выравнивание попробовав применить 
 	 типа sizeProperties от текста.
 
+Не решенные задачи.Есть ли решение?
+	 Controller.showMessage():
+	 //TODO Не нашел стандартный геттер признака отображения панели прокрутки в ScrollPanel
+	 //TODO For future improvings.Перенести прорисовку в отдельный процесс и добавить перерисовку панелей сообщений
+       //перерисовываем панели для адаптивной подгонки при изменении размера окна
+       //scrollPaneChat.autosize();
+       //vBoxCh.autosize();
+     //TODO Важно! Выравнивание текта в метке Не полностью работает!
+       //работает только для нескольких строк в метке
+       //выравниваем текст по правому краю метки
+       //label.setTextAlignment(RIGHT);//неработает и (TextAlignment.RIGHT)
+
 Created two new packets for two independent branches of netChat developing.
 It starts at the following:
 Basically completed the implementing of L8hwTask5.

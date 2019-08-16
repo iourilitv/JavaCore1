@@ -81,7 +81,6 @@ public class Controller {
 
     //переменные с pr в начале имени - для privateChat.fxml
     @FXML
-    //TODO L8hwTask5.ERR NullPointerException in connect .."/w".Добавил static.ERR при выводе сообщ. в свой приватный чат.Удалил
     VBox prVBoxChat;
 
     @FXML
@@ -105,15 +104,12 @@ public class Controller {
 
     private boolean isAuthorized;
 
-    //TODO L8hwTask5.Добавил
     //static - чтобы использовать в потоке FX application
     private static String chatCompanionNick;
-
-    //TODO L8hwTask5.Добавил
-    private String nick;
-    //TODO L8hwTask5.Closing window if partner has left.Добавил.ERR NullPointerException.Добавил static
-    //чтобы закрыть окно приватного чата в методе connect(работает) или sendMsgInPrivateChat(TODO удалить)
+    //чтобы закрыть окно приватного чата в методе connect
     private static PrivateChatStage prStage;
+
+    private String nick;
 
     final String IP_ADRESS = "localhost";//IP 127.0.0.1.
     final int PORT = 8189;
@@ -187,9 +183,6 @@ public class Controller {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
-            //TODO Test.Удалил
-            //new Thread(new Runnable() {
-            //TODO Test.Добавил
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -219,13 +212,10 @@ public class Controller {
                                     setRegistered(true);
                                     //скрываем элементы GUI для авторизации
                                     setAuthorized(true);
-
-                                    //TODO L8hwTask5.Добавил
                                     //выделяем полученный с сервера собственный ник пользователя
                                     int splitLimit = 2;
                                     String[] tokens = str.split(" ", splitLimit);
                                     nick = tokens[1];
-
                                     break;
                                 }
 
@@ -249,7 +239,6 @@ public class Controller {
                             }
                         }
 
-                        //TODO L8hwTask5.Добавил
                         //Устанавливаем пустой ник партнера для приватного чата пользователя
                         chatCompanionNick = null;
 
@@ -258,7 +247,6 @@ public class Controller {
                         while (!serverClosed) {
                             String str = in.readUTF();
 
-                            //TODO L8hwTask5.Добавил
                             //ловим все служебные сообщения, чтобы не выводить их в TextArea
                             if (str.startsWith("/")) {
                                 if (str.equals("/serverclosed")) {
@@ -283,7 +271,7 @@ public class Controller {
                                     });
                                 }
 
-                                //TODO L8hwTask5.Добавил
+                                //TODO onlyPrivateMsgWindow.Удалить?
                                 //***Обработка запросов на инициализацию и закрытие персонального чата***
                                 if (str.startsWith("/inv")) {//всегда в строке ник партнера
                                     //***Обработка запроса на закрытие персонального чата***
@@ -304,7 +292,7 @@ public class Controller {
                                     initPrivateChat(str);
                                 }
 
-                                //TODO L8hwTask5.Добавил
+                                //TODO onlyPrivateMsgWindow.Переписать?
                                 //обрабатываем полученные сообщения из приватного чата
                                 if (str.startsWith("/w")) {
 
@@ -317,42 +305,8 @@ public class Controller {
                                     String msg = temp[2];
                                     //выводим сообщение в свое окно чата
 
-                                    //TODO ERR NullPointerException.Не помогло.Удалить
-                                    //VBox vB = ((PrivateChatStage)prBtnSend.getScene().getWindow()).prVBoxChat;
-                                    //showMessage(vB, Pos.TOP_LEFT, msg);
 
-                                    //TODO ERR NullPointerException.Не помогло.Удалить
-                                    //showMessage(((PrivateChatStage)prBtnSend.getScene().getWindow()).prVBoxChat, Pos.TOP_LEFT, msg);
-
-                                    //TODO ERR.Test.Добавил.Не помогло.Удалить
-                                    /*Platform.runLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Label label = new Label(msg + "\n");
-                                            VBox vBox = new VBox();
-                                            vBox.setAlignment(Pos.TOP_LEFT);
-                                            //добавляем метку в бокс
-                                            vBox.getChildren().add(label);
-                                            //добавляем vBox в общий бокс чата
-                                            prVBoxChat.getChildren().add(vBox);
-                                        }
-                                    });*/
-                                    //TODO ERR NullPointerException.Не работает
-                                    //showMessage(prVBoxChat, Pos.TOP_LEFT, msg);
-
-                                    //TODO Test in.read in PrivateChatStage.Добавил.Не работает
-                                    //showMessage(vBoxChat, Pos.TOP_LEFT, msg);
                                 }
-
-                                //TODO L8hwTask5.Удалил
-                                /*else {
-                                    //отсеиваем служебные сообщения, чтобы не показывать в окне чата
-                                    if (!str.startsWith("/")) {
-                                        //выводим сообщение в свое окно чата
-                                        showMessage(vBoxChat, Pos.TOP_LEFT, str);
-                                    }
-                                }*/
-                            //TODO L8hwTask5.Добавил
                             } else{
                                 //выводим сообщение в свое окно чата
                                 showMessage(vBoxChat, Pos.TOP_LEFT, str);
@@ -374,10 +328,6 @@ public class Controller {
                         regFormTextArea.appendText("Waiting for server connection...Please log in.\n");
                     }
                 }
-
-            //TODO Test.Удалил
-            //}).start();
-            //TODO Test.Добавил.Не помогло
             });
             thread.setDaemon(true);
             thread.start();
@@ -456,7 +406,6 @@ public class Controller {
         }
     }
 
-    //TODO L8hwTask5.Добавил
     //метод для приглашения в приватный чат выбранного в списке ник
     @FXML
     public void tryToInviteIntoPrivateChat(MouseEvent mouseEvent) throws IOException {
@@ -502,7 +451,7 @@ public class Controller {
         }
     }
 
-    //TODO L8hwTask5.Добавил
+    //метод инициализации окна приватного чата
     private void initPrivateChat(String str) {
         try {
             //выделяем ник партнера по чату из служебного сообщения
@@ -546,7 +495,6 @@ public class Controller {
         }
     }
 
-    //TODO L8hwTask5.Добавил
     //если приватный чат инициализирован, открыть новое окно
     //и подтверждаем готовность инициализации приватного чата
     private void startPrivateChat(){
@@ -624,39 +572,15 @@ public class Controller {
         }
     }
 
-    //TODO L8hwTask5.Добавил
     //метод для отправки сообщений в приватном чате
     @FXML
     public void sendMsgInPrivateChat (ActionEvent actionEvent) {
-
-        //TODO Уже не нужно.Удалить
-        /*//закрываем свое окно приватного чата, если партнер вышел
-        if (chatCompanionNick == null){
-
-            //TODO временно
-            System.out.println("Your partner has left. Closing the window...");
-
-            // TODO Лишнее? Не помогло.Не выводится пользователю!
-            //выводим пользователю сервисное сообщение в окно приватного чата
-            showMessage(prVBoxChat, Pos.TOP_LEFT, "service: Your partner has left. Closing the window...");
-
-            //TODO Не помогло.Не выводится пользователю!
-            //выводим пользователю сервисное сообщение в окно основного чата.
-            showMessage(vBoxChat, Pos.TOP_LEFT, "service: Your partner has left. The window of your private chat has been closed.");
-
-            //закрываем свое окно приватного чата
-            prStage.close();//TODO L8hwTask5.Closing window if partner has left.Добавил.ERR NullPointerException.Добавил static
-
-            return;
-        }*/
-
         try {
             //принимаем строку из текстового поля
             String str = prTextField.getText();
 
-            //TODO Don't allow sending of empty string or with only break spaces.Добавил
             //не отправляем пустую строку, в том числе из одних пробелов
-            if(str.equals("") || str.split(" ").length < 1) {//TODO Важно! если str = "", то str.split(" ").length = 1!!!
+            if(str.equals("") || str.split(" ").length < 1) {
                 prTextField.clear();
                 prTextField.requestFocus();
                 return;
@@ -678,7 +602,6 @@ public class Controller {
         }
     }
 
-    //TODO L8hwTask5.Добавил
     //Метод вывода полученных и сервисных сообщений в чаты пользователя
     private void showMessage(VBox vBoxCh, Pos position, String msg){
         Platform.runLater(new Runnable() {
@@ -708,8 +631,6 @@ public class Controller {
                 //вычисляем в пикселях ширину главного бокса боксов меток и вычитаем 20%, чтобы метка была немного меньше
                 double scrollBarWidthShift = 2;
                 //определяем показывается ли панель прокрутки
-                // TODO Не нашел стандартный признак отображения панели прокрутки
-                //TODO ERR in privateChat: scrollPaneChat - Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
                 if(scrollPaneChat.getVvalue() >= scrollPaneChat.getHeight() - SCROLLPANE_HEIGHT_SHIFT){
                     //если да, устанавливаем размер сдвига на ширину панели прокрутки
                     scrollBarWidthShift += SCROLLBAR_WIDTH;
@@ -748,11 +669,6 @@ public class Controller {
                 //Устанавливаем положение прокрутки вниз(показываем последний элемент)
                 //привязываем свойство vvalue к свойству высоты внутреннего вертикального бокса чата
                 scrollPaneChat.vvalueProperty().bind(vBoxCh.heightProperty());
-
-                //TODO For future improvings.Перенести прорисовку в отдельный процесс и добавить перерисовку панелей сообщений
-                //перерисовываем панели для адаптивной подгонки при изменении размера окна
-                //scrollPaneChat.autosize();
-                //vBoxCh.autosize();
             }
         });
     }
