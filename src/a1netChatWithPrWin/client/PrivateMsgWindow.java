@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class PrivateChatStage extends Stage {
+public class PrivateMsgWindow extends Stage {
 
     //TODO pr.window opening.Deleted
     //String chatCompanionNick;//кому
@@ -38,12 +38,12 @@ public class PrivateChatStage extends Stage {
 
     }*/
     //TODO pr.window opening.Added
-    public PrivateChatStage(Controller controller, String nickTo) throws IOException {
+    public PrivateMsgWindow(Controller controller, String nickTo) throws IOException {
         this.nickTo = nickTo;
         this.out = controller.getOut();
 
         FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResourceAsStream("privateChat.fxml"));
+        Parent root = loader.load(getClass().getResourceAsStream("privateMsgWindow.fxml"));
         setTitle("Private message to " + nickTo);
         Scene scene = new Scene(root, 300, 100);
         setScene(scene);
