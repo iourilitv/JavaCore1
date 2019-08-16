@@ -11,7 +11,6 @@ HBox {
 #regFormTopLabelsBox {
     -fx-min-height: 150;
     -fx-pref-height: 150;
-    /*-fx-max-width: 65;*/
     -fx-spacing:3;
 }
 
@@ -28,7 +27,6 @@ HBox {
     -fx-pref-width-width: 65;
     -fx-max-width: 65;
     -fx-padding: 3.5;
-    /*-fx-text-alignment: right;//TODO Важно! ERR API. Здесь не работает. вернул в sample.fxml*/
 }
 
 #regFormTextArea {

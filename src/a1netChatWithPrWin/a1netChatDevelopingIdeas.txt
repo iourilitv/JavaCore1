@@ -32,6 +32,10 @@
        //работает только для нескольких строк в метке
        //выравниваем текст по правому краю метки
        //label.setTextAlignment(RIGHT);//неработает и (TextAlignment.RIGHT)
+     Style_main.css.
+     //TODO Важно! ERR API. label: Здесь не работает. вернул в sample.fxml./*-fx-text-alignment: right;*/
+
+
 
 
 /**
