@@ -15,8 +15,19 @@
 
 
 Доработка в оба варианта.
-	Сделать процесс авторизации и регистрации в отдельных Stages? Будет красивее, но как реализовать?
-	showMsg.
-	 Чтобы показывать и отправителя, время и т.п. добавить несколько меток в бокс сообщения. Придется сделать их прозрачными, 
+	- Сделать процесс авторизации и регистрации в отдельных Stages? Будет красивее, но как реализовать?
+	showMsg. Добавить проверку пароля из Lesson_4/HW/Password.
+	- Чтобы показывать и отправителя, время и т.п. добавить несколько меток в бокс сообщения. Придется сделать их прозрачными,
 	 а все оформление фона сделать в боксе. А метку сделать прозрачной. Также можно улучшить выравнивание попробовав применить 
 	 типа sizeProperties от текста.
+
+Created two new packets for two independent branches of netChat developing.
+It starts at the following:
+Basically completed the implementing of L8hwTask5.
+But when I try to send the message from the window of my personal chat I get an java.lang.NullPointerException Exception in the JavaFX Application Thread in connect method of Controller class at the moment of receiving the message started with "/w".
+The others works correctly.
+We are at - solved tasks 1, 2, 3, 4. All works correctly.
+There are some problems:
+- not good looking GUI:
+  at auth stage: make similar the reg form;
+  at private chat: make similar the main chat.
