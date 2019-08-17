@@ -577,6 +577,10 @@ public class Controller {
                     //открываем отдельное окно для приватного чата
                     prMsgWindow = new PrivateMsgWindow(Controller.this, nick, msg);
 
+                    //всегда показываем окно выше остальных окон
+                    prMsgWindow.isAlwaysOnTop();
+                    prMsgWindow.show();
+
                     //называем окно в зависимости от направления
                     //TODO ERR.java.lang.NullPointerException
                     /*if(msg != null){//для отправки сообщения
@@ -585,10 +589,6 @@ public class Controller {
                         prMsgLabel.setText("Введите сообщение и нажмите Send или Enter");
 
                     }*/
-
-                    //всегда показываем окно выше остальных окон
-                    prMsgWindow.isAlwaysOnTop();
-                    prMsgWindow.show();
 
                     //обработчик закрытия окна персонального чата
                     prMsgWindow.setOnCloseRequest(event -> {
