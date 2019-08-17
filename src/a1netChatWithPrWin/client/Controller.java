@@ -586,6 +586,8 @@ public class Controller {
 
                     }*/
 
+                    //всегда показываем окно выше остальных окон
+                    prMsgWindow.isAlwaysOnTop();
                     prMsgWindow.show();
 
                     //обработчик закрытия окна персонального чата

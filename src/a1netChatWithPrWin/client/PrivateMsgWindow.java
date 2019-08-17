@@ -57,6 +57,17 @@ public class PrivateMsgWindow extends Stage {
         Scene scene = new Scene(root, 350, 100);
         setScene(scene);
 
+        //устанавливаем запрет на изменение размеров окна
+        this.setResizable(false);
+        //устанавливаем координату x окна от текущих координат окна главного чата
+        double x = controller.mainChatPanel.getScene().getWindow().getX();
+        this.getScene().getWindow().setX(x);
+        //устанавливаем координату y окна от текущих координат окна главного чата
+        double y = controller.mainChatPanel.getScene().getWindow().getY() +
+                controller.mainChatPanel.getScene().getWindow().getHeight() / 2 -
+                this.getScene().getHeight() / 2;
+        this.setY(y);
+
         //TODO временно.
         System.out.println("PrivateChatStage.chatCompanionNick: " + nick);
 
