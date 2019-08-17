@@ -131,7 +131,8 @@ public class ClientHandler {
                                     break;
                                 }
 
-                                //сервер принимает от клиента служебные сообщения приглашения в персональный чат
+                                //TODO pr.msg receiving.Deleted
+                                /*//сервер принимает от клиента служебные сообщения приглашения в персональный чат
                                 // и переправляет его на сервер партнеру
                                 if (str.startsWith("/inv")) {
                                     //выделяем ник партнера по чату из служебного сообщения
@@ -149,7 +150,7 @@ public class ClientHandler {
                                         //сервер отправляет измененное сообщение на сервер партнеру
                                         server.sendMsgToNick(ClientHandler.this, chatCompanionNick, msg);
                                     }
-                                }
+                                }*/
 
                                 //оправка персонального сообщения
                                 if(str.startsWith("/w")) {
@@ -157,7 +158,7 @@ public class ClientHandler {
                                     //что нельзя отправлять самому себе
 
                                     //TODO временно
-                                    System.out.println("if(str.startsWith(\"/w\")) {. str: " + str);
+                                    System.out.println("ClientHandler.if(str.startsWith(\"/w\")) {. str: " + str);
 
                                     //TODO когда добавится адресная книга, этот блок не понадобится
                                     String nickOfRecipient;//ник адресата
@@ -174,15 +175,15 @@ public class ClientHandler {
                                         //выделяем собственно текст сообщения
                                         msg = temp[2];
                                         //проверка не отправляется ли сообщение самому себе
-                                        if(!ClientHandler.this.getNick().equals(nickOfRecipient)){
+                                        if(!ClientHandler.this.getNick().equals(nickOfRecipient)){//TODO лишняя проверка?
                                             //проверяем не находится ли получатель черном списке отправителя
                                             if(!AuthService.checkUserInBlacklistDB(ClientHandler.this.getNick(), nickOfRecipient)){
                                                 //отправляем сообщение адресату
 
-                                                //TODO L8hwTask5.Удалил
-                                                //server.sendMsgToNick(ClientHandler.this, nickOfRecipient, msg);
-                                                //TODO L8hwTask5.Добавил
-                                                server.sendMsgToNick(ClientHandler.this, nickOfRecipient, str);
+                                                //TODO pr.msg receiving.Deleted
+                                                //server.sendMsgToNick(ClientHandler.this, nickOfRecipient, str);
+                                                //TODO pr.msg receiving.Added
+                                                server.sendMsgToNick(ClientHandler.this, nickOfRecipient, msg);
 
                                             } else{
                                                 //если получатель находится в черном списке адресата (цикл не прервался по return)

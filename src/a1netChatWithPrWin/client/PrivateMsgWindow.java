@@ -14,7 +14,8 @@ public class PrivateMsgWindow extends Stage {
     //TODO pr.window opening.Deleted
     //String chatCompanionNick;//кому
     //TODO pr.window opening.Added
-    String nickTo;//кому
+    String nick;//имя партнера (кому/от кого)
+    String msg;
 
     DataOutputStream out;
 
@@ -38,18 +39,26 @@ public class PrivateMsgWindow extends Stage {
 
     }*/
     //TODO pr.window opening.Added
-    public PrivateMsgWindow(Controller controller, String nickTo) throws IOException {
-        this.nickTo = nickTo;
+    public PrivateMsgWindow(Controller controller, String nick, String msg) throws IOException {
+        this.nick = nick;
+        this.msg = msg;
         this.out = controller.getOut();
 
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResourceAsStream("privateMsgWindow.fxml"));
-        setTitle("Private message to " + nickTo);
-        Scene scene = new Scene(root, 300, 100);
+
+        //называем окно в зависимости от направления
+        if(msg == null){//для отправки сообщения
+            setTitle("Private message to " + nick);
+        } else {//при получении сообщения
+            setTitle("Private message from " + nick);
+        }
+
+        Scene scene = new Scene(root, 350, 100);
         setScene(scene);
 
         //TODO временно.
-        System.out.println("PrivateChatStage.chatCompanionNick: " + nickTo);
+        System.out.println("PrivateChatStage.chatCompanionNick: " + nick);
 
     }
 

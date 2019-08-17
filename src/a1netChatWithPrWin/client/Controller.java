@@ -84,6 +84,9 @@ public class Controller {
     VBox prVBoxChat;
 
     @FXML
+    Label prMsgLabel;
+
+    @FXML
     TextField prTextField;
 
     @FXML
@@ -303,17 +306,15 @@ public class Controller {
                                 if (str.startsWith("/w")) {
 
                                     //TODO временно
-                                    System.out.println("if (str.startsWith(\"/w\")).str: " + str);
+                                    System.out.println("connect.if (str.startsWith(\"/w\")).str: " + str);
 
                                     int splitLimit = 3;
                                     String[] temp = str.split(" ", splitLimit);
-                                    //выделяем собственно текст сообщения
+                                    //выделяем ник и собственно текст сообщения
+                                    String nick = temp[1];
                                     String msg = temp[2];
-
-                                    //TODO pr.window opening.Added
                                     //открывает окно дла приема и отправки одного приватного сообщения
-                                    openPrivateMessageWindow("nick?");
-                                    //выводим сообщение в свое окно чата
+                                    openPrivateMessageWindow(nick, msg);
                                 }
                             } else{
                                 //выводим сообщение в свое окно чата
@@ -477,15 +478,13 @@ public class Controller {
             if (nickTo.equals(nick)){
                 //Выводим предупреждение пользователю в GUI
                 showMessage(vBoxChat, Pos.TOP_LEFT, "service: Нельзя выбрать самого себя!");
-                //Обнуляем ник партнера по чату
-                //nickTo = null;
 
                 //TODO временно
                 System.out.println("Нельзя выбрать самого себя!");
 
             } else {
                 //открываем окно для ввода сообщения
-                openPrivateMessageWindow(nickTo);
+                openPrivateMessageWindow(nickTo, null);
             }
         }
     }
@@ -569,14 +568,24 @@ public class Controller {
         });
     }*/
     //TODO pr.window opening.Added
-    //Метод открывает окно дла приема и отправки одного приватного сообщения
-    private void openPrivateMessageWindow(String nickTo){
+    //Метод открывает окно для приема и отправки одного приватного сообщения
+    private void openPrivateMessageWindow(String nick, String msg){
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 try {
                     //открываем отдельное окно для приватного чата
-                    prMsgWindow = new PrivateMsgWindow(Controller.this, nickTo);
+                    prMsgWindow = new PrivateMsgWindow(Controller.this, nick, msg);
+
+                    //называем окно в зависимости от направления
+                    //TODO ERR.java.lang.NullPointerException
+                    /*if(msg != null){//для отправки сообщения
+                        prMsgLabel.setText(msg);
+                    } else {//при получении сообщения
+                        prMsgLabel.setText("Введите сообщение и нажмите Send или Enter");
+
+                    }*/
+
                     prMsgWindow.show();
 
                     //обработчик закрытия окна персонального чата
@@ -673,7 +682,7 @@ public class Controller {
             //принимаем строку из текстового поля
             String str = prTextField.getText();
             //получаем ник получателя
-            String nickTo = ((PrivateMsgWindow)prBtnSend.getScene().getWindow()).nickTo;
+            String nickTo = ((PrivateMsgWindow)prBtnSend.getScene().getWindow()).nick;
             //не отправляем пустую строку, в том числе из одних пробелов
             if(str.equals("") || str.split(" ").length < 1) {
                 prTextField.clear();
@@ -683,6 +692,10 @@ public class Controller {
             //отправляем сообщение на сервер(ClientHandler)
             DataOutputStream out = ((PrivateMsgWindow)prBtnSend.getScene().getWindow()).out;
             out.writeUTF("/w " + nickTo + " " + str);
+
+            //TODO временно
+            System.out.println("sendPrivateMsg.out.writeUTF(\"/w \" + nickTo + \" \" + str): " + "/w " + nickTo + " " + str);
+
             //закрываем после отправки окно приватного сообщения
             prMsgWindow.close();
         } catch (IOException e) {

@@ -102,7 +102,8 @@ public class MainServer {
      * @param nickOfRecipient - ник адресата(получателя)
      * @param msg - отправляемое сообщение
      */
-    public void sendMsgToNick(ClientHandler sender, String nickOfRecipient, String msg){
+    //TODO pr.msg receiving.Deleted
+    /*public void sendMsgToNick(ClientHandler sender, String nickOfRecipient, String msg){
         //в списке авторизованных ищем адресата(получателя) по нику
         for (ClientHandler r: clients) {
             //проверяем есть ли соотвествие
@@ -123,11 +124,11 @@ public class MainServer {
                         return;
                     }
                     //TODO L8hwTask5.Удалить блок?
-                    /*//отправляем сообщение адресату
-                    r.sendMsg("from " + sender.getNick() + ": " + msg);
+                    //отправляем сообщение адресату
+                    //r.sendMsg("from " + sender.getNick() + ": " + msg);
                     //отправляем сообщение отправителю
-                    sender.sendMsg("to " + nickOfRecipient + ": " + msg);
-                    return;*/
+                    //sender.sendMsg("to " + nickOfRecipient + ": " + msg);
+                    //return;
 
                 } else{
                     //если отправитель черном списке получателя (цикл не прервался по return)
@@ -138,6 +139,43 @@ public class MainServer {
         }
         //если в списке не нашлось клиента с таким ником (цикл не прервался по return)
         sender.sendMsg("Адресат с ником " + nickOfRecipient + " не найден в чате!");
+    }*/
+    //TODO pr.msg receiving.Added
+    public void sendMsgToNick(ClientHandler sender, String nickOfRecipient, String msg){
+
+        //TODO временно
+        System.out.println("sendMsgToNick.sender: " + sender + ". nickOfRecipient: " + nickOfRecipient + ". msg: " + msg);
+
+        //в списке авторизованных ищем адресата(получателя) по нику
+        for (ClientHandler r: clients) {
+            //проверяем есть ли соотвествие
+            if(r.getNick().equals(nickOfRecipient)){
+
+                //TODO Перенести в tryToOpenPrivateMessageWindow?
+                //проверяем не находится ли отправитель черном списке получателя
+                if(!AuthService.checkUserInBlacklistDB(nickOfRecipient, sender.getNick())){
+                    //отправляем сообщения для вывода в окно основного чата
+                    //адресату
+                    r.sendMsg("from " + sender.getNick() + ": " + msg);
+                    //отправителю
+                    sender.sendMsg("to " + nickOfRecipient + ": " + msg);
+                    //отправляем сервисное сообщение для вывода в окно приватного сообщения
+                    r.sendMsg("/wfrom " + sender.getNick() + " " + msg);
+                } else{
+                    //если отправитель черном списке получателя (цикл не прервался по return)
+                    sender.sendMsg("Вы в черном списке адресата с ником " + nickOfRecipient + " !");
+                    //return;
+                }
+
+            } else {
+                //если в списке не нашлось клиента с таким ником (цикл не прервался по return)
+                sender.sendMsg("Адресат с ником " + nickOfRecipient + " не найден в чате!");
+
+                //TODO временно
+                System.out.println("sendMsgToNick.}else.sender: " + sender + ". nickOfRecipient: " + nickOfRecipient + ". msg: " + msg);
+
+            }
+        }
     }
 
     /**

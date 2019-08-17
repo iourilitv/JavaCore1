@@ -3,12 +3,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
 <VBox alignment="center" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121"
       fx:controller="a1netChatWithPrWin.client.Controller">
 
-    <VBox fx:id="prVBoxChat" HBox.hgrow="ALWAYS">
-        <!--для каждой метки каждого сообщения отдельные боксы-->
-    </VBox>
+    <Label fx:id="prMsgLabel" HBox.hgrow="ALWAYS">
+        <!--верхняя метка для отображения полученного сообщения-->
+    </Label>
 
     <!--нижняя панель для отправки сообщений-->
     <HBox fx:id="prBottomPanel">
