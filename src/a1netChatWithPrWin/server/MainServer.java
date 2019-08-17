@@ -166,16 +166,11 @@ public class MainServer {
                     sender.sendMsg("Вы в черном списке адресата с ником " + nickOfRecipient + " !");
                     //return;
                 }
-
-            } else {
-                //если в списке не нашлось клиента с таким ником (цикл не прервался по return)
-                sender.sendMsg("Адресат с ником " + nickOfRecipient + " не найден в чате!");
-
-                //TODO временно
-                System.out.println("sendMsgToNick.}else.sender: " + sender + ". nickOfRecipient: " + nickOfRecipient + ". msg: " + msg);
-
+                return;
             }
         }
+        //если в списке не нашлось клиента с таким ником (цикл не прервался по return)
+        sender.sendMsg("Адресат с ником " + nickOfRecipient + " не найден в чате!");
     }
 
     /**

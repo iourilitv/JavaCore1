@@ -123,6 +123,9 @@ public class Controller {
     final String IP_ADRESS = "localhost";//IP 127.0.0.1.
     final int PORT = 8189;
 
+    public Controller() {
+    }
+
     //метод отображения элементов GUI в режиме Авторизован/Неавторизован
     public void setAuthorized(boolean isAuthorized) {
         this.isAuthorized = isAuthorized;
